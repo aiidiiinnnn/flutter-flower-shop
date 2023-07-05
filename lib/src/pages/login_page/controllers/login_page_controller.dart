@@ -21,7 +21,17 @@ class LoginPageController extends GetxController {
   @override
   void onInit(){
     super.onInit();
-    loadUserVendor();
+    loadUserVendor().then((isChecked){
+      if(isChecked=true && chosenRole=='user'){
+        Get.toNamed("${RouteNames.loginPage}${RouteNames.userFlowerList}");
+      }
+      else if(isChecked=true && chosenRole=='vendor'){
+        Get.toNamed("${RouteNames.loginPage}${RouteNames.vendorFlowerList}");
+      }
+      else{
+        Get.toNamed(RouteNames.loginPage);
+      }
+    });
   }
 
   String? emailValidator(final String? email) {
@@ -38,49 +48,6 @@ class LoginPageController extends GetxController {
     return null;
   }
 
-  // void rememberMe(bool value){
-  //   isChecked.value=value;
-  // }
-
-  // Future<void> handleRememberMe() async {
-  // SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   if(isChecked.value){
-  //     prefs.setBool("remember_me", isChecked.value);
-  //     prefs.setString("role",chosenRole);
-  //   }
-  //   else{
-  //     prefs.clear();
-  //   }
-  // }
-
-  // void handleRememberMe(bool value) {
-  //   isChecked.value = value;
-  //   SharedPreferences.getInstance().then(
-  //         (prefs) {
-  //       prefs.setBool("remember_me", value);
-  //       prefs.setString('email', emailController.text);
-  //       prefs.setString('password', passwordController.text);
-  //     },
-  //   );
-  //   isChecked.value = value;
-  // }void loadUserEmailPassword() async {
-  //   try {
-  //     SharedPreferences prefs = await SharedPreferences.getInstance();
-  //     var email = prefs.getString("email") ?? "";
-  //     var password = prefs.getString("password") ?? "";
-  //     var rememberMe = prefs.getBool("remember_me") ?? false;
-  //     if (rememberMe) {
-  //       isChecked.value = true;
-  //       emailController.text = email ?? "";
-  //       passwordController.text = password ?? "";
-  //     }
-  //   }
-  //   catch (e)
-  //   {
-  //     print(e);
-  //   }
-  // }
-
   void handleRememberMe(String role,bool value) {
     isChecked.value = value;
     SharedPreferences.getInstance().then(
@@ -92,7 +59,7 @@ class LoginPageController extends GetxController {
     isChecked.value = value;
   }
 
-  void loadUserVendor() async {
+  Future loadUserVendor() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var role = prefs.getString("role") ?? "";
@@ -204,7 +171,8 @@ class LoginPageController extends GetxController {
                 else{
                   chosenRole ="vendor";
                   handleRememberMe(chosenRole, isChecked.value);
-                  Get.offAndToNamed("${RouteNames.loginPage}${RouteNames.vendorFlowerList}");
+                  onInit();
+                  Get.toNamed("${RouteNames.loginPage}${RouteNames.vendorFlowerList}");
                 }
               }
             }
@@ -228,7 +196,8 @@ class LoginPageController extends GetxController {
                         else{
                           chosenRole ="user";
                           handleRememberMe(chosenRole, isChecked.value);
-                          Get.offAndToNamed("${RouteNames.loginPage}${RouteNames.userFlowerList}");
+                          onInit();
+                          Get.toNamed("${RouteNames.loginPage}${RouteNames.userFlowerList}");
                         }
                       }
                     }

@@ -1,8 +1,6 @@
 import 'package:flower_shop/src/pages/login_page/view/widget/custom_login_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
-import '../../../../flower_shop.dart';
 import '../controllers/login_page_controller.dart';
 
 class LoginPage extends  GetView<LoginPageController>{

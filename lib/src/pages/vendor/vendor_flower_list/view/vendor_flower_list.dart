@@ -1,9 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-
 import '../controller/vendor_flower_list_controller.dart';
-
 class VendorFlowerList extends  GetView<VendorFlowerListController>{
   const VendorFlowerList({super.key});
 
@@ -17,7 +14,11 @@ class VendorFlowerList extends  GetView<VendorFlowerListController>{
             backgroundColor: const Color(0xffb32437),
             title: const Text("Vendor Flower List"),
           ),
-          body: const Text("Hi"),
+          body: ElevatedButton(
+              onPressed: () => controller.logOut(),
+              // onPressed: () => {},
+              child: const Text("Logout")
+          )
         )
     );
   }

@@ -15,9 +15,13 @@ class UserFlowerList extends  GetView<UserFlowerListController>{
             backgroundColor: const Color(0xffb32437),
             title: const Text("User Flower List"),
           ),
-          body: const Text("Hi 2"),
+          body: ElevatedButton(
+              onPressed: () => controller.logOut(),
+            // onPressed: () => {},
+              child: const Text("Logout")
+          )
         )
-    );
+        );
   }
 
 }
