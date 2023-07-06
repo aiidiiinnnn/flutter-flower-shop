@@ -1,8 +1,9 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:either_dart/either.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-
 import '../../../infrastructure/common/repository_url.dart';
 import '../models/user_models/signup_user_dto.dart';
 import '../models/user_models/signup_user_view_model.dart';
@@ -44,4 +45,6 @@ class SignupPageRepository{
       return Left('There was an error: ${request.statusCode}');
     }
   }
+
+
 }

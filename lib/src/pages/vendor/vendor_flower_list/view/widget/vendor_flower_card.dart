@@ -26,7 +26,7 @@ class VendorFlowerCard extends GetView<VendorFlowerListController>{
             const AspectRatio(
                 aspectRatio: 2.2,
               child: Image(
-                image: AssetImage('assets/flower.jpg'),
+                image: AssetImage('assets/flower.jpg', package: "flower_shop"),
                 fit: BoxFit.cover,
                 height: 70,
               ),

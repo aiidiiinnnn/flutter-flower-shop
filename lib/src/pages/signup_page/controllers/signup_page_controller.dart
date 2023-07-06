@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:either_dart/either.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +23,7 @@ class SignupPageController extends GetxController {
   final TextEditingController confirmPasswordController = TextEditingController();
   RxInt selectedType = 1.obs;
   RxString imagePath=''.obs;
+  // String? image;
 
   String? firstNameValidator(final String? firstName) {
     if (firstName == null || firstName.isEmpty) {
@@ -65,6 +70,42 @@ class SignupPageController extends GetxController {
     selectedType.value = chosenType!;
   }
 
+  RxString savedImage=''.obs;
+
+  Future<void> imageFromCamera() async {
+    final XFile? pickedImage = await ImagePicker().pickImage(source: ImageSource.camera);
+
+    if (pickedImage != null) {
+      imagePath.value=pickedImage.path.toString();
+      File imageFile = File(imagePath.value);
+      Uint8List bytes = await imageFile.readAsBytes();
+
+      String base64String = base64.encode(bytes);
+      savedImage.value= base64String;
+      update();
+    }
+    else {
+      print('No image selected.');
+    }
+  }
+
+  Future<void> imageFromGallery() async {
+    final XFile? pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedImage != null) {
+      imagePath.value=pickedImage.path.toString();
+      File imageFile = File(imagePath.value);
+      Uint8List bytes = await imageFile.readAsBytes();
+
+      String base64String = base64.encode(bytes);
+      savedImage.value= base64String;
+      update();
+    }
+    else {
+      print('No image selected.');
+    }
+  }
+
   Future<void> addVendor() async {
     if (!formKey.currentState!.validate()) {
       return;
@@ -103,7 +144,7 @@ class SignupPageController extends GetxController {
       lastName: lastNameController.text,
       email: emailController.text,
       password: confirmPasswordController.text,
-      imagePath: imagePath.value
+      imagePath: savedImage.value
     );
     final Either<String, SignupUserViewModel> request = await _repository
         .addUser(dto);
@@ -122,29 +163,4 @@ class SignupPageController extends GetxController {
             )
     );
   }
-
-  Future<void> imageFromCamera() async {
-    final pickedImage = await ImagePicker().pickImage(source: ImageSource.camera);
-
-    if (pickedImage != null) {
-      imagePath.value=pickedImage.path.toString();
-      update();
-    }
-    else {
-      print('No image selected.');
-    }
-  }
-
-  Future<void> imageFromGallery() async {
-    final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
-
-    if (pickedImage != null) {
-      imagePath.value=pickedImage.path.toString();
-      update();
-    }
-    else {
-      print('No image selected.');
-    }
-  }
-
 }

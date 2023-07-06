@@ -28,7 +28,7 @@ class VendorFlowerListController extends GetxController{
   }
 
   Future<void> goToAdd() async {
-    final result = await Get.toNamed("${RouteNames.loginPage}${RouteNames.vendorFlowerList}${RouteNames.addVendorFlower}");
+    final result = await Get.toNamed("${RouteNames.vendorFlowerList}${RouteNames.addVendorFlower}");
     if (result != null) {
       final VendorFlowerViewModel newVendorFlower = VendorFlowerViewModel
           .fromJson(result);

@@ -58,16 +58,20 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                             content: SingleChildScrollView(
                               child: ColorPicker(
                                 pickerColor: controller.pickerColor,
-                                onColorChanged: controller.changeColor,
+                                onColorChanged: (Color value) {
+                                  controller.currentColor = value;
+                                  },
                               ),
                             ),
                             actions: [
                               ElevatedButton(
                                 child: const Text('Got it'),
                                 onPressed: () {
-                                  controller.changeColor(controller.pickerColor);
+                                  controller.changeColor(controller.currentColor);
+                                  // print(controller.currentColor);
                                   print(controller.pickerColor);
                                   print(controller.colorList);
+                                  print(controller.colors);
                                   Navigator.of(context).pop();
                                 },
                               ),
@@ -77,33 +81,28 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                     },
                   child: const Text("Color Picker"),
                 ),
-                // Container(
-                //   color: controller.newColorList.last,
-                //   decoration: BoxDecoration(
-                //     border: Border.all(color: Colors.black),
-                //     borderRadius: BorderRadius.circular(200),
-                //   ),
-                // ),
-                // Row(
-                //   children: [
-                //     Expanded(
-                //       child: ListView.builder(
-                //           shrinkWrap: true,
-                //           itemCount: controller.newColorList.length,
-                //           itemBuilder: (_,index) => Padding(
-                //               padding: const EdgeInsets.all(8.0),
-                //               child: Container(
-                //                 color: controller.newColorList[index],
-                //                 decoration: BoxDecoration(
-                //                   border: Border.all(color: Colors.black),
-                //                   borderRadius: BorderRadius.circular(200),
-                //                 ),
-                //               )
-                //           )
-                //       ),
-                //     ),
-                //   ],
-                // )
+                SizedBox(
+                  height: 30,
+                  child: Expanded(
+                    child: Obx(() => ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: controller.colorList.length,
+                        itemBuilder: (_,index) => Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              height: 30,
+                              width: 30,
+                              decoration: BoxDecoration(
+                                color: controller.colorList[index],
+                                border: Border.all(color: Colors.black),
+                                borderRadius: BorderRadius.circular(200),
+                              ),
+                            )
+                        )
+                    ),)
+                  ),
+                )
               ],
             ),
           ),

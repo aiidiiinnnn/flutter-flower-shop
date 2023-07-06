@@ -87,7 +87,7 @@ class ProfilePicture extends GetView<SignupPageController>{
                     child: const Column(
                       children: [
                         Icon(Icons.camera_alt_outlined,size: 60),
-                        Text("Gallery",style: TextStyle(
+                        Text("Camera",style: TextStyle(
                             fontSize: 16
                         ),),
                       ],

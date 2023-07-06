@@ -26,7 +26,7 @@ class LoginPage extends  GetView<LoginPageController>{
                     child: Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(100),
-                          border: Border.all(color: Color(0xff2a3945), width: 7)
+                          border: Border.all(color: const Color(0xff2a3945), width: 7)
                       ),
                       child: Container(
                         height:150,

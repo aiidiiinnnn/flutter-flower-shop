@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../repositories/add_vendor_flower_repository.dart';
 
@@ -10,16 +11,16 @@ class AddVendorFlowerController extends GetxController{
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
-  List<String> colorList=[];
-  List<Color> newColorList=[];
+  List<dynamic> colors=[];
+  RxList colorList=[].obs;
 
-  Color pickerColor = const Color(0xff443a49);
-  Color currentColor = const Color(0xff443a49);
+  Color currentColor = const Color(0xff32623a);
+  Color pickerColor = const Color(0xff8c4169);
 
   void changeColor(Color color) {
-    currentColor = color;
-    colorList.add("$currentColor");
-    newColorList.add(currentColor);
+    pickerColor = color;
+    colorList.add(pickerColor);
+    colors.add(pickerColor.value);
   }
 
   String? nameValidator(final String? name){

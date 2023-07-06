@@ -59,23 +59,6 @@ class LoginPageController extends GetxController {
     isChecked.value = value;
   }
 
-  Future loadUserVendor() async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      var role = prefs.getString("role") ?? "";
-      var rememberMe = prefs.getBool("remember_me") ?? false;
-      print(role);
-      if (rememberMe) {
-        isChecked.value = true;
-        chosenRole = role ?? "";
-      }
-    }
-    catch (e)
-    {
-      print(e);
-    }
-  }
-
   Future<void> goToSignup() async {
     Get.toNamed("${RouteNames.loginPage}${RouteNames.signupPage}");
   }
@@ -170,8 +153,9 @@ class LoginPageController extends GetxController {
                 }
                 else{
                   chosenRole ="vendor";
-                  handleRememberMe(chosenRole, isChecked.value);
-                  // onInit();
+                  if(isChecked.value){
+                    handleRememberMe(chosenRole, isChecked.value);
+                  }
                   Get.offAndToNamed(RouteNames.vendorFlowerList);
                 }
               }
@@ -195,8 +179,9 @@ class LoginPageController extends GetxController {
                         }
                         else{
                           chosenRole ="user";
-                          handleRememberMe(chosenRole, isChecked.value);
-                          // onInit();
+                          if(isChecked.value){
+                            handleRememberMe(chosenRole, isChecked.value);
+                          }
                           Get.offAndToNamed(RouteNames.userFlowerList);
                         }
                       }
