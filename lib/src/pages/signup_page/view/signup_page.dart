@@ -2,7 +2,6 @@ import 'package:flower_shop/src/pages/signup_page/view/widget/custom_signup_form
 import 'package:flower_shop/src/pages/signup_page/view/widget/profile_picture.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
 import '../controllers/signup_page_controller.dart';
 
 class SignupPage extends GetView<SignupPageController>{

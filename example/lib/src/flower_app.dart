@@ -7,30 +7,35 @@ class FlowerApp extends StatelessWidget {
   const FlowerApp({Key? key}) : super(key: key);
 
   // String? stringValue;
-  // Future<void> getStringValuesSF() async {
+  // Future getStringValuesSF() async {
   //   SharedPreferences prefs = await SharedPreferences.getInstance();
   //   stringValue = prefs.getString('role');
   // }
   //
-  // String chooseInitial(){
-  //   if(stringValue=="vendor"){
-  //     return RouteNames.vendorFlowerList;
-  //   }
-  //   else if(stringValue=='user'){
-  //     return RouteNames.userFlowerList;
-  //   }
-  //   else{
-  //     return RouteNames.loginPage;
-  //   }
+  // bool? isLogged;
+  // Future getBoolValuesSF() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   isLogged = prefs.getBool('remember_me');
   // }
 
 
   @override
   Widget build(BuildContext context) {
+    // String? routeName;
+    //
+    // if(stringValue=="vendor"){
+    //   routeName = RouteNames.vendorFlowerList;
+    // }
+    // else if(stringValue=='user'){
+    //   routeName = RouteNames.userFlowerList;
+    // }
+    // else{
+    //   routeName = RouteNames.loginPage;
+    // }
     return GetMaterialApp(
       debugShowCheckedModeBanner:false,
+      // initialRoute: isLogged == null ? RouteNames.loginPage : routeName,
       initialRoute: RouteNames.loginPage,
-      // initialRoute: chooseInitial(),
       getPages: RoutePages.pages,
       // translations: LocalizationService(),
       locale: const Locale('en','US'),
