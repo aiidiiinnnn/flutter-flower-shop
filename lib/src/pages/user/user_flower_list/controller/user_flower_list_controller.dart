@@ -9,7 +9,8 @@ class UserFlowerListController extends GetxController{
   void logOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove("role");
-    Get.back();
+    prefs.remove("remember_me");
+    Get.offAndToNamed(RouteNames.loginPage);
   }
 
 }

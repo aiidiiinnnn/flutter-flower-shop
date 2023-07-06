@@ -23,25 +23,24 @@ class RoutePages{
               page: () => const SignupPage(),
               binding: SignupPageBinding()
           ),
-          GetPage(
-              name: RouteNames.vendorFlowerList,
-              page: () => const VendorFlowerList(),
-              binding: VendorFlowerListBinding(),
-              children: [
-                GetPage(
-                    name: RouteNames.addVendorFlower,
-                    page: () => const AddVendorFlower(),
-                    binding: AddVendorFlowerBinding()
-                ),
-              ]
-          ),
-          GetPage(
-              name: RouteNames.userFlowerList,
-              page: () => const UserFlowerList(),
-              binding: UserFlowerListBinding()
-          ),
-
         ]
-    )
+    ),
+    GetPage(
+        name: RouteNames.vendorFlowerList,
+        page: () => const VendorFlowerList(),
+        binding: VendorFlowerListBinding(),
+        children: [
+          GetPage(
+              name: RouteNames.addVendorFlower,
+              page: () => const AddVendorFlower(),
+              binding: AddVendorFlowerBinding()
+          ),
+        ]
+    ),
+    GetPage(
+        name: RouteNames.userFlowerList,
+        page: () => const UserFlowerList(),
+        binding: UserFlowerListBinding()
+    ),
   ];
 }

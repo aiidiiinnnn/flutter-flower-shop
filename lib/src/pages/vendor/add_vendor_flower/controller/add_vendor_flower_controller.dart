@@ -10,6 +10,17 @@ class AddVendorFlowerController extends GetxController{
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
+  List<String> colorList=[];
+  List<Color> newColorList=[];
+
+  Color pickerColor = const Color(0xff443a49);
+  Color currentColor = const Color(0xff443a49);
+
+  void changeColor(Color color) {
+    currentColor = color;
+    colorList.add("$currentColor");
+    newColorList.add(currentColor);
+  }
 
   String? nameValidator(final String? name){
     if(name == null || name.isEmpty){

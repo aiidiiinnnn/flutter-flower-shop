@@ -12,7 +12,7 @@ class LoginPageController extends GetxController {
   RxList<LoginUserViewModel> usersList = RxList();
   RxList<LoginVendorViewModel> vendorList = RxList();
   final LoginPageRepository _repository = LoginPageRepository();
-  final GlobalKey<FormState> formKey = GlobalKey();
+  // final GlobalKey<FormState> formKey = GlobalKey();
   RxBool isLoading = true.obs;
   RxBool isChecked = false.obs;
   final TextEditingController emailController = TextEditingController();
@@ -21,17 +21,17 @@ class LoginPageController extends GetxController {
   @override
   void onInit(){
     super.onInit();
-    loadUserVendor().then((isChecked){
-      if(isChecked=true && chosenRole=='user'){
-        Get.toNamed("${RouteNames.loginPage}${RouteNames.userFlowerList}");
-      }
-      else if(isChecked=true && chosenRole=='vendor'){
-        Get.toNamed("${RouteNames.loginPage}${RouteNames.vendorFlowerList}");
-      }
-      else{
-        Get.toNamed(RouteNames.loginPage);
-      }
-    });
+    // loadUserVendor().then((isChecked){
+    //   if(isChecked=true && chosenRole=='user'){
+    //     Get.toNamed("${RouteNames.loginPage}${RouteNames.userFlowerList}");
+    //   }
+    //   else if(isChecked=true && chosenRole=='vendor'){
+    //     Get.toNamed("${RouteNames.loginPage}${RouteNames.vendorFlowerList}");
+    //   }
+    //   else{
+    //     Get.toNamed(RouteNames.loginPage);
+    //   }
+    // });
   }
 
   String? emailValidator(final String? email) {
@@ -147,9 +147,9 @@ class LoginPageController extends GetxController {
   }
 
   Future<void> goToNextPage() async {
-    if (!formKey.currentState!.validate()) {
-      return;
-    }
+    // if (!formKey.currentState!.validate()) {
+    //   return;
+    // }
     isLoading.value = true;
     final Either<String, List<LoginVendorViewModel>> vendorsByEmailPassword = await _repository.getVendorByEmailPassword(email: emailController.text, password: passwordController.text);
     final Either<String, List<LoginUserViewModel>> usersByEmailPassword = await _repository.getUserByEmailPassword(email: emailController.text, password: passwordController.text);
@@ -171,8 +171,8 @@ class LoginPageController extends GetxController {
                 else{
                   chosenRole ="vendor";
                   handleRememberMe(chosenRole, isChecked.value);
-                  onInit();
-                  Get.toNamed("${RouteNames.loginPage}${RouteNames.vendorFlowerList}");
+                  // onInit();
+                  Get.offAndToNamed(RouteNames.vendorFlowerList);
                 }
               }
             }
@@ -196,8 +196,8 @@ class LoginPageController extends GetxController {
                         else{
                           chosenRole ="user";
                           handleRememberMe(chosenRole, isChecked.value);
-                          onInit();
-                          Get.toNamed("${RouteNames.loginPage}${RouteNames.userFlowerList}");
+                          // onInit();
+                          Get.offAndToNamed(RouteNames.userFlowerList);
                         }
                       }
                     }

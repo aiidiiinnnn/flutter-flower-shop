@@ -1,5 +1,6 @@
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/widget/vendor_flower_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import '../../vendor_flower_list/view/widget/custom_add_form_field.dart';
@@ -21,28 +22,88 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
           body: SingleChildScrollView(
             child: Column(
               children: [
-                CustomAddFormField(
-                  hintText: "Flower Name",
-                  name: "Flower Name",
-                  controller: controller.nameController,
-                  validator: controller.nameValidator,
-                  icon: Icons.accessibility_outlined,
+                Form(
+                    child: Column(
+                      children: [
+                        CustomAddFormField(
+                          hintText: "Flower Name",
+                          name: "Flower Name",
+                          controller: controller.nameController,
+                          validator: controller.nameValidator,
+                          icon: Icons.accessibility_outlined,
+                        ),
+                        CustomAddFormField(
+                          hintText: "Description",
+                          name: "Description",
+                          controller: controller.descriptionController,
+                          validator: controller.descriptionValidator,
+                          icon: Icons.accessibility_outlined,
+                        ),
+                        CustomAddFormField(
+                          hintText: "Price",
+                          name: "Price",
+                          controller: controller.priceController,
+                          validator: controller.priceValidator,
+                          icon: Icons.accessibility_outlined,
+                        ),
+                      ],
+                    )
                 ),
-                CustomAddFormField(
-                  hintText: "Description",
-                  name: "Description",
-                  controller: controller.descriptionController,
-                  validator: controller.descriptionValidator,
-                  icon: Icons.accessibility_outlined,
+                ElevatedButton(
+                    onPressed: ()=>{
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                            title: const Text('Pick a color!'),
+                            content: SingleChildScrollView(
+                              child: ColorPicker(
+                                pickerColor: controller.pickerColor,
+                                onColorChanged: controller.changeColor,
+                              ),
+                            ),
+                            actions: [
+                              ElevatedButton(
+                                child: const Text('Got it'),
+                                onPressed: () {
+                                  controller.changeColor(controller.pickerColor);
+                                  print(controller.pickerColor);
+                                  print(controller.colorList);
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          )
+                      )
+                    },
+                  child: const Text("Color Picker"),
                 ),
-                CustomAddFormField(
-                  hintText: "Price",
-                  name: "Price",
-                  controller: controller.priceController,
-                  validator: controller.priceValidator,
-                  icon: Icons.accessibility_outlined,
-                ),
-
+                // Container(
+                //   color: controller.newColorList.last,
+                //   decoration: BoxDecoration(
+                //     border: Border.all(color: Colors.black),
+                //     borderRadius: BorderRadius.circular(200),
+                //   ),
+                // ),
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: ListView.builder(
+                //           shrinkWrap: true,
+                //           itemCount: controller.newColorList.length,
+                //           itemBuilder: (_,index) => Padding(
+                //               padding: const EdgeInsets.all(8.0),
+                //               child: Container(
+                //                 color: controller.newColorList[index],
+                //                 decoration: BoxDecoration(
+                //                   border: Border.all(color: Colors.black),
+                //                   borderRadius: BorderRadius.circular(200),
+                //                 ),
+                //               )
+                //           )
+                //       ),
+                //     ),
+                //   ],
+                // )
               ],
             ),
           ),
