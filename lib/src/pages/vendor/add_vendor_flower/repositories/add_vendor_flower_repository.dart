@@ -11,7 +11,7 @@ class AddVendorFlowerRepository{
   final httpClient = http.Client();
   Map<String,String> customHeaders={"content-type": "application/json"};
 
-  Future<Either<String, AddVendorFlowerViewModel>> addAuctionItem(AddVendorFlowerDto dto) async{
+  Future<Either<String, AddVendorFlowerViewModel>> addVendorFlower(AddVendorFlowerDto dto) async{
     final url = Uri.http(RepositoryUrls.fullBaseUrl, 'vendorFlowers');
     final request = await http.post(url,body: json.encode(dto.toJson()),headers: customHeaders);
 

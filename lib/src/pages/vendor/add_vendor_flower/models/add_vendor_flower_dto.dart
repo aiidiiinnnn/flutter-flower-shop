@@ -1,5 +1,4 @@
 class AddVendorFlowerDto{
-  final int id;
   final String name;
   final String imageAddress;
   final String description;
@@ -9,7 +8,6 @@ class AddVendorFlowerDto{
   final int count;
 
   AddVendorFlowerDto({
-    required this.id,
     required this.name,
     required this.imageAddress,
     required this.description,
