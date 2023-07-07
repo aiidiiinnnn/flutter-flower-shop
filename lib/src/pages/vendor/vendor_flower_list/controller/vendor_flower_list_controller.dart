@@ -1,10 +1,11 @@
 import 'package:either_dart/either.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/models/vendor_flower_view_model.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/repositories/vendor_flower_list_repository.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../../../flower_shop.dart';
+import '../view/screens/vendor_flower_home.dart';
 
 
 class VendorFlowerListController extends GetxController{
@@ -13,6 +14,20 @@ class VendorFlowerListController extends GetxController{
   RxList<VendorFlowerViewModel> vendorFlowersList =RxList();
   RxBool isLoading=true.obs;
   RxBool isRetry=false.obs;
+  RxBool textFlag = true.obs;
+  RxInt index=RxInt(0);
+
+  void onDestinationSelected(index){
+    this.index.value=index;
+    print(this.index);
+  }
+
+  final screens = [
+    const VendorFlowerHome(),
+    const Center(child: Text('History',style: TextStyle(fontSize: 72),)),
+    const Center(child: Text('Search',style: TextStyle(fontSize: 72),)),
+    const Center(child: Text('Profile',style: TextStyle(fontSize: 72),)),
+  ];
 
   @override
   void onInit(){
@@ -28,7 +43,7 @@ class VendorFlowerListController extends GetxController{
   }
 
   Future<void> goToAdd() async {
-    final result = await Get.toNamed("${RouteNames.vendorFlowerList}${RouteNames.addVendorFlower}");
+    final result = await Get.toNamed("${RouteNames.vendorFlowerList}${RouteNames.vendorFlowerHome}${RouteNames.addVendorFlower}");
     if (result != null) {
       final VendorFlowerViewModel newVendorFlower = VendorFlowerViewModel
           .fromJson(result);
