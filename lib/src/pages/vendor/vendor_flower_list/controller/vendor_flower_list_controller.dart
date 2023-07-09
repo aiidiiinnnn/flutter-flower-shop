@@ -1,6 +1,8 @@
 import 'package:either_dart/either.dart';
+import 'package:flower_shop/src/pages/login_page/models/vendor_models/login_vendor_view_model.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/models/vendor_flower_view_model.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/repositories/vendor_flower_list_repository.dart';
+import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,6 +11,8 @@ import '../view/screens/vendor_flower_home.dart';
 
 
 class VendorFlowerListController extends GetxController{
+  LoginVendorViewModel? vendor;
+  int? vendorId;
   RxBool isChecked = false.obs;
   final VendorFlowerListRepository _repository = VendorFlowerListRepository();
   RxList<VendorFlowerViewModel> vendorFlowersList =RxList();
@@ -19,26 +23,37 @@ class VendorFlowerListController extends GetxController{
 
   void onDestinationSelected(index){
     this.index.value=index;
-    print(this.index);
   }
 
   final screens = [
     const VendorFlowerHome(),
     const Center(child: Text('History',style: TextStyle(fontSize: 72),)),
     const Center(child: Text('Search',style: TextStyle(fontSize: 72),)),
-    const Center(child: Text('Profile',style: TextStyle(fontSize: 72),)),
+    const VendorFlowerProfile(),
   ];
 
   @override
   void onInit(){
     super.onInit();
-    getVendorFlowers();
+    Future.delayed(const Duration(seconds: 1), () {
+      sharedVendor().then((id) => vendorId=id);
+    });
+    Future.delayed(const Duration(seconds: 2), () {
+      getVendorById();
+      getVendorFlowers();
+    });
+  }
+
+  Future<int?> sharedVendor() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt("vendorId");
   }
 
   void logOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove("role");
     prefs.remove("remember_me");
+    prefs.remove("vendorId");
     Get.offAndToNamed(RouteNames.loginPage);
   }
 
@@ -49,6 +64,23 @@ class VendorFlowerListController extends GetxController{
           .fromJson(result);
       vendorFlowersList.add(newVendorFlower);
     }
+  }
+
+  Future<void> getVendorById() async{
+    isLoading.value=true;
+    isRetry.value=false;
+    final Either<String, LoginVendorViewModel> vendorById = await _repository.getVendor(vendorId!);
+    vendorById.fold(
+            (left) {
+              print(left);
+              isLoading.value=false;
+              isRetry.value=true;
+            },
+            (right) {
+              vendor=right;
+              isLoading.value=false;
+            }
+    );
   }
 
   Future<void> getVendorFlowers() async{
@@ -68,5 +100,10 @@ class VendorFlowerListController extends GetxController{
             }
     );
   }
+
+  // Future<void> loadImage() async{
+  //   decodedBytes = base64.decode(vendor!.imagePath);
+  // }
+
 
 }

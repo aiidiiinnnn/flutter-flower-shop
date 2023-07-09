@@ -4,8 +4,11 @@ class LoginUserViewModel{
   final String lastName;
   final String email;
   final String password;
+  final String imagePath;
+  final List<Map<String,dynamic>> userFlowerList;
 
-  LoginUserViewModel({required this.id, required this.firstName,required this.lastName,required this.email, required this.password});
+
+  LoginUserViewModel({required this.id, required this.firstName,required this.lastName,required this.email, required this.password, required this.imagePath,required this.userFlowerList});
 
   factory LoginUserViewModel.fromJson(Map<String, dynamic> json){
     return LoginUserViewModel(
@@ -13,7 +16,9 @@ class LoginUserViewModel{
         firstName: json["firstName"],
         lastName: json["lastName"],
         email: json["email"],
-        password: json["password"]
+        password: json["password"],
+        imagePath: json["imagePath"],
+        userFlowerList: json["userFlowerList"]
     );
   }
 }

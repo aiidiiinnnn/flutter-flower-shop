@@ -21,17 +21,6 @@ class LoginPageController extends GetxController {
   @override
   void onInit(){
     super.onInit();
-    // loadUserVendor().then((isChecked){
-    //   if(isChecked=true && chosenRole=='user'){
-    //     Get.toNamed("${RouteNames.loginPage}${RouteNames.userFlowerList}");
-    //   }
-    //   else if(isChecked=true && chosenRole=='vendor'){
-    //     Get.toNamed("${RouteNames.loginPage}${RouteNames.vendorFlowerList}");
-    //   }
-    //   else{
-    //     Get.toNamed(RouteNames.loginPage);
-    //   }
-    // });
   }
 
   String? emailValidator(final String? email) {
@@ -57,6 +46,22 @@ class LoginPageController extends GetxController {
       },
     );
     isChecked.value = value;
+  }
+
+  void saveVendor(int id){
+    SharedPreferences.getInstance().then(
+          (prefs) {
+        prefs.setInt("vendorId", id);
+      },
+    );
+  }
+
+  void saveUser(int id){
+    SharedPreferences.getInstance().then(
+          (prefs) {
+        prefs.setInt("userId", id);
+      },
+    );
   }
 
   Future<void> goToSignup() async {
@@ -143,12 +148,12 @@ class LoginPageController extends GetxController {
         },
             (right) {
           if(right.isNotEmpty){
-            for(final vendorUser in right){
-              if(emailController.text!=vendorUser.email){
+            for(final loginVendor in right){
+              if(emailController.text!=loginVendor.email){
                 Get.snackbar('Email', 'Entered email has not found V');
               }
               else{
-                if(passwordController.text!=vendorUser.password){
+                if(passwordController.text!=loginVendor.password){
                   Get.snackbar('Password', 'Password is wrong U');
                 }
                 else{
@@ -156,6 +161,7 @@ class LoginPageController extends GetxController {
                   if(isChecked.value){
                     handleRememberMe(chosenRole, isChecked.value);
                   }
+                  saveVendor(loginVendor.id);
                   Get.offAndToNamed(RouteNames.vendorFlowerList);
                 }
               }

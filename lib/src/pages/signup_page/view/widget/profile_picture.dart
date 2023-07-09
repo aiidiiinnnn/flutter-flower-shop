@@ -24,7 +24,6 @@ class ProfilePicture extends GetView<SignupPageController>{
           ),
           child: Obx(() => controller.imagePath.isNotEmpty? CircleAvatar(backgroundImage: FileImage(File(controller.imagePath.toString())),) :
           Icon(Icons.person_outline,size: shapeSize*0.8),)
-
         ),
           Positioned(
             left: -10,
