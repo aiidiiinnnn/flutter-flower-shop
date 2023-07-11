@@ -4,7 +4,7 @@ class LoginUserDto{
   final String email;
   final String password;
   final String imagePath;
-  final List<Map<String,dynamic>> userFlowerList;
+  final List<dynamic> userFlowerList;
 
   LoginUserDto({required this.firstName,required this.lastName,required this.email, required this.password,required this.imagePath, required this.userFlowerList});
 

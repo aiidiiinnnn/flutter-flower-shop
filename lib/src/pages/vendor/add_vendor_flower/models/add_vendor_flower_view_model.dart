@@ -6,6 +6,7 @@ class AddVendorFlowerViewModel{
   final int price;
   final List<dynamic> color;
   final List<dynamic> category;
+  int vendorId;
   final int count;
 
   AddVendorFlowerViewModel({
@@ -16,7 +17,8 @@ class AddVendorFlowerViewModel{
     required this.price,
     required this.color,
     required this.category,
-    required this.count
+    required this.count,
+    required this.vendorId
   });
 
   factory AddVendorFlowerViewModel.fromJson(Map<String,dynamic> json){
@@ -28,7 +30,8 @@ class AddVendorFlowerViewModel{
         price: json["price"],
         color: json["color"],
         category: json["category"],
-        count: json["count"]
+        count: json["count"],
+        vendorId: json["vendorId"]
     );
   }
 
@@ -40,6 +43,7 @@ class AddVendorFlowerViewModel{
     int? price,
     List<dynamic>? color,
     List<dynamic>? category,
+    int? vendorId,
     int? count})
   => AddVendorFlowerViewModel(
     id: id ?? this.id,
@@ -49,6 +53,7 @@ class AddVendorFlowerViewModel{
     price: price ?? this.price,
     color: color ?? this.color,
     category: category ?? this.category,
+    vendorId: vendorId ?? this.vendorId,
     count: count ?? this.count,
   );
 

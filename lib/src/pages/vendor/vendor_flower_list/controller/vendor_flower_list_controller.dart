@@ -33,15 +33,11 @@ class VendorFlowerListController extends GetxController{
   ];
 
   @override
-  void onInit(){
+  Future<void> onInit() async {
     super.onInit();
-    Future.delayed(const Duration(seconds: 1), () {
-      sharedVendor().then((id) => vendorId=id);
-    });
-    Future.delayed(const Duration(seconds: 2), () {
-      getVendorById();
-      getVendorFlowers();
-    });
+    await sharedVendor().then((id) => vendorId=id);
+    await getVendorById();
+    await getFlowersByVendorId();
   }
 
   Future<int?> sharedVendor() async {
@@ -76,34 +72,31 @@ class VendorFlowerListController extends GetxController{
               isLoading.value=false;
               isRetry.value=true;
             },
-            (right) {
-              vendor=right;
+            (vendorViewModel) {
+              vendor=vendorViewModel;
               isLoading.value=false;
             }
     );
   }
 
-  Future<void> getVendorFlowers() async{
+  Future<void> getFlowersByVendorId() async{
     vendorFlowersList.clear();
     isLoading.value=true;
     isRetry.value=false;
-    final Either<String,List<VendorFlowerViewModel>> auctionItems = await _repository.getVendorFlower();
+    final Either<String,List<VendorFlowerViewModel>> auctionItems = await _repository.getFlowerByVendorId(vendorId!);
     auctionItems.fold(
             (left) {
-              print(left);
-              isLoading.value=false;
-              isRetry.value=true;
-            },
+          print(left);
+          isLoading.value=false;
+          isRetry.value=true;
+        },
             (right){
-              vendorFlowersList.addAll(right);
-              isLoading.value=false;
-            }
+          vendorFlowersList.addAll(right);
+          isLoading.value=false;
+        }
     );
   }
 
-  // Future<void> loadImage() async{
-  //   decodedBytes = base64.decode(vendor!.imagePath);
-  // }
 
 
 }

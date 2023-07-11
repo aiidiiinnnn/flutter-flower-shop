@@ -7,6 +7,7 @@ import 'package:flower_shop/src/pages/vendor/add_vendor_flower/models/add_vendor
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../repositories/add_vendor_flower_repository.dart';
 
@@ -25,12 +26,26 @@ class AddVendorFlowerController extends GetxController{
   RxList colorList=[].obs;
   RxString imagePath=''.obs;
   RxString savedImage=''.obs;
+  int? vendorId;
 
   void onIncrement(){
     if (counterValue.value >= 0){
       counterValue.value++;
       print(counterValue.value);
     }
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    Future.delayed(const Duration(seconds: 1), () {
+      sharedVendor().then((id) => vendorId=id);
+    });
+  }
+
+  Future<int?> sharedVendor() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt("vendorId");
   }
 
   void onDecrement(){
@@ -132,6 +147,7 @@ class AddVendorFlowerController extends GetxController{
         imageAddress: savedImage.value,
         count: counterValue.value,
         category: categoryList,
+        vendorId: vendorId!
     );
     final Either<String, AddVendorFlowerViewModel> request = await _repository.addVendorFlower(dto);
     request.fold(

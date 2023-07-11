@@ -8,9 +8,8 @@ class VendorFlowerListRepository{
   final httpClient = http.Client();
   Map<String,String> customHeaders={"content-type": "application/json"};
 
-
-  Future<Either<String,List<VendorFlowerViewModel>>> getVendorFlower() async{
-    final url = Uri.http(RepositoryUrls.fullBaseUrl, 'vendorFlowers');
+  Future<Either<String,List<VendorFlowerViewModel>>> getFlowerByVendorId(int vendorId) async{
+    final url = Uri.http(RepositoryUrls.fullBaseUrl, 'vendorFlowers',{"vendorId": vendorId.toString()});
     final response = await http.get(url,headers: customHeaders);
 
     if(response.statusCode >= 200 && response.statusCode <400){

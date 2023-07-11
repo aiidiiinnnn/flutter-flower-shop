@@ -10,6 +10,7 @@ class UserFlowerListController extends GetxController{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove("role");
     prefs.remove("remember_me");
+    prefs.remove("vendorEmail");
     Get.offAndToNamed(RouteNames.loginPage);
   }
 

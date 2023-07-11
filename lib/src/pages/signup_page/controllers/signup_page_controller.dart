@@ -115,7 +115,8 @@ class SignupPageController extends GetxController {
       lastName: lastNameController.text,
       email: emailController.text,
       password: confirmPasswordController.text,
-      imagePath: imagePath.value
+      imagePath: savedImage.value,
+      vendorFlowerList: []
     );
     final Either<String, SignupVendorViewModel> request = await _repository
         .addVendor(dto);
@@ -129,7 +130,8 @@ class SignupPageController extends GetxController {
                   "lastName": right.lastName,
                   "email": right.email,
                   "password": right.password,
-                  "imagePath": right.imagePath
+                  "imagePath": right.imagePath,
+                  "vendorFlowerList": right.vendorFlowerList
                 }
             )
     );
@@ -144,7 +146,8 @@ class SignupPageController extends GetxController {
       lastName: lastNameController.text,
       email: emailController.text,
       password: confirmPasswordController.text,
-      imagePath: savedImage.value
+      imagePath: savedImage.value,
+      userFlowerList: []
     );
     final Either<String, SignupUserViewModel> request = await _repository
         .addUser(dto);
@@ -158,7 +161,8 @@ class SignupPageController extends GetxController {
                   "lastName": right.lastName,
                   "email": right.email,
                   "password": right.password,
-                  "imagePath": right.imagePath
+                  "imagePath": right.imagePath,
+                  "userFlowerList": right.userFlowerList
                 }
             )
     );

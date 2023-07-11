@@ -7,6 +7,7 @@ class VendorFlowerViewModel{
   final int price;
   final List<dynamic> color;
   final List<dynamic> category;
+  final int vendorId;
   final int count;
 
   VendorFlowerViewModel({
@@ -17,6 +18,7 @@ class VendorFlowerViewModel{
     required this.price,
     required this.color,
     required this.category,
+    required this.vendorId,
     required this.count
   });
 
@@ -29,7 +31,8 @@ class VendorFlowerViewModel{
         price: json["price"],
         color: json["color"],
         category: json["category"],
-        count: json["count"]
+        count: json["count"],
+        vendorId: json["vendorId"]
     );
   }
 
@@ -41,6 +44,7 @@ class VendorFlowerViewModel{
     int? price,
     List<dynamic>? color,
     List<dynamic>? category,
+    int? vendorId,
     int? count})
   => VendorFlowerViewModel(
     id: id ?? this.id,
@@ -51,6 +55,7 @@ class VendorFlowerViewModel{
     color: color ?? this.color,
     category: category ?? this.category,
     count: count ?? this.count,
+    vendorId: vendorId ?? this.vendorId
   );
 
   @override

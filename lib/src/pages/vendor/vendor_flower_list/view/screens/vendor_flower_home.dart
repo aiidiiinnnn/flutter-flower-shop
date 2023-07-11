@@ -37,7 +37,7 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
           ),
 
           body: Obx(() => RefreshIndicator(
-            onRefresh: controller.getVendorFlowers,
+            onRefresh: controller.getFlowersByVendorId,
             child: _pageContent(),
           ),),
 
@@ -51,12 +51,22 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
     } else if (controller.isRetry.value) {
       return _retryButton();
     }
-    return _vendorFlower();
+    return controller.vendorFlowersList.isNotEmpty ? _vendorFlower() :
+    const Center(
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Home',style: TextStyle(fontSize: 72),),
+            Text('There is no flower here', style: TextStyle(fontSize: 32, fontWeight: FontWeight.w300))
+          ],
+      ),
+    );
+    // return _vendorFlower();
   }
 
   Widget _retryButton() => Center(
     child: OutlinedButton(
-        onPressed: controller.getVendorFlowers, child: const Icon(Icons.keyboard_return_outlined)),
+        onPressed: controller.getFlowersByVendorId, child: const Icon(Icons.keyboard_return_outlined)),
   );
 
   Widget _vendorFlower() => GridView.builder(
@@ -73,5 +83,29 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
       // crossAxisSpacing: 0,
     ),
   );
+
+  // Widget _vendorFlower() => GridView.builder(
+  //   itemCount: controller.vendor!.vendorFlowerList.length,
+  //   itemBuilder: (_,index) => Padding(
+  //       padding: const EdgeInsets.all(5.0),
+  //       child: Container(
+  //         width: 400,
+  //         height: 450,
+  //         decoration: BoxDecoration(
+  //             color: const Color(0xff2a3945),
+  //             borderRadius: BorderRadius.circular(10)
+  //         ),
+  //         child: Column(
+  //           children: [
+  //             Text(controller.vendor!.vendorFlowerList[index]["name"])
+  //           ],
+  //         ),
+  //       )
+  //   ),
+  //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+  //     crossAxisCount: 2,
+  //     // crossAxisSpacing: 0,
+  //   ),
+  // );
 
 }

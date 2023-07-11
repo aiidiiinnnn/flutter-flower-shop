@@ -1,6 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import '../../controller/vendor_flower_list_controller.dart';
 
@@ -40,9 +41,13 @@ class VendorFlowerProfile extends  GetView<VendorFlowerListController>{
                               borderRadius: BorderRadius.circular(200),
                               color: Colors.blueGrey
                           ),
-                          child: const Icon(Icons.person_outline,size: 70),
-                          // child: Obx(() => controller.decodedBytes!.isNotEmpty ? Image.memory(controller.decodedBytes!) :
-                          // const Icon(Icons.person_outline,size: 30),)
+                          // child: const Icon(Icons.person_outline,size: 70),
+                          // child: Image.memory(base64Decode(controller.vendor!.imagePath))
+                          child: controller.vendor!.imagePath.isNotEmpty? SizedBox(
+                              width: 400,
+                              height: 400,
+                              child: Image.memory(base64Decode(controller.vendor!.imagePath),fit: BoxFit.cover,)) :
+                          const Icon(Icons.person_outline,size: 30)
                       ),
                     ),
                   ),

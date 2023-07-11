@@ -5,6 +5,7 @@ class AddVendorFlowerDto{
   final int price;
   final List<dynamic> color;
   final List<dynamic> category;
+  int vendorId;
   final int count;
 
   AddVendorFlowerDto({
@@ -14,6 +15,7 @@ class AddVendorFlowerDto{
     required this.price,
     required this.color,
     required this.category,
+    required this.vendorId,
     required this.count
   });
 
@@ -24,7 +26,8 @@ class AddVendorFlowerDto{
     "price": price,
     "color":color,
     "category":category,
-    "count":count
+    "count":count,
+    "vendorId":vendorId
   };
 
 
