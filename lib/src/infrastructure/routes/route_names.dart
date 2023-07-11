@@ -4,9 +4,11 @@ class RouteNames{
 
   static const vendorFlowerHome='/VendorFlowerHome';
   static const vendorFlowerList='/VendorFlowerList';
+  static const vendorFlowerProfile='/VendorFlowerProfile';
   static const addVendorFlower='/AddVendorFlower';
   static const editVendorFlower='/EditVendorFlower';
 
 
   static const userFlowerList='/UserFlowerList';
+  static const userFlowerProfile='/UserFlowerProfile';
 }

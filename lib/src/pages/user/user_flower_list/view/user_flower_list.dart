@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import '../controller/user_flower_list_controller.dart';
 
@@ -11,17 +12,43 @@ class UserFlowerList extends  GetView<UserFlowerListController>{
     return SafeArea(
         child: Scaffold(
           backgroundColor: const Color(0xff314657),
-          appBar: AppBar(
-            backgroundColor: const Color(0xffb32437),
-            title: const Text("User Flower List"),
+
+          body: Obx(() => controller.screens[controller.index.value]),
+
+          bottomNavigationBar: NavigationBarTheme(
+              data: NavigationBarThemeData(
+                  indicatorColor: Colors.blue.shade100,
+                  labelTextStyle: MaterialStateProperty.all(
+                      const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)
+                  )
+              ),
+              child: Obx(() => NavigationBar(
+                height: 60,
+                backgroundColor: const Color(0xfff1f5fb),
+                selectedIndex: controller.index.value,
+                onDestinationSelected: (index)=>controller.onDestinationSelected(index),
+                destinations: const [
+                  NavigationDestination(
+                      icon: Icon(Icons.home),
+                      label: "Home"
+                  ),
+                  NavigationDestination(
+                      icon: Icon(Icons.history),
+                      label: "History"
+                  ),
+                  NavigationDestination(
+                      icon: Icon(Icons.search),
+                      label: "Search"
+                  ),
+                  NavigationDestination(
+                      icon: Icon(Icons.person),
+                      label: "Profile"
+                  )
+                ],
+              ),)
           ),
-          body: ElevatedButton(
-              onPressed: () => controller.logOut(),
-            // onPressed: () => {},
-              child: const Text("Logout")
-          )
         )
-        );
+    );
   }
 
 }

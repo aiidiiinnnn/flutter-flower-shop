@@ -48,9 +48,7 @@ class VendorFlowerListController extends GetxController{
 
   void logOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove("role");
-    prefs.remove("remember_me");
-    prefs.remove("vendorId");
+    prefs.clear();
     Get.offAndToNamed(RouteNames.loginPage);
   }
 
@@ -84,8 +82,8 @@ class VendorFlowerListController extends GetxController{
     vendorFlowersList.clear();
     isLoading.value=true;
     isRetry.value=false;
-    final Either<String,List<VendorFlowerViewModel>> auctionItems = await _repository.getFlowerByVendorId(vendorId!);
-    auctionItems.fold(
+    final Either<String,List<VendorFlowerViewModel>> flower = await _repository.getFlowerByVendorId(vendorId!);
+    flower.fold(
             (left) {
           print(left);
           isLoading.value=false;

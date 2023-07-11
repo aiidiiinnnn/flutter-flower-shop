@@ -2,10 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-import '../../controller/vendor_flower_list_controller.dart';
 
-class VendorFlowerProfile extends  GetView<VendorFlowerListController>{
-  const VendorFlowerProfile({super.key});
+import '../../controller/user_flower_list_controller.dart';
+
+class UserFlowerProfile extends  GetView<UserFlowerListController>{
+  const UserFlowerProfile({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class VendorFlowerProfile extends  GetView<VendorFlowerListController>{
           backgroundColor: const Color(0xff314657),
           appBar: AppBar(
             backgroundColor: const Color(0xffb32437),
-            title: const Text("Vendor Profile"),
+            title: const Text("User Profile"),
           ),
 
           body: Padding(
@@ -40,10 +41,10 @@ class VendorFlowerProfile extends  GetView<VendorFlowerListController>{
                               borderRadius: BorderRadius.circular(200),
                               color: Colors.blueGrey
                           ),
-                          child: controller.vendor!.imagePath.isNotEmpty? SizedBox(
+                          child: controller.user!.imagePath.isNotEmpty? SizedBox(
                               width: 400,
                               height: 400,
-                              child: Image.memory(base64Decode(controller.vendor!.imagePath),fit: BoxFit.cover,)) :
+                              child: Image.memory(base64Decode(controller.user!.imagePath),fit: BoxFit.cover,)) :
                           const Icon(Icons.person_outline,size: 30)
                       ),
                     ),
@@ -61,7 +62,7 @@ class VendorFlowerProfile extends  GetView<VendorFlowerListController>{
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.blueGrey
                           ),
-                          child: Center(child: Text(controller.vendor!.firstName,style: const TextStyle(
+                          child: Center(child: Text(controller.user!.firstName,style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w400
                           ),)),
@@ -74,7 +75,7 @@ class VendorFlowerProfile extends  GetView<VendorFlowerListController>{
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.blueGrey
                           ),
-                          child: Center(child: Text(controller.vendor!.lastName,style: const TextStyle(
+                          child: Center(child: Text(controller.user!.lastName,style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400
                           ),)),
@@ -90,7 +91,7 @@ class VendorFlowerProfile extends  GetView<VendorFlowerListController>{
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.blueGrey
                     ),
-                    child: Center(child: Text(controller.vendor!.email,style: const TextStyle(
+                    child: Center(child: Text(controller.user!.email,style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400
                     ),)),

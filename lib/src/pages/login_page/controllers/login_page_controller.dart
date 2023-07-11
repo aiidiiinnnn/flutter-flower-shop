@@ -188,6 +188,7 @@ class LoginPageController extends GetxController {
                           if(isChecked.value){
                             handleRememberMe(chosenRole, isChecked.value);
                           }
+                          saveUser(loginUser.id);
                           Get.offAndToNamed(RouteNames.userFlowerList);
                         }
                       }
