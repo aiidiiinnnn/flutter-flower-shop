@@ -1,4 +1,4 @@
-class VendorFlowerViewModel{
+class UserFlowerViewModel{
   final int id;
   final String name;
   final String imageAddress;
@@ -9,7 +9,7 @@ class VendorFlowerViewModel{
   final int vendorId;
   int count;
 
-  VendorFlowerViewModel({
+  UserFlowerViewModel({
     required this.id,
     required this.name,
     required this.imageAddress,
@@ -21,8 +21,8 @@ class VendorFlowerViewModel{
     required this.count
   });
 
-  factory VendorFlowerViewModel.fromJson(Map<String,dynamic> json){
-    return VendorFlowerViewModel(
+  factory UserFlowerViewModel.fromJson(Map<String,dynamic> json){
+    return UserFlowerViewModel(
         id: json["id"],
         name: json["name"],
         imageAddress: json["imageAddress"],
@@ -35,7 +35,7 @@ class VendorFlowerViewModel{
     );
   }
 
-  VendorFlowerViewModel copyWith({
+  UserFlowerViewModel copyWith({
     int? id,
     String? name,
     String? imageAddress,
@@ -45,16 +45,16 @@ class VendorFlowerViewModel{
     List<dynamic>? category,
     int? vendorId,
     int? count})
-  => VendorFlowerViewModel(
-    id: id ?? this.id,
-    name: name ?? this.name,
-    imageAddress: imageAddress ?? this.imageAddress,
-    description: description ?? this.description,
-    price: price ?? this.price,
-    color: color ?? this.color,
-    category: category ?? this.category,
-    count: count ?? this.count,
-    vendorId: vendorId ?? this.vendorId
+  => UserFlowerViewModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      imageAddress: imageAddress ?? this.imageAddress,
+      description: description ?? this.description,
+      price: price ?? this.price,
+      color: color ?? this.color,
+      category: category ?? this.category,
+      count: count ?? this.count,
+      vendorId: vendorId ?? this.vendorId
   );
 
   @override
