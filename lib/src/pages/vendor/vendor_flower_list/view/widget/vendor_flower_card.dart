@@ -1,13 +1,9 @@
 import 'dart:convert';
-
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/controller/vendor_flower_list_controller.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/models/vendor_flower_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-
-import '../../../../../../flower_shop.dart';
-
 class VendorFlowerCard extends GetView<VendorFlowerListController> {
   VendorFlowerCard(
       {super.key, required this.vendorFlower, required this.index});
@@ -153,12 +149,11 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               InkWell(
-                  child: const Icon(Icons.delete_outline,color: Colors.white),
+                  child: const Icon(Icons.delete_outline,color: Colors.white,size: 20,),
                   onTap: (){
                     Widget cancelButton = TextButton(
                         child:  const Text("Cancel"),
                         onPressed:  (){
-                          Get.toNamed(RouteNames.vendorFlowerList);
                           Navigator.of(context).pop();
                         }
                     );
@@ -188,7 +183,7 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _enabledDecrementButton(),
+                  decrementButton(context),
                   Text(
                     "${vendorFlower.count}",
                     style:
@@ -235,11 +230,33 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
         });
   }
 
-  Widget _enabledDecrementButton() {
+  Widget decrementButton(BuildContext context) {
     return InkWell(
         child: const Icon(Icons.arrow_back_ios, size: 16),
         onTap: () => {
-          controller.minusFlowerCount(flowerToEdit: vendorFlower, index: index)
+        (vendorFlower.count == 1) ? showDialog(context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title:  const Text("Delete"),
+            content: const Text("Are you sure you want to delete this ?"),
+            actions: [
+              TextButton(
+                  child:  const Text("Cancel"),
+                  onPressed:  (){
+                    Navigator.of(context).pop();
+                  }
+              ),
+              TextButton(
+                child:  const Text("Continue"),
+                onPressed:  () {
+                  controller.deleteFlower(vendorFlower);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+        ) : controller.minusFlowerCount(flowerToEdit: vendorFlower, index: index)
         });
   }
 }
