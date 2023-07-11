@@ -41,8 +41,6 @@ class VendorFlowerProfile extends  GetView<VendorFlowerListController>{
                               borderRadius: BorderRadius.circular(200),
                               color: Colors.blueGrey
                           ),
-                          // child: const Icon(Icons.person_outline,size: 70),
-                          // child: Image.memory(base64Decode(controller.vendor!.imagePath))
                           child: controller.vendor!.imagePath.isNotEmpty? SizedBox(
                               width: 400,
                               height: 400,

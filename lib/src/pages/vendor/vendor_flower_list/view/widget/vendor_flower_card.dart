@@ -318,7 +318,7 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xff71cc47),
                         ),
-                        onPressed: ()=>{},
+                        onPressed: ()=>controller.goToEdit(vendorFlower),
                         child: const Text('Edit'),
                       ),
                     ),

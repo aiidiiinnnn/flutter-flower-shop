@@ -1,19 +1,17 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:either_dart/either.dart';
-import 'package:flower_shop/src/pages/vendor/add_vendor_flower/models/add_vendor_flower_dto.dart';
-import 'package:flower_shop/src/pages/vendor/add_vendor_flower/models/add_vendor_flower_view_model.dart';
+import 'package:flower_shop/src/pages/vendor/edit_vendor_flower/models/edit_vendor_flower_dto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io';
+import '../models/edit_vendor_flower_view_model.dart';
+import '../repositories/edit_vendor_flower_repository.dart';
 
-import '../repositories/add_vendor_flower_repository.dart';
-
-
-class AddVendorFlowerController extends GetxController{
-  final AddVendorFlowerRepository _repository = AddVendorFlowerRepository();
+class EditVendorFlowerController extends GetxController{
+  final EditVendorFlowerRepository _repository = EditVendorFlowerRepository();
   final GlobalKey<FormState> formKey=GlobalKey();
   final GlobalKey<FormState> categoryKey=GlobalKey();
   final TextEditingController nameController = TextEditingController();
@@ -21,19 +19,27 @@ class AddVendorFlowerController extends GetxController{
   final TextEditingController priceController = TextEditingController();
   final TextEditingController categoryController = TextEditingController();
   final TextEditingController countController = TextEditingController();
-
+  int? _selectedFlowerId;
   RxList categoryList=[].obs;
-  List<dynamic> colors=[];
+  RxList colors=[].obs;
   RxList colorList=[].obs;
   RxString imagePath=''.obs;
   RxString savedImage=''.obs;
   int? vendorId;
 
-
   @override
   Future<void> onInit() async {
     super.onInit();
     await sharedVendor().then((id) => vendorId=id);
+    _selectedFlowerId = Get.arguments['id'];
+    nameController.text= Get.arguments['name'];
+    descriptionController.text=Get.arguments['description'];
+    priceController.text="${Get.arguments['price']}";
+    countController.text="${Get.arguments['count']}";
+    categoryList.value=Get.arguments['category'];
+    savedImage.value=Get.arguments['imageAddress'];
+    colors.value=Get.arguments['color'];
+    getRecipeById();
   }
 
   Future<int?> sharedVendor() async {
@@ -55,8 +61,11 @@ class AddVendorFlowerController extends GetxController{
 
   void changeColor(Color color) {
     pickerColor = color;
-    colorList.add(pickerColor);
     colors.add(pickerColor.value);
+  }
+
+  void editColor(Color color){
+    pickerColor = color;
   }
 
   Future<void> imageFromCamera() async {
@@ -128,35 +137,47 @@ class AddVendorFlowerController extends GetxController{
     return null;
   }
 
-  Future<void> addVendorFlower() async{
+  Future<void> getRecipeById () async{
+    final Either<String, EditVendorFlowerViewModel> flowerById = await _repository.getFlowerById(_selectedFlowerId!);
+    flowerById.fold(
+            (left) {
+              print(left);
+        },
+            (right) {
+              nameController.text= right.name;
+              descriptionController.text=right.description;
+              priceController.text= "${right.price}";
+              countController.text="${right.count}";
+              categoryList.value= right.category;
+              savedImage.value=right.imageAddress;
+              colors.value=right.color;
+        }
+    );
+  }
+
+  Future<void> editVendorFlower() async {
     if(!formKey.currentState!.validate()){
       return;
     }
-    final dto = AddVendorFlowerDto(
-        name: nameController.text,
-        description: descriptionController.text,
-        price: int.parse(priceController.text),
-        color: colors,
-        imageAddress: savedImage.value,
-        count: int.parse(countController.text),
-        category: categoryList,
-        vendorId: vendorId!
-    );
-    final Either<String, AddVendorFlowerViewModel> request = await _repository.addVendorFlower(dto);
-    request.fold(
-            (left) => print(left),
-            (right) => Get.back(
-            result: {
-              "id":right.id,
-              "name":right.name,
-              "description":right.description,
-              "price":right.price,
-              "color": right.color,
-              "imageAddress":right.imageAddress,
-              "count":right.count,
-              "category":right.category
-            }
-        )
-    );
+    final EditVendorFlowerDto dataTransferObject = _generateDto();
+    final result = await _repository.editFlower( flowerDto:dataTransferObject);
+    if(result.isLeft){
+      Get.snackbar('Error', result.left);
+    }else {
+      Get.back(result: result.right);
+    }
   }
+
+  EditVendorFlowerDto _generateDto() => EditVendorFlowerDto(
+    name: nameController.text,
+    description: descriptionController.text,
+    imageAddress: savedImage.value,
+    price: int.parse(priceController.text),
+    color: colors,
+    category: categoryList,
+    count: int.parse(countController.text),
+    id: _selectedFlowerId!,
+    vendorId: vendorId!,
+  );
+
 }

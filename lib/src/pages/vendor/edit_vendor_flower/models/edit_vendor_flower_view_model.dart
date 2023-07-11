@@ -1,4 +1,4 @@
-class AddVendorFlowerViewModel{
+class EditVendorFlowerViewModel{
   final int id;
   final String name;
   final String imageAddress;
@@ -9,7 +9,7 @@ class AddVendorFlowerViewModel{
   int vendorId;
   int count;
 
-  AddVendorFlowerViewModel({
+  EditVendorFlowerViewModel({
     required this.id,
     required this.name,
     required this.imageAddress,
@@ -18,11 +18,11 @@ class AddVendorFlowerViewModel{
     required this.color,
     required this.category,
     required this.count,
-    required this.vendorId,
+    required this.vendorId
   });
 
-  factory AddVendorFlowerViewModel.fromJson(Map<String,dynamic> json){
-    return AddVendorFlowerViewModel(
+  factory EditVendorFlowerViewModel.fromJson(Map<String,dynamic> json){
+    return EditVendorFlowerViewModel(
         id: json["id"],
         name: json["name"],
         imageAddress: json["imageAddress"],
@@ -35,7 +35,7 @@ class AddVendorFlowerViewModel{
     );
   }
 
-  AddVendorFlowerViewModel copyWith({
+  EditVendorFlowerViewModel copyWith({
     int? id,
     String? name,
     String? imageAddress,
@@ -45,7 +45,7 @@ class AddVendorFlowerViewModel{
     List<dynamic>? category,
     int? vendorId,
     int? count})
-  => AddVendorFlowerViewModel(
+  => EditVendorFlowerViewModel(
     id: id ?? this.id,
     name: name ?? this.name,
     imageAddress: imageAddress ?? this.imageAddress,

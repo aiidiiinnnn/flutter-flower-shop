@@ -4,12 +4,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:get/get.dart';
-import 'widget/custom_add_form_field.dart';
-import '../controller/add_vendor_flower_controller.dart';
-class AddVendorFlower extends  GetView<AddVendorFlowerController>{
-  const AddVendorFlower({super.key});
-
-
+import '../../add_vendor_flower/view/widget/custom_add_form_field.dart';
+import '../controller/edit_vendor_flower_controller.dart';
+class EditVendorFlower extends  GetView<EditVendorFlowerController>{
+  const EditVendorFlower({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -151,16 +149,43 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                       child: Obx(() => ListView.builder(
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
-                          itemCount: controller.colorList.length,
+                          itemCount: controller.colors.length,
                           itemBuilder: (_,index) => Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                height: 30,
-                                width: 30,
-                                decoration: BoxDecoration(
-                                  color: controller.colorList[index],
-                                  border: Border.all(color: Colors.black),
-                                  borderRadius: BorderRadius.circular(200),
+                              child: InkWell(
+                                onTap:() => {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) => AlertDialog(
+                                        title: const Text('Pick a color!'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: Color(controller.colors[index]),
+                                            onColorChanged: (Color value) {
+                                              controller.colors[index] = value.value;
+                                            },
+                                          ),
+                                        ),
+                                        actions: [
+                                          ElevatedButton(
+                                            child: const Text('Got it'),
+                                            onPressed: () {
+                                              controller.editColor(Color(controller.colors[index]));
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      )
+                                  )
+                                },
+                                child: Container(
+                                  height: 30,
+                                  width: 30,
+                                  decoration: BoxDecoration(
+                                    color: Color(controller.colors[index]),
+                                    border: Border.all(color: Colors.black),
+                                    borderRadius: BorderRadius.circular(200),
+                                  ),
                                 ),
                               )
                           )
@@ -176,7 +201,7 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xffb32437),
                         ),
-                        onPressed: ()=>controller.addVendorFlower(),
+                        onPressed: ()=>controller.editVendorFlower(),
                         child: const Text("Submit")
                     ),
                   ),
@@ -206,10 +231,6 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
               child: const Text('Got it'),
               onPressed: () {
                 controller.changeColor(controller.currentColor);
-                // print(controller.currentColor);
-                print(controller.pickerColor);
-                print(controller.colorList);
-                print(controller.colors);
                 Navigator.of(context).pop();
               },
             ),

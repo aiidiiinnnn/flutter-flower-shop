@@ -179,6 +179,37 @@ class VendorFlowerListController extends GetxController{
     }
   }
 
+  Future<void> goToEdit(VendorFlowerViewModel flowerViewModel) async {
+    final result = await Get.toNamed("${RouteNames.vendorFlowerList}${RouteNames.vendorFlowerHome}${RouteNames.editVendorFlower}",
+      arguments: {
+        'id': flowerViewModel.id,
+        'name': flowerViewModel.name,
+        'imageAddress': flowerViewModel.imageAddress,
+        'description': flowerViewModel.description,
+        "price": flowerViewModel.price,
+        "color": flowerViewModel.color,
+        "category": flowerViewModel.category,
+        "count": flowerViewModel.count,
+        "vendorId": flowerViewModel.vendorId,
+      },
+    );
+    final bool isFlowerEdited = result != null;
+    if (isFlowerEdited) {
+      final int index = vendorFlowersList.indexOf(flowerViewModel);
+      vendorFlowersList[index] = VendorFlowerViewModel(
+          id: result['id'],
+          name: result['name'],
+          imageAddress: result['imageAddress'],
+          description: result['description'],
+          price: result['price'],
+          color: result['color'],
+          category: result['category'],
+          vendorId: result['vendorId'],
+          count: result['count']
+      );
+    }
+  }
+
 
 
 }

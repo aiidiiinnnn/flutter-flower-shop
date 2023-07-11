@@ -188,22 +188,24 @@
       "id": 6
     },
     {
-      "name": "Melika",
+      "name": "Mamad",
       "imageAddress": "",
-      "description": "Melika melika melika key berim biron ?",
+      "description": "mamad daroo re va kon ",
       "price": 80000,
       "color": [
         4288725536,
         4280693311,
         4284119193,
-        4280182194,
+        4293782068,
         4289863272,
-        4279966487
+        4278190080,
+        4294705923
       ],
       "category": [
         "khune",
         "programming ",
-        "takht"
+        "takht",
+        "home"
       ],
       "count": 17,
       "vendorId": 5,
@@ -233,10 +235,10 @@
       "description": "cactus is yummy put it in my tommy",
       "price": 3000,
       "color": [
-        4292157312,
+        4280248789,
         4283075961,
         4286359344,
-        4284447972,
+        4283865378,
         4292258612
       ],
       "category": [

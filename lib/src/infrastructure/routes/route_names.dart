@@ -5,6 +5,7 @@ class RouteNames{
   static const vendorFlowerHome='/VendorFlowerHome';
   static const vendorFlowerList='/VendorFlowerList';
   static const addVendorFlower='/AddVendorFlower';
+  static const editVendorFlower='/EditVendorFlower';
 
 
   static const userFlowerList='/UserFlowerList';

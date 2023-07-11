@@ -9,6 +9,8 @@ import '../../pages/signup_page/view/signup_page.dart';
 import '../../pages/user/user_flower_list/commons/user_flower_list_binding.dart';
 import '../../pages/user/user_flower_list/view/user_flower_list.dart';
 import '../../pages/vendor/add_vendor_flower/commons/add_vendor_flower_binding.dart';
+import '../../pages/vendor/edit_vendor_flower/commons/edit_vendor_flower_binding.dart';
+import '../../pages/vendor/edit_vendor_flower/view/edit_vendor_flower.dart';
 import '../../pages/vendor/vendor_flower_list/commons/vendor_flower_list_binding.dart';
 import '../../pages/vendor/vendor_flower_list/view/screens/vendor_flower_home.dart';
 
@@ -42,6 +44,11 @@ class RoutePages{
                     name: RouteNames.addVendorFlower,
                     page: () => const AddVendorFlower(),
                     binding: AddVendorFlowerBinding()
+                ),
+                GetPage(
+                    name: RouteNames.editVendorFlower,
+                    page: () => const EditVendorFlower(),
+                    binding: EditVendorFlowerBinding()
                 ),
               ]
           ),
