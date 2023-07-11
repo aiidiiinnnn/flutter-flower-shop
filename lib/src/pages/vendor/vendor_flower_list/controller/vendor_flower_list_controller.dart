@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../flower_shop.dart';
+import '../models/vendor_flower_dto.dart';
 import '../view/screens/vendor_flower_home.dart';
 
 
@@ -95,6 +96,87 @@ class VendorFlowerListController extends GetxController{
           isLoading.value=false;
         }
     );
+  }
+
+  Future<void> addFlowerCount({required VendorFlowerViewModel flowerToEdit, required int index}) async {
+    if (flowerToEdit.count >= 0){
+      final result = await _repository.editFlowerCount(
+        dto: _generatePlusDto(flowerToEdit),
+        flowerId: flowerToEdit.id,
+      );
+
+      result.fold((exception) {
+        Get.snackbar('Exception', exception);
+      }, (auctionId) {
+        addCount(index: index);
+      });
+    }
+  }
+
+  VendorFlowerDto _generatePlusDto(VendorFlowerViewModel flowerViewModel) => VendorFlowerDto(
+    name: flowerViewModel.name,
+    description: flowerViewModel.description,
+    imageAddress: flowerViewModel.imageAddress,
+    price: flowerViewModel.price,
+    color: flowerViewModel.color,
+    category: flowerViewModel.category,
+    vendorId: flowerViewModel.vendorId,
+    count: ++ flowerViewModel.count,
+  );
+
+  void addCount({required int index}) {
+    int editedCount = vendorFlowersList[index].count;
+    final editedFlower = vendorFlowersList[index].copyWith(
+      count: editedCount++,
+    );
+    vendorFlowersList[index] = editedFlower;
+  }
+
+
+  Future<void> minusFlowerCount({required VendorFlowerViewModel flowerToEdit, required int index}) async {
+    if (flowerToEdit.count > 0){
+      final result = await _repository.editFlowerCount(
+        dto: _generateMinusDto(flowerToEdit),
+        flowerId: flowerToEdit.id,
+      );
+
+      result.fold((exception) {
+        Get.snackbar('Exception', exception);
+      }, (auctionId) {
+        addCount(index: index);
+      });
+    }
+  }
+
+  VendorFlowerDto _generateMinusDto(VendorFlowerViewModel flowerViewModel) => VendorFlowerDto(
+    name: flowerViewModel.name,
+    description: flowerViewModel.description,
+    imageAddress: flowerViewModel.imageAddress,
+    price: flowerViewModel.price,
+    color: flowerViewModel.color,
+    category: flowerViewModel.category,
+    vendorId: flowerViewModel.vendorId,
+    count: -- flowerViewModel.count,
+  );
+
+  void minusCount({required int index}) {
+    int editedCount = vendorFlowersList[index].count;
+    final editedFlower = vendorFlowersList[index].copyWith(
+      count: editedCount--,
+    );
+    vendorFlowersList[index] = editedFlower;
+  }
+
+  Future<void> deleteFlower(VendorFlowerViewModel flower) async {
+    final result = await _repository.deleteFlower(flowerId: flower.id);
+
+    final bool isRecipeDeleted = result == null;
+    if (isRecipeDeleted) {
+      vendorFlowersList.remove(flower);
+    }
+    else {
+      Get.snackbar('Error',result);
+    }
   }
 
 

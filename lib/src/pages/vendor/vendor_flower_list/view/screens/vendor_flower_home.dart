@@ -72,7 +72,7 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
   Widget _vendorFlower() => GridView.builder(
       itemCount: controller.vendorFlowersList.length,
       itemBuilder: (_,index) => Padding(
-          padding: const EdgeInsets.all(5.0),
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
           child: VendorFlowerCard(
               vendorFlower: controller.vendorFlowersList[index],
               index: index

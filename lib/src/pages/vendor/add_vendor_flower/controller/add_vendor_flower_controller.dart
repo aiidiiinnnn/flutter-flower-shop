@@ -36,11 +36,9 @@ class AddVendorFlowerController extends GetxController{
   }
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
-    Future.delayed(const Duration(seconds: 1), () {
-      sharedVendor().then((id) => vendorId=id);
-    });
+    await sharedVendor().then((id) => vendorId=id);
   }
 
   Future<int?> sharedVendor() async {

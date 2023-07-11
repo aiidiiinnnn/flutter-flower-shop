@@ -8,7 +8,7 @@ class VendorFlowerViewModel{
   final List<dynamic> color;
   final List<dynamic> category;
   final int vendorId;
-  final int count;
+  int count;
 
   VendorFlowerViewModel({
     required this.id,

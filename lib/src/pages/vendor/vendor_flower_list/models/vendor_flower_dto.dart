@@ -1,4 +1,4 @@
-class AddVendorFlowerDto{
+class VendorFlowerDto{
   final String name;
   final String imageAddress;
   final String description;
@@ -8,7 +8,7 @@ class AddVendorFlowerDto{
   int vendorId;
   int count;
 
-  AddVendorFlowerDto({
+  VendorFlowerDto({
     required this.name,
     required this.imageAddress,
     required this.description,
