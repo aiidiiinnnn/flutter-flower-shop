@@ -141,7 +141,7 @@ class VendorFlowerListController extends GetxController{
       result.fold((exception) {
         Get.snackbar('Exception', exception);
       }, (auctionId) {
-        addCount(index: index);
+        minusCount(index: index);
       });
     }
   }

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:either_dart/either.dart';
+import 'package:flower_shop/src/pages/login_page/models/vendor_models/login_vendor_dto.dart';
 import 'package:flower_shop/src/pages/vendor/add_vendor_flower/models/add_vendor_flower_dto.dart';
 import 'package:flower_shop/src/pages/vendor/add_vendor_flower/models/add_vendor_flower_view_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../login_page/models/vendor_models/login_vendor_view_model.dart';
 import '../repositories/add_vendor_flower_repository.dart';
 
 
@@ -21,7 +23,9 @@ class AddVendorFlowerController extends GetxController{
   final TextEditingController priceController = TextEditingController();
   final TextEditingController categoryController = TextEditingController();
   final TextEditingController countController = TextEditingController();
-
+  LoginVendorViewModel? vendor;
+  RxBool isLoading=true.obs;
+  RxBool isRetry=false.obs;
   RxList categoryList=[].obs;
   List<dynamic> colors=[];
   RxList colorList=[].obs;
@@ -34,6 +38,7 @@ class AddVendorFlowerController extends GetxController{
   Future<void> onInit() async {
     super.onInit();
     await sharedVendor().then((id) => vendorId=id);
+    await getVendorById();
   }
 
   Future<int?> sharedVendor() async {
@@ -128,6 +133,23 @@ class AddVendorFlowerController extends GetxController{
     return null;
   }
 
+  Future<void> getVendorById() async{
+    isLoading.value=true;
+    isRetry.value=false;
+    final Either<String, LoginVendorViewModel> vendorById = await _repository.getVendor(vendorId!);
+    vendorById.fold(
+            (left) {
+          print(left);
+          isLoading.value=false;
+          isRetry.value=true;
+        },
+            (vendorViewModel) {
+          vendor=vendorViewModel;
+          isLoading.value=false;
+        }
+    );
+  }
+
   Future<void> addVendorFlower() async{
     if(!formKey.currentState!.validate()){
       return;
@@ -145,18 +167,39 @@ class AddVendorFlowerController extends GetxController{
     final Either<String, AddVendorFlowerViewModel> request = await _repository.addVendorFlower(dto);
     request.fold(
             (left) => print(left),
-            (right) => Get.back(
-            result: {
-              "id":right.id,
-              "name":right.name,
-              "description":right.description,
-              "price":right.price,
-              "color": right.color,
-              "imageAddress":right.imageAddress,
-              "count":right.count,
-              "category":right.category
+            (right) async {
+              vendor!.vendorFlowerList.add(right.id);
+              final result = await _repository.vendorEditFlowerList(
+                dto: LoginVendorDto(
+                    firstName: vendor!.firstName,
+                    lastName: vendor!.lastName,
+                    email: vendor!.email,
+                    password: vendor!.password,
+                    imagePath: vendor!.imagePath,
+                    vendorFlowerList: vendor!.vendorFlowerList
+                ),
+                id: vendorId!,
+              );
+
+              result.fold(
+                      (exception) {
+                        Get.snackbar('Exception', exception);
+                      },
+                      (auctionId) {
+                        Get.back(result: {
+                          "id": right.id,
+                          "name": right.name,
+                          "description": right.description,
+                          "price": right.price,
+                          "color": right.color,
+                          "imageAddress": right.imageAddress,
+                          "count": right.count,
+                          "category": right.category
+                        });
+                      });
             }
-        )
-    );
-  }
+  );}
+
+
+
 }
