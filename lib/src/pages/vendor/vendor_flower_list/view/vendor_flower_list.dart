@@ -11,42 +11,36 @@ class VendorFlowerList extends  GetView<VendorFlowerListController>{
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-          backgroundColor: const Color(0xff314657),
+          backgroundColor: const Color(0xffc4c4c4),
 
           body: Obx(() => controller.screens[controller.index.value]),
 
-          bottomNavigationBar: NavigationBarTheme(
-              data: NavigationBarThemeData(
-                  indicatorColor: Colors.blue.shade100,
-                  labelTextStyle: MaterialStateProperty.all(
-                      const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)
-                  )
+          bottomNavigationBar: Obx(() => BottomNavigationBar(
+            currentIndex: controller.index.value,
+            onTap: (index)=>controller.onDestinationSelected(index),
+            items: const [
+              BottomNavigationBarItem(
+                  backgroundColor: Color(0xffc4c4c4),
+                  icon: Icon(Icons.home),
+                  label: "Home"
               ),
-              child: Obx(() => NavigationBar(
-                height: 60,
-                backgroundColor: const Color(0xfff1f5fb),
-                selectedIndex: controller.index.value,
-                onDestinationSelected: (index)=>controller.onDestinationSelected(index),
-                destinations: const [
-                  NavigationDestination(
-                      icon: Icon(Icons.home),
-                      label: "Home"
-                  ),
-                  NavigationDestination(
-                      icon: Icon(Icons.history),
-                      label: "History"
-                  ),
-                  NavigationDestination(
-                      icon: Icon(Icons.search),
-                      label: "Search"
-                  ),
-                  NavigationDestination(
-                      icon: Icon(Icons.person),
-                      label: "Profile"
-                  )
-                ],
-              ),)
-          ),
+              BottomNavigationBarItem(
+                  backgroundColor: Color(0xffc4c4c4),
+                  icon: Icon(Icons.history),
+                  label: "History"
+              ),
+              BottomNavigationBarItem(
+                  backgroundColor: Color(0xffc4c4c4),
+                  icon: Icon(Icons.search),
+                  label: "Search"
+              ),
+              BottomNavigationBarItem(
+                  backgroundColor: Color(0xffc4c4c4),
+                  icon: Icon(Icons.person),
+                  label: "Profile"
+              ),
+            ],
+          ),)
         )
     );
   }

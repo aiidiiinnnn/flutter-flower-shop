@@ -11,10 +11,14 @@ class LoginPage extends  GetView<LoginPageController>{
   Widget build(BuildContext context){
     return SafeArea(
         child: Scaffold(
-          backgroundColor: const Color(0xff314657),
+          backgroundColor: const Color(0xfff3f7f7),
           appBar: AppBar(
-            backgroundColor: const Color(0xffb32437),
-            title: const Text("Login"),
+            backgroundColor: const Color(0xfff3f7f7),
+            title: const Text("Login",style: TextStyle(
+              color: Color(0xff050a0a),
+              fontWeight: FontWeight.w600,
+              fontSize: 23
+            ),),
           ),
           body: SingleChildScrollView(
             child: Column(
@@ -22,20 +26,19 @@ class LoginPage extends  GetView<LoginPageController>{
                 children: [
                   Padding(
                     padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
                     child: Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(100),
-                          border: Border.all(color: const Color(0xff2a3945), width: 7)
                       ),
                       child: Container(
                         height:150,
                         width: 150,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(100),
-                          // color: const Color(0xff2a3945)
+                          color: const Color(0xff7f8283)
                         ),
-                        child: const Icon(Icons.person_outline,color: Colors.white,size: 100),
+                        child: const Icon(Icons.person,color: Colors.white,size: 120),
                       ),
                     ),
                   ),
@@ -62,39 +65,58 @@ class LoginPage extends  GetView<LoginPageController>{
                       )
                   ),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                          height: 24.0,
-                          width: 24.0,
-                          child: Theme(
-                              data: ThemeData(
-                                  unselectedWidgetColor: const Color(0xff00C8E8)
-                              ),
-                              child: Obx(() => Checkbox(
-                                  value: controller.isChecked.value,
-                                  onChanged: (value) {
-                                    controller.isChecked.value=value!;
-                                  }
-                              ),),
-                          )),
-                      const SizedBox(width: 10.0),
-                      const Text("Remember Me", style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontFamily: 'Rubric')
-                      )
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                            height: 24.0,
+                            width: 24.0,
+                            child: Theme(
+                                data: ThemeData(
+                                    unselectedWidgetColor: Colors.blue
+                                ),
+                                child: Obx(() => Checkbox(
+                                    value: controller.isChecked.value,
+                                    onChanged: (value) {
+                                      controller.isChecked.value=value!;
+                                    }
+                                ),),
+                            )),
+                        const SizedBox(width: 10.0),
+                        const Text("Remember Me", style: TextStyle(
+                            color: Color(0xff050a0a),
+                            fontSize: 12,
+                            fontFamily: 'Rubric')
+                        )
+                      ],
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 20),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 40,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xff6cba00),
+                        ),
+                        onPressed: controller.goToNextPage,
+                        child: const Text('Login'),
+                      ),
+                    ),
                   ),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text("Don't have an account?",style: TextStyle(
-                          color: Colors.white,
+                          color: Color(0xff050a0a),
                           fontSize: 12
                       ),),
+
                       TextButton(
                         style: TextButton.styleFrom(
                           textStyle: const TextStyle(fontSize: 20),
@@ -106,21 +128,6 @@ class LoginPage extends  GetView<LoginPageController>{
                         ),),
                       ),
                     ],
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 40,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xff71cc47),
-                        ),
-                        onPressed: controller.goToNextPage,
-                        child: const Text('Login'),
-                      ),
-                    ),
                   ),
                 ]
             ),

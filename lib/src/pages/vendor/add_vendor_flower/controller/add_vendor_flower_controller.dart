@@ -52,7 +52,6 @@ class AddVendorFlowerController extends GetxController{
     }
     categoryList.add(category);
     categoryController.clear();
-    print(categoryList);
   }
 
   Color currentColor = const Color(0xff32623a);
@@ -101,6 +100,11 @@ class AddVendorFlowerController extends GetxController{
   String? categoryValidator(final String? category){
     if(category == null || category.isEmpty){
       return "Please enter the category";
+    }
+    for(final cat in categoryList){
+      if(category==cat){
+        return "Category has already add";
+      }
     }
     return null;
   }

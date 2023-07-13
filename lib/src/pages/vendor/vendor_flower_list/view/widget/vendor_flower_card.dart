@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 class VendorFlowerCard extends GetView<VendorFlowerListController> {
-  VendorFlowerCard(
-      {super.key, required this.vendorFlower, required this.index});
+  VendorFlowerCard({super.key, required this.vendorFlower, required this.index});
 
   VendorFlowerViewModel vendorFlower;
   int index;
@@ -26,31 +25,33 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
     return InkWell(
       onTap: ()=> flowerShowDialog(context),
       child: Container(
-        width: 200,
-        height: 200,
+        width: double.infinity,
+        height: double.infinity,
         decoration: BoxDecoration(
-            color: const Color(0xff2a3945),
-            borderRadius: BorderRadius.circular(10)),
+            color: const Color(0xffe9e9e9),
+            border: Border.all(color: const Color(0xff9d9d9d)),
+            borderRadius: BorderRadius.circular(20)),
         child: Column(
           children: [
             Container(
-                height: 63,
-                width: 130,
+                height: 115,
+                width: 145,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  border: Border.all(color: Colors.black),
-                  // borderRadius: BorderRadius.circular(10)
+                  borderRadius: BorderRadius.circular(15)
                 ),
                 child: vendorFlower.imageAddress.isNotEmpty
                     ? ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
                     child: SizedBox.fromSize(
                         child: Image.memory(
                           base64Decode(vendorFlower.imageAddress),
                           fit: BoxFit.fill,
                         )))
-                    : const Icon(Icons.image_outlined, size: 30)),
+                    : const Icon(Icons.image_outlined, size: 30)
+            ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 3),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -68,14 +69,14 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
             SizedBox(
               height: 35,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                padding: const EdgeInsets.symmetric(horizontal: 6),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 6.0),
                   child: secondHalfText.isEmpty
                       ? Center(
                     child: Text(
                       firstHalfText,
-                      style: const TextStyle(fontSize: 11),
+                      style: const TextStyle(fontSize: 10),
                     ),
                   )
                       : Column(
@@ -84,7 +85,7 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                         controller.textFlag.value
                             ? ("$firstHalfText...")
                             : (firstHalfText + secondHalfText),
-                        style: const TextStyle(fontSize: 11),
+                        style: const TextStyle(fontSize: 10),
                       ),
                       InkWell(
                         child: const Row(
@@ -93,7 +94,7 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                             Text(
                               "show more",
                               style:
-                              TextStyle(color: Colors.blue, fontSize: 11),
+                              TextStyle(color: Colors.blue, fontSize: 9),
                             ),
                           ],
                         ),
@@ -106,44 +107,6 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-              child: SizedBox(
-                height: 15,
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: vendorFlower.color.length,
-                    itemBuilder: (_, index) => Padding(
-                        padding: const EdgeInsets.all(1.0),
-                        child: Container(
-                          height: 15,
-                          width: 15,
-                          decoration: BoxDecoration(
-                            color: Color(vendorFlower.color[index]),
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(200),
-                          ),
-                        ))),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-              child: SizedBox(
-                height: 25,
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: vendorFlower.category.length,
-                    itemBuilder: (_, index) => Transform(
-                      transform: Matrix4.identity()..scale(0.7),
-                      child: Chip(
-                        label:
-                        Center(child: Text(vendorFlower.category[index])),
-                      ),
-                    )),
-              ),
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -154,7 +117,7 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                     Text(
                       "${vendorFlower.count}",
                       style:
-                      const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                      const TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
                     ),
                     incrementButton()
                   ],
@@ -171,30 +134,74 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
     return showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        backgroundColor: const Color(0xff2a3945),
+        backgroundColor: const Color(0xffe9e9e9),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
         content: Container(
           width: 400,
           height: 490,
           decoration: const BoxDecoration(
-              color: Color(0xff2a3945),),
+              color: Color(0xffe9e9e9)),
           child: Column(
             children: [
-              Container(
-                  height: 250,
-                  width: 250,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.black),
-                    // borderRadius: BorderRadius.circular(10)
+              Stack(
+                children: [
+                  Container(
+                      height: 280,
+                      width: 280,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.black),
+                        borderRadius: BorderRadius.circular(20)
+                      ),
+                      child: vendorFlower.imageAddress.isNotEmpty
+                          ? ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: SizedBox.fromSize(
+                              child: Image.memory(
+                                base64Decode(vendorFlower.imageAddress),
+                                fit: BoxFit.fill,
+                              )))
+                          : const Icon(Icons.image_outlined, size: 30)
                   ),
-                  child: vendorFlower.imageAddress.isNotEmpty
-                      ? ClipRRect(
-                      child: SizedBox.fromSize(
-                          child: Image.memory(
-                            base64Decode(vendorFlower.imageAddress),
-                            fit: BoxFit.fill,
-                          )))
-                      : const Icon(Icons.image_outlined, size: 30)
+                  Positioned(
+                    left: 6,
+                    top: 6,
+                    child: InkWell(
+                        child: const Icon(Icons.delete_outline,color: Colors.black,size: 28),
+                        onTap: (){
+                          Widget cancelButton = TextButton(
+                              child:  const Text("Cancel"),
+                              onPressed:  (){
+                                Navigator.of(context).pop();
+                              }
+                          );
+                          Widget continueButton = TextButton(
+                            child:  const Text("Continue"),
+                            onPressed:  () {
+                              controller.deleteFlower(vendorFlower);
+                              Navigator.of(context).pop();
+                            },
+                          );
+                          AlertDialog alert = AlertDialog(
+                            title:  const Text("Delete"),
+                            content: const Text("Are you sure you want to delete this ?"),
+                            actions: [
+                              cancelButton,
+                              continueButton,
+                            ],
+                          );
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return alert;
+                            },
+                          );
+                        }
+                    ),
+                  ),
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
@@ -204,17 +211,17 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                     Text(
                       vendorFlower.name,
                       style: const TextStyle(
-                          fontSize: 21, fontWeight: FontWeight.w500),
+                          fontSize: 24, fontWeight: FontWeight.w500),
                     ),
                     Text("\$${vendorFlower.price}",
                         style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w300))
+                            fontSize: 20, fontWeight: FontWeight.w400))
                   ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                child: Text(vendorFlower.description,style: const TextStyle(fontSize: 14),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Text(vendorFlower.description,style: const TextStyle(fontSize: 14,fontWeight: FontWeight.w300),
                 ),
               ),
               Padding(
@@ -258,65 +265,18 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Transform.scale(
-                        scale: 1.3,
-                        child: decrementButton(context)),
                     Text(
-                      "${vendorFlower.count}",
+                      "Count in stock: ${vendorFlower.count}",
                       style:
-                      const TextStyle(fontWeight: FontWeight.w500, fontSize: 21),
-                    ),
-                    Transform.scale(
-                        scale: 1.3,
-                        child: incrementButton())
-                  ],
-                ),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    InkWell(
-                        child: const Icon(Icons.delete_outline,color: Colors.white,size: 24,),
-                        onTap: (){
-                          Widget cancelButton = TextButton(
-                              child:  const Text("Cancel"),
-                              onPressed:  (){
-                                Navigator.of(context).pop();
-                              }
-                          );
-                          Widget continueButton = TextButton(
-                            child:  const Text("Continue"),
-                            onPressed:  () {
-                              controller.deleteFlower(vendorFlower);
-                              Navigator.of(context).pop();
-                            },
-                          );
-                          AlertDialog alert = AlertDialog(
-                            title:  const Text("Delete"),
-                            content: const Text("Are you sure you want to delete this ?"),
-                            actions: [
-                              cancelButton,
-                              continueButton,
-                            ],
-                          );
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return alert;
-                            },
-                          );
-                        }
+                      const TextStyle(fontWeight: FontWeight.w400, fontSize: 20),
                     ),
                     SizedBox(
                       height: 25,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xff71cc47),
+                          backgroundColor: const Color(0xff6cba00),
                         ),
                         onPressed: ()=>controller.goToEdit(vendorFlower),
                         child: const Text('Edit'),
@@ -340,7 +300,7 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
               content: SingleChildScrollView(
                 child: Text(
                   firstHalfText + secondHalfText,
-                  style: const TextStyle(fontSize: 12),
+                  style: const TextStyle(fontSize: 10),
                 ),
               ),
               actions: [

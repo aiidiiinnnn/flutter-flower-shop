@@ -18,21 +18,20 @@ class ProfilePicture extends GetView<SignupPageController>{
           width: shapeSize,
           height: shapeSize,
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.black),
-            borderRadius: BorderRadius.circular(200),
-            color: Colors.blueGrey
+              borderRadius: BorderRadius.circular(100),
+              color: const Color(0xff7f8283)
           ),
           child: Obx(() => controller.imagePath.isNotEmpty? CircleAvatar(backgroundImage: FileImage(File(controller.imagePath.toString())),) :
-          Icon(Icons.person_outline,size: shapeSize*0.8),)
+          const Icon(Icons.person,color: Color(0xfff3f7f7),size: 120),)
         ),
           Positioned(
             left: -10,
             bottom: -10,
             child: Material(
-              color: Colors.grey,
+              color: const Color(0xffc4c4c4),
               borderRadius: BorderRadius.circular(200),
               child: InkWell(
-                splashColor: Colors.red,
+                splashColor: Colors.blue,
                 customBorder: const CircleBorder(),
                 onTap: (){
                   _showImagePicker(context);

@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:get/get.dart';
@@ -15,11 +13,19 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-          backgroundColor: const Color(0xff314657),
-          appBar: AppBar(
-            backgroundColor: const Color(0xffb32437),
-            title: const Text("Add Vendor Flower"),
-          ),
+            backgroundColor: const Color(0xfff3f7f7),
+            appBar: AppBar(
+              backgroundColor: const Color(0xfff3f7f7),
+              title: const Text("Vendor Flower List",style: TextStyle(
+                  color: Color(0xff050a0a),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 22
+              ),),
+              iconTheme: const IconThemeData(
+                color: Color(0xff050a0a),
+                weight: 2,
+              ),
+            ),
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -35,7 +41,7 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                         height: 300,
                         width: 300,
                         decoration: const BoxDecoration(
-                          color: Colors.brown,
+                          color: Colors.white,
                         ),
                         child: Obx(()=> controller.imagePath.isNotEmpty ? AspectRatio(aspectRatio: 2.2,
                         child: Image(image: FileImage(File(controller.imagePath.toString())),fit: BoxFit.fill,)):
@@ -52,28 +58,28 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                           name: "Name",
                           controller: controller.nameController,
                           validator: controller.nameValidator,
-                          icon: Icons.accessibility_outlined,
+                          icon: Icons.spa_outlined,
                         ),
                         CustomAddFormField(
                           hintText: "Description",
                           name: "Description",
                           controller: controller.descriptionController,
                           validator: controller.descriptionValidator,
-                          icon: Icons.accessibility_outlined,
+                          icon: Icons.description_outlined,
                         ),
                         CustomAddFormField(
                           hintText: "Price",
                           name: "Price",
                           controller: controller.priceController,
                           validator: controller.priceValidator,
-                          icon: Icons.accessibility_outlined,
+                          icon: Icons.attach_money_outlined,
                         ),
                         CustomAddFormField(
                           hintText: "Count",
                           name: "Count",
                           controller: controller.countController,
                           validator: controller.countValidator,
-                          icon: Icons.accessibility_outlined,
+                          icon: Icons.numbers_outlined,
                         ),
                       ],
                     )
@@ -84,12 +90,12 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                       key: controller.categoryKey,
                       child: TextFormField(
                         enableSuggestions: false,
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Color(0xff050a0a)),
                         decoration: InputDecoration(
                           suffixIcon: Padding(
                             padding: const EdgeInsets.all(4),
                             child: InkWell(
-                                splashColor: Colors.red,
+                                splashColor: const Color(0xffc4c4c4),
                                 customBorder: const CircleBorder(),
                                 onTap: ()=>controller.addCategory(controller.categoryController.text),
                                 child: Padding(
@@ -98,8 +104,8 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                                       width: 65,
                                       height: 10,
                                       decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.black),
-                                        color: Colors.red
+                                        border: Border.all(color: const Color(0xff050a0a)),
+                                        color: const Color(0xffc4c4c4)
                                         // borderRadius: BorderRadius.circular(200),
                                       ),
                                       child: const Icon(Icons.add,size:25)
@@ -110,13 +116,13 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                           ),
                           prefixIcon: const Icon(Icons.category_outlined),
                           enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white)
+                              borderSide: BorderSide(color: Color(0xff050a0a))
                           ),
                           focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white)
+                              borderSide: BorderSide(color: Color(0xff050a0a))
                           ),
                           labelText: "Category",
-                          labelStyle: const TextStyle(color: Colors.white),
+                          labelStyle: const TextStyle(color: Color(0xff050a0a)),
                         ),
                         validator: controller.categoryValidator,
                         controller: controller.categoryController,
@@ -170,14 +176,14 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SizedBox(
-                    height: 50,
                     width: double.infinity,
+                    height: 40,
                     child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xffb32437),
-                        ),
-                        onPressed: ()=>controller.addVendorFlower(),
-                        child: const Text("Submit")
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xff6cba00),
+                      ),
+                      onPressed: ()=>controller.addVendorFlower(),
+                      child: const Text('Submit'),
                     ),
                   ),
                 ),
@@ -206,10 +212,6 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
               child: const Text('Got it'),
               onPressed: () {
                 controller.changeColor(controller.currentColor);
-                // print(controller.currentColor);
-                print(controller.pickerColor);
-                print(controller.colorList);
-                print(controller.colors);
                 Navigator.of(context).pop();
               },
             ),

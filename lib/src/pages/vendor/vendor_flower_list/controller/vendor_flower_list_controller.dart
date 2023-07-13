@@ -3,6 +3,7 @@ import 'package:flower_shop/src/pages/login_page/models/vendor_models/login_vend
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/models/vendor_flower_view_model.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/repositories/vendor_flower_list_repository.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_profile.dart';
+import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,10 +14,13 @@ import '../view/screens/vendor_flower_home.dart';
 
 class VendorFlowerListController extends GetxController{
   LoginVendorViewModel? vendor;
+  final GlobalKey<FormState> searchKey=GlobalKey();
+  final TextEditingController searchController = TextEditingController();
   int? vendorId;
   RxBool isChecked = false.obs;
   final VendorFlowerListRepository _repository = VendorFlowerListRepository();
   RxList<VendorFlowerViewModel> vendorFlowersList =RxList();
+  RxList<VendorFlowerViewModel> searchedFlowersList =RxList();
   RxBool isLoading=true.obs;
   RxBool isRetry=false.obs;
   RxBool textFlag = true.obs;
@@ -29,9 +33,19 @@ class VendorFlowerListController extends GetxController{
   final screens = [
     const VendorFlowerHome(),
     const Center(child: Text('History',style: TextStyle(fontSize: 72),)),
-    const Center(child: Text('Search',style: TextStyle(fontSize: 72),)),
+    const VendorFlowerSearch(),
     const VendorFlowerProfile(),
   ];
+
+  @override
+  void onReady() {
+    super.onReady();
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+  }
 
   @override
   Future<void> onInit() async {
@@ -40,6 +54,7 @@ class VendorFlowerListController extends GetxController{
     await getVendorById();
     await getFlowersByVendorId();
   }
+
 
   Future<int?> sharedVendor() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -91,6 +106,7 @@ class VendorFlowerListController extends GetxController{
         },
             (right){
           vendorFlowersList.addAll(right);
+          searchedFlowersList.addAll(right);
           isLoading.value=false;
         }
     );
@@ -206,6 +222,14 @@ class VendorFlowerListController extends GetxController{
           count: result['count']
       );
     }
+  }
+
+  void searchFlower(String searchedText){
+    searchedFlowersList.value = vendorFlowersList.where((searchedFlower) {
+      var flowerName = searchedFlower.name.toLowerCase();
+      var flowerDescription = searchedFlower.description.toLowerCase();
+      return flowerName.contains(searchedText) || flowerDescription.contains(searchedText);
+    }).toList();
   }
 
 

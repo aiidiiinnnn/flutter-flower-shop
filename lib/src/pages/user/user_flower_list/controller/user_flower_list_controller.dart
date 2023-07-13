@@ -18,6 +18,9 @@ class UserFlowerListController extends GetxController{
   int? userId;
   RxBool isLoading=true.obs;
   RxBool isRetry=false.obs;
+  RxInt buyCount=RxInt(1);
+  RxMap buyCounting={}.obs;
+
 
   void onDestinationSelected(index){
     this.index.value=index;
@@ -79,9 +82,24 @@ class UserFlowerListController extends GetxController{
         },
             (right){
           flowersList.addAll(right);
+          for(final flower in flowersList){
+            buyCounting[flower.id]=1;
+          }
           isLoading.value=false;
         }
     );
+  }
+
+  Future<void> onTapIncrement({required UserFlowerViewModel user,required int index}) async {
+    if(buyCounting[index]>=0 && buyCounting[index] < user.count){
+      buyCounting[index]++;
+    }
+  }
+
+  Future<void> onTapDecrement({required UserFlowerViewModel user,required int index}) async {
+    if(buyCounting[index]>0 && buyCounting[index] <= user.count){
+      buyCounting[index]--;
+    }
   }
 
 }

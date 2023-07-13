@@ -12,10 +12,18 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-          backgroundColor: const Color(0xff314657),
+          backgroundColor: const Color(0xfff3f7f7),
           appBar: AppBar(
-            backgroundColor: const Color(0xffb32437),
-            title: const Text("Vendor Flower List"),
+            backgroundColor: const Color(0xfff3f7f7),
+            title: const Text("Vendor Flower List",style: TextStyle(
+                color: Color(0xff050a0a),
+                fontWeight: FontWeight.w600,
+                fontSize: 22
+            ),),
+            iconTheme: const IconThemeData(
+              color: Color(0xff050a0a),
+              weight: 2,
+            ),
           ),
           drawer: Drawer(
             child: Column(
@@ -31,7 +39,7 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
             ),
           ),
           floatingActionButton: FloatingActionButton(
-            backgroundColor: const Color(0xff71cc47),
+            backgroundColor: const Color(0xff6cba00),
             onPressed: ()=> controller.goToAdd(),
             child: const Icon(Icons.add,size: 40),
           ),
@@ -72,7 +80,7 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
   Widget _vendorFlower() => Obx(() => GridView.builder(
     itemCount: controller.vendorFlowersList.length,
     itemBuilder: (_,index) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
         child: VendorFlowerCard(
             vendorFlower: controller.vendorFlowersList[index],
             index: index

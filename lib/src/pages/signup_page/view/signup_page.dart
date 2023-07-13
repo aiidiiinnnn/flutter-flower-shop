@@ -12,10 +12,18 @@ class SignupPage extends GetView<SignupPageController>{
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-          backgroundColor: const Color(0xff314657),
+          backgroundColor: const Color(0xfff3f7f7),
           appBar: AppBar(
-            backgroundColor: const Color(0xffb32437),
-            title: const Text("Signup"),
+            backgroundColor: const Color(0xfff3f7f7),
+              title: const Text("Signup",style: TextStyle(
+                  color: Color(0xff050a0a),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 23
+              ),),
+            iconTheme: const IconThemeData(
+              color: Color(0xff050a0a),
+              weight: 2,
+            ),
           ),
           body: SingleChildScrollView(
             child: Column(
@@ -44,7 +52,7 @@ class SignupPage extends GetView<SignupPageController>{
                           name: "Email",
                           controller: controller.emailController,
                           validator: controller.emailValidator,
-                          icon: Icons.accessibility_outlined,
+                          icon: Icons.alternate_email,
                         ),
                         CustomSignupFormField(
                           hintText: "Password",
@@ -91,18 +99,26 @@ class SignupPage extends GetView<SignupPageController>{
                     )
                 ),
 
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff5B3596),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 20),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 40,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xff6cba00),
+                      ),
+                      onPressed: () => {
+                        if(controller.selectedType.value==1){
+                          controller.addVendor()
+                        },
+                        controller.addUser()
+                      },
+                      child: const Text('Signup'),
+                    ),
                   ),
-                  onPressed: () => {
-                    if(controller.selectedType.value==1){
-                      controller.addVendor()
-                    },
-                    controller.addUser()
-                  },
-                  child: const Text('Signup'),
                 ),
+
               ],
             ),
           ),
