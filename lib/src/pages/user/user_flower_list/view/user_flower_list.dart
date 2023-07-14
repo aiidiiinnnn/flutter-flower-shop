@@ -12,9 +12,9 @@ class UserFlowerList extends  GetView<UserFlowerListController>{
     return SafeArea(
         child: Scaffold(
             backgroundColor: const Color(0xffc4c4c4),
-            body: Obx(() => controller.screens[controller.index.value]),
+            body: Obx(() => controller.screens[controller.pageIndex.value]),
             bottomNavigationBar: Obx(() => BottomNavigationBar(
-              currentIndex: controller.index.value,
+              currentIndex: controller.pageIndex.value,
               onTap: (index)=>controller.onDestinationSelected(index),
               items: const [
                 BottomNavigationBarItem(

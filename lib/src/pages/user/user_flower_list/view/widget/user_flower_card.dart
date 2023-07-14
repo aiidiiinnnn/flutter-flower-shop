@@ -19,8 +19,14 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
         height: 510,
         decoration: BoxDecoration(
             color: const Color(0xffe9e9e9),
-            border: Border.all(color: const Color(0xff9d9d9d)),
-            borderRadius: BorderRadius.circular(45)),
+            border: const Border(
+              top: BorderSide(color: Color(0xff9d9d9d),width: 0.5),
+              left: BorderSide(color: Color(0xff9d9d9d),width: 0.5),
+              bottom: BorderSide(color: Color(0xff9d9d9d),width: 3.5),
+              right: BorderSide(color: Color(0xff9d9d9d),width: 3.5),
+            ),
+            borderRadius: BorderRadius.circular(45)
+        ),
         child: Column(
           children: [
             Padding(
@@ -86,12 +92,13 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
                       showDialog(
                       context: context,
                       builder: (BuildContext context) => AlertDialog(
+                        backgroundColor: const Color(0xffe9e9e9),
                         content: Obx(() => Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Row(
                               children: [
-                                (controller.buyCount.value == 0) ? _disableButton() : decrementButton(),
+                                (controller.buyCounting[index] == 0) ? _disableButton() : decrementButton(),
                               ],
                             ),
                             Obx(() => Text(
@@ -101,7 +108,7 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
                             )),
                             Row(
                               children: [
-                                (controller.buyCount.value == userFlower.count) ? _disableButton() : incrementButton(),
+                                (controller.buyCounting[index] == userFlower.count) ? _disableButton() : incrementButton(),
                               ],
                             )
                           ],
@@ -115,8 +122,9 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
                                 Text('Add to cart'),
                               ],
                             ),
-                            onPressed: () {
-                              Navigator.of(context).pop();
+                            onPressed: () => {
+                              controller.addToCart(index),
+                              Navigator.of(context).pop(),
                             },
                           ),
                         ],
@@ -137,38 +145,28 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
   }
 
   Widget _disableButton() {
-    return const ElevatedButton(
-        key: Key('Increment'),
-        onPressed: null,
-        child: Icon(Icons.cancel_outlined)
+    return const IconButton(
+      onPressed: null,
+      icon: Icon(Icons.close,color: Colors.black,),
     );
   }
 
   Widget incrementButton() {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.green,
-      ),
-      key: const Key('Increment'),
-      child: const Icon(Icons.arrow_forward_ios),
+    return IconButton(
       onPressed: () => {
         controller.onTapIncrement(user: userFlower,index: index),
-        print(controller.buyCounting)
       },
+      icon: const Icon(Icons.arrow_forward_ios,color: Colors.black,),
     );
   }
 
   Widget decrementButton() {
-    return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.red,
-        ),
-        key: const Key('Increment'),
-        child: const Icon(Icons.arrow_back_ios),
-        onPressed: () => {
-          controller.onTapDecrement(user: userFlower,index: index),
-          print(controller.buyCounting)
-        });
+    return IconButton(
+      onPressed: () => {
+        controller.onTapDecrement(user: userFlower,index: index),
+      },
+      icon: const Icon(Icons.arrow_back_ios,color: Colors.black),
+    );
   }
 
 }

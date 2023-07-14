@@ -15,10 +15,10 @@ class VendorFlowerSearchCard extends GetView<VendorFlowerListController> {
 
   @override
   Widget build(BuildContext context) {
-    if (vendorFlower.description.length > 25) {
-      firstHalfText = vendorFlower.description.substring(0, 25);
+    if (vendorFlower.description.length > 20) {
+      firstHalfText = vendorFlower.description.substring(0, 20);
       secondHalfText = vendorFlower.description
-          .substring(25, vendorFlower.description.length);
+          .substring(20, vendorFlower.description.length);
     } else {
       firstHalfText = vendorFlower.description;
       secondHalfText = "";
@@ -37,8 +37,8 @@ class VendorFlowerSearchCard extends GetView<VendorFlowerListController> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-                height: 180,
-                width: 180,
+                height: 170,
+                width: 170,
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(15)
@@ -69,47 +69,45 @@ class VendorFlowerSearchCard extends GetView<VendorFlowerListController> {
                 ),
                 SizedBox(
                   height: 35,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 6),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                      child: secondHalfText.isEmpty
-                          ? Center(
-                        child: Text(
-                          firstHalfText,
+                  width: 170,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                    child: secondHalfText.isEmpty
+                        ? Center(
+                      child: Text(
+                        firstHalfText,
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                    )
+                        : Column(
+                      children: [
+                        Text(
+                          controller.textFlag.value
+                              ? ("$firstHalfText...")
+                              : (firstHalfText + secondHalfText),
                           style: const TextStyle(fontSize: 12),
                         ),
-                      )
-                          : Column(
-                        children: [
-                          Text(
-                            controller.textFlag.value
-                                ? ("$firstHalfText...")
-                                : (firstHalfText + secondHalfText),
-                            style: const TextStyle(fontSize: 12),
+                        InkWell(
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                "show more",
+                                style:
+                                TextStyle(color: Colors.blue, fontSize: 12),
+                              ),
+                            ],
                           ),
-                          InkWell(
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(
-                                  "show more",
-                                  style:
-                                  TextStyle(color: Colors.blue, fontSize: 12),
-                                ),
-                              ],
-                            ),
-                            onTap: () {
-                              _showDescription(context);
-                            },
-                          ),
-                        ],
-                      ),
+                          onTap: () {
+                            _showDescription(context);
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ),
                 SizedBox(
-                  width: 160,
+                  width: 170,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

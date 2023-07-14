@@ -172,37 +172,37 @@ class AddVendorFlowerController extends GetxController{
     request.fold(
             (left) => print(left),
             (right) async {
-              vendor!.vendorFlowerList.add(right.id);
-              final result = await _repository.vendorEditFlowerList(
-                dto: LoginVendorDto(
-                    firstName: vendor!.firstName,
-                    lastName: vendor!.lastName,
-                    email: vendor!.email,
-                    password: vendor!.password,
-                    imagePath: vendor!.imagePath,
-                    vendorFlowerList: vendor!.vendorFlowerList
-                ),
-                id: vendorId!,
-              );
+          vendor!.vendorFlowerList.add(right.id);
+          final result = await _repository.vendorEditFlowerList(
+            dto: LoginVendorDto(
+                firstName: vendor!.firstName,
+                lastName: vendor!.lastName,
+                email: vendor!.email,
+                password: vendor!.password,
+                imagePath: vendor!.imagePath,
+                vendorFlowerList: vendor!.vendorFlowerList
+            ),
+            id: vendorId!,
+          );
 
-              result.fold(
-                      (exception) {
-                        Get.snackbar('Exception', exception);
-                      },
-                      (auctionId) {
-                        Get.back(result: {
-                          "id": right.id,
-                          "name": right.name,
-                          "description": right.description,
-                          "price": right.price,
-                          "color": right.color,
-                          "imageAddress": right.imageAddress,
-                          "count": right.count,
-                          "category": right.category
-                        });
-                      });
-            }
-  );}
+          result.fold(
+                  (exception) {
+                Get.snackbar('Exception', exception);
+              },
+                  (userId) {
+                Get.back(result: {
+                  "id": right.id,
+                  "name": right.name,
+                  "description": right.description,
+                  "price": right.price,
+                  "color": right.color,
+                  "imageAddress": right.imageAddress,
+                  "count": right.count,
+                  "category": right.category
+                });
+              });
+        }
+    );}
 
 
 

@@ -5,7 +5,7 @@ class LoginUserViewModel{
   final String email;
   final String password;
   final String imagePath;
-  final List<dynamic> userFlowerList;
+  List<dynamic> userFlowerList;
 
 
   LoginUserViewModel({required this.id, required this.firstName,required this.lastName,required this.email, required this.password, required this.imagePath,required this.userFlowerList});

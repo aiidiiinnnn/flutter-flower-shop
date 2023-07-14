@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:either_dart/either.dart';
 import '../../../../infrastructure/common/repository_url.dart';
 import 'package:http/http.dart' as http;
+import '../../../login_page/models/user_models/login_user_dto.dart';
 import '../../../login_page/models/user_models/login_user_view_model.dart';
 import '../models/user_flower_view_model.dart';
 
@@ -39,6 +40,18 @@ class UserFlowerListRepository{
     }
     else{
       return Left("Error: ${response.statusCode}");
+    }
+  }
+
+  Future<Either<String, int>> userEditFlowerList({required LoginUserDto dto,required int id,}) async {
+    final url= Uri.http(RepositoryUrls.fullBaseUrl, 'users/$id');
+    final request = await http.put(url,body: json.encode(dto.toJson()),headers: customHeaders);
+    try {
+      final editedUser = json.decode(request.body);
+      return Right(editedUser['id']);
+    }
+    catch (e) {
+      return Left('There was an error: ${request.statusCode}');
     }
   }
 

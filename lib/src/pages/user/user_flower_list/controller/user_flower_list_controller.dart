@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../flower_shop.dart';
+import '../../../login_page/models/user_models/login_user_dto.dart';
 import '../../../login_page/models/user_models/login_user_view_model.dart';
 import '../models/user_flower_view_model.dart';
 import '../repositories/user_flower_list_repository.dart';
@@ -12,18 +13,17 @@ import '../view/screens/user_flower_profile.dart';
 class UserFlowerListController extends GetxController{
   RxList<UserFlowerViewModel> flowersList =RxList();
   RxBool isChecked = false.obs;
-  RxInt index=RxInt(0);
+  RxInt pageIndex=RxInt(0);
   final UserFlowerListRepository _repository = UserFlowerListRepository();
   LoginUserViewModel? user;
   int? userId;
   RxBool isLoading=true.obs;
   RxBool isRetry=false.obs;
-  RxInt buyCount=RxInt(1);
   RxMap buyCounting={}.obs;
 
 
   void onDestinationSelected(index){
-    this.index.value=index;
+    pageIndex.value=index;
   }
 
   final screens = [
@@ -83,7 +83,7 @@ class UserFlowerListController extends GetxController{
             (right){
           flowersList.addAll(right);
           for(final flower in flowersList){
-            buyCounting[flower.id]=1;
+            buyCounting[flower.id-1]=1;
           }
           isLoading.value=false;
         }
@@ -100,6 +100,32 @@ class UserFlowerListController extends GetxController{
     if(buyCounting[index]>0 && buyCounting[index] <= user.count){
       buyCounting[index]--;
     }
+  }
+
+  Future<void> addToCart(int index) async{
+    user!.userFlowerList.add({'id':index, 'count': buyCounting[index]});
+    final result = await _repository.userEditFlowerList(
+      dto: LoginUserDto(
+          firstName: user!.firstName,
+          lastName: user!.lastName,
+          email: user!.email,
+          password: user!.password,
+          imagePath: user!.imagePath,
+          userFlowerList: user!.userFlowerList
+      ),
+      id: userId!,
+    );
+    result.fold(
+            (exception) {
+          Get.snackbar('Exception', exception);
+        },
+            (right) {
+              List shoppingCart = user!.userFlowerList;
+              final editedUser = user!.copyWith(
+                userFlowerList: shoppingCart,
+              );
+              user = editedUser;
+            });
   }
 
 }
