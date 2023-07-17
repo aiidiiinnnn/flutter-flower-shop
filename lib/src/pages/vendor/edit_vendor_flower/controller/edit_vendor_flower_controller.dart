@@ -39,7 +39,7 @@ class EditVendorFlowerController extends GetxController{
     categoryList.value=Get.arguments['category'];
     savedImage.value=Get.arguments['imageAddress'];
     colors.value=Get.arguments['color'];
-    getRecipeById();
+    getFlowerById();
   }
 
   Future<int?> sharedVendor() async {
@@ -137,7 +137,7 @@ class EditVendorFlowerController extends GetxController{
     return null;
   }
 
-  Future<void> getRecipeById () async{
+  Future<void> getFlowerById () async{
     final Either<String, EditVendorFlowerViewModel> flowerById = await _repository.getFlowerById(_selectedFlowerId!);
     flowerById.fold(
             (left) {

@@ -1,11 +1,6 @@
 import 'package:flower_shop/src/pages/user/user_flower_list/view/widget/user_flower_card.dart';
-import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/widget/vendor_flower_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
-
 import '../../../../../../flower_shop.dart';
 import '../../controller/user_flower_list_controller.dart';
 
@@ -30,15 +25,37 @@ class UserFlowerHome extends  GetView<UserFlowerListController>{
               weight: 2,
             ),
             actions: [
-              IconButton(
-                icon: const Icon(
-                  Icons.shopping_cart_outlined,
-                  color: Color(0xff050a0a),
-                  weight: 2,
-                ),
-                onPressed: () {
-                  Get.toNamed("${RouteNames.userFlowerList}${RouteNames.userFlowerHome}${RouteNames.userFlowerCart}");
-                },
+              Stack(
+                children: [
+                  IconButton(
+                    icon: const Icon(
+                      Icons.shopping_cart_outlined,
+                      color: Color(0xff050a0a),
+                      weight: 2,
+                    ),
+                    onPressed: () {
+                      Get.toNamed("${RouteNames.userFlowerList}${RouteNames.userFlowerHome}${RouteNames.userFlowerCart}");
+                    },
+                  ),
+                  Positioned(
+                      right: 3,
+                      top: 3,
+                      child: Container(
+                      width: 17,
+                      height: 17,
+                      decoration: BoxDecoration(
+                        // border: Border.all(color: Colors.black),
+                        borderRadius: BorderRadius.circular(100),
+                        color: Colors.blue
+                      ),
+                      child: Center(
+                        child: Obx(() => Text("${controller.countInCart}",style: const TextStyle(
+                            fontSize: 12
+                        ),),)
+                      )
+                    // child:
+                  ))
+                ],
               )
             ],
           ),
@@ -67,7 +84,13 @@ class UserFlowerHome extends  GetView<UserFlowerListController>{
 
   Widget _pageContent() {
     if (controller.isLoading.value) {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(
+        child: SizedBox(
+            width: 150,
+            child: LinearProgressIndicator()
+        ),
+          // child: CircularProgressIndicator()
+      );
     } else if (controller.isRetry.value) {
       return _retryButton();
     }

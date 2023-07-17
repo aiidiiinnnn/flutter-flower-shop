@@ -1,9 +1,10 @@
 import 'package:either_dart/either.dart';
+import 'package:flower_shop/src/pages/user/user_flower_cart/models/cart_Flower/cart_flower_view_model.dart';
+import 'package:flower_shop/src/pages/user/user_flower_list/view/screens/user_flower_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../flower_shop.dart';
-import '../../../login_page/models/user_models/login_user_dto.dart';
 import '../../../login_page/models/user_models/login_user_view_model.dart';
 import '../models/user_flower_view_model.dart';
 import '../repositories/user_flower_list_repository.dart';
@@ -14,13 +15,16 @@ class UserFlowerListController extends GetxController{
   RxList<UserFlowerViewModel> flowersList =RxList();
   RxBool isChecked = false.obs;
   RxInt pageIndex=RxInt(0);
+  final TextEditingController searchController = TextEditingController();
   final UserFlowerListRepository _repository = UserFlowerListRepository();
   LoginUserViewModel? user;
   int? userId;
   RxBool isLoading=true.obs;
   RxBool isRetry=false.obs;
   RxMap buyCounting={}.obs;
-
+  RxInt countInCart = RxInt(0);
+  List<int> maxCount=[];
+  final GlobalKey<FormState> searchKey=GlobalKey();
 
   void onDestinationSelected(index){
     pageIndex.value=index;
@@ -29,7 +33,7 @@ class UserFlowerListController extends GetxController{
   final screens = [
     const UserFlowerHome(),
     const Center(child: Text('History',style: TextStyle(fontSize: 72),)),
-    const Center(child: Text('Search',style: TextStyle(fontSize: 72),)),
+    const UserFlowerSearch(),
     const UserFlowerProfile(),
   ];
 
@@ -64,6 +68,7 @@ class UserFlowerListController extends GetxController{
         },
             (userViewModel) {
           user=userViewModel;
+          countInCart.value = user!.userFlowerList.length;
           isLoading.value=false;
         }
     );
@@ -84,6 +89,7 @@ class UserFlowerListController extends GetxController{
           flowersList.addAll(right);
           for(final flower in flowersList){
             buyCounting[flower.id-1]=1;
+            maxCount.add(flower.count);
           }
           isLoading.value=false;
         }
@@ -91,28 +97,33 @@ class UserFlowerListController extends GetxController{
   }
 
   Future<void> onTapIncrement({required UserFlowerViewModel user,required int index}) async {
-    if(buyCounting[index]>=0 && buyCounting[index] < user.count){
+    if(buyCounting[index]>=0 && buyCounting[index] < maxCount[index]){
       buyCounting[index]++;
     }
   }
 
   Future<void> onTapDecrement({required UserFlowerViewModel user,required int index}) async {
-    if(buyCounting[index]>0 && buyCounting[index] <= user.count){
+    if(buyCounting[index]>0 && buyCounting[index] <= maxCount[index]){
       buyCounting[index]--;
     }
   }
 
   Future<void> addToCart(int index) async{
-    user!.userFlowerList.add({'id':index, 'count': buyCounting[index]});
+    user!.userFlowerList.add(CartFlowerViewModel(
+        name: flowersList[index].name,
+        imageAddress: flowersList[index].imageAddress,
+        description: flowersList[index].description,
+        price: flowersList[index].price,
+        color: flowersList[index].color,
+        category: flowersList[index].category,
+        vendorId: flowersList[index].vendorId,
+        count: buyCounting[index],
+        id: flowersList[index].id,
+        totalCount: flowersList[index].count
+    )
+    );
     final result = await _repository.userEditFlowerList(
-      dto: LoginUserDto(
-          firstName: user!.firstName,
-          lastName: user!.lastName,
-          email: user!.email,
-          password: user!.password,
-          imagePath: user!.imagePath,
-          userFlowerList: user!.userFlowerList
-      ),
+      dto: user!,
       id: userId!,
     );
     result.fold(
@@ -120,7 +131,9 @@ class UserFlowerListController extends GetxController{
           Get.snackbar('Exception', exception);
         },
             (right) {
-              List shoppingCart = user!.userFlowerList;
+              countInCart.value = user!.userFlowerList.length;
+              maxCount[index]-buyCounting[index];
+              List<CartFlowerViewModel> shoppingCart = user!.userFlowerList;
               final editedUser = user!.copyWith(
                 userFlowerList: shoppingCart,
               );

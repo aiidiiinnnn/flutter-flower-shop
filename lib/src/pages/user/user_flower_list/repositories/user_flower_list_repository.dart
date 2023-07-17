@@ -43,7 +43,7 @@ class UserFlowerListRepository{
     }
   }
 
-  Future<Either<String, int>> userEditFlowerList({required LoginUserDto dto,required int id,}) async {
+  Future<Either<String, int>> userEditFlowerList({required LoginUserViewModel dto,required int id,}) async {
     final url= Uri.http(RepositoryUrls.fullBaseUrl, 'users/$id');
     final request = await http.put(url,body: json.encode(dto.toJson()),headers: customHeaders);
     try {

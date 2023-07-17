@@ -1,3 +1,5 @@
+import '../../../user/user_flower_cart/models/cart_Flower/cart_flower_view_model.dart';
+
 class SignupUserViewModel{
   final int id;
   final String firstName;
@@ -5,11 +7,15 @@ class SignupUserViewModel{
   final String email;
   final String password;
   final String imagePath;
-  final List<dynamic> userFlowerList;
+  final List<CartFlowerViewModel> userFlowerList;
 
   SignupUserViewModel({required this.id, required this.firstName,required this.lastName,required this.email, required this.password, required this.imagePath, required this.userFlowerList});
 
   factory SignupUserViewModel.fromJson(Map<String, dynamic> json){
+    List<CartFlowerViewModel> flowerList=[];
+    for(final flower in json["userFlowerList"]){
+      flowerList.add(CartFlowerViewModel.fromJson(flower));
+    }
     return SignupUserViewModel(
         id: json["id"],
         firstName: json["firstName"],
@@ -17,7 +23,7 @@ class SignupUserViewModel{
         email: json["email"],
         password: json["password"],
         imagePath: json["imagePath"],
-        userFlowerList: json["userFlowerList"]
+        userFlowerList: flowerList
     );
   }
 
@@ -28,7 +34,7 @@ class SignupUserViewModel{
     String? email,
     String? password,
     String? imagePath,
-    List<dynamic>? userFlowerList
+    List<CartFlowerViewModel>? userFlowerList
   }) => SignupUserViewModel(
       id: id ?? this.id,
       firstName: firstName ?? this.firstName,

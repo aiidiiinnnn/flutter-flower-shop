@@ -93,7 +93,11 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
                       context: context,
                       builder: (BuildContext context) => AlertDialog(
                         backgroundColor: const Color(0xffe9e9e9),
-                        content: Obx(() => Row(
+                        content: (userFlower.count==0) ? const Text(
+                          "Out of stock",
+                          style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 21),
+                        ) : Obx(() => Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Row(
@@ -108,11 +112,11 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
                             )),
                             Row(
                               children: [
-                                (controller.buyCounting[index] == userFlower.count) ? _disableButton() : incrementButton(),
+                                (controller.buyCounting[index] == (userFlower.count)) ? _disableButton() : incrementButton(),
                               ],
                             )
                           ],
-                        ),),
+                        )),
                         actions: [
                           ElevatedButton(
                             child: const Row(

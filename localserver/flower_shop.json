@@ -69,12 +69,7 @@
       "email": "bagherinejad.aidin@gmail.com",
       "password": "Aa123",
       "imagePath": "",
-      "userFlowerList": [
-        {
-          "id": 0,
-          "count": 5
-        }
-      ],
+      "userFlowerList": [],
       "id": 1
     },
     {
@@ -320,9 +315,63 @@
         "gol",
         "mpmp"
       ],
-      "count": 15,
+      "count": 0,
       "vendorId": 5,
       "id": 13
+    }
+  ],
+  "purchase": [
+    {
+      "purchaseList": [
+        {
+          "id": 13,
+          "name": "flow",
+          "imageAddress": "",
+          "description": "dede",
+          "price": 120,
+          "color": [
+            4293207948,
+            4280983844,
+            4280626646,
+            4289478430
+          ],
+          "category": [
+            "gol",
+            "mpmp"
+          ],
+          "count": 2,
+          "vendorId": 5,
+          "totalCount": 15
+        }
+      ],
+      "date": "2023-07-17 00:00:00.000",
+      "id": 1
+    },
+    {
+      "purchaseList": [
+        {
+          "id": 13,
+          "name": "flow",
+          "imageAddress": "",
+          "description": "dede",
+          "price": 120,
+          "color": [
+            4293207948,
+            4280983844,
+            4280626646,
+            4289478430
+          ],
+          "category": [
+            "gol",
+            "mpmp"
+          ],
+          "count": 13,
+          "vendorId": 5,
+          "totalCount": 13
+        }
+      ],
+      "date": "2023-07-17 00:00:00.000",
+      "id": 2
     }
   ]
 }
