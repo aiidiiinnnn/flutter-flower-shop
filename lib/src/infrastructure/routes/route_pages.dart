@@ -1,4 +1,5 @@
 import 'package:flower_shop/src/pages/user/user_flower_cart/view/user_flower_cart.dart';
+import 'package:flower_shop/src/pages/user/user_flower_list/view/screens/user_flower_history.dart';
 import 'package:flower_shop/src/pages/vendor/add_vendor_flower/view/add_vendor_flower.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_profile.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_search.dart';
@@ -91,6 +92,11 @@ class RoutePages{
           GetPage(
             name: RouteNames.userFlowerProfile,
             page: () => const UserFlowerProfile(),
+            binding: UserFlowerListBinding(),
+          ),
+          GetPage(
+            name: RouteNames.userFlowerHistory,
+            page: () => const UserFlowerHistory(),
             binding: UserFlowerListBinding(),
           ),
         ]

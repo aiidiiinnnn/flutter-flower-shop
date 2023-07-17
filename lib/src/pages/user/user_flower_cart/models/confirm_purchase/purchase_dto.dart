@@ -4,10 +4,12 @@ import 'package:flower_shop/src/pages/user/user_flower_cart/models/cart_Flower/c
 class PurchaseDto {
   List<CartFlowerViewModel> purchaseList;
   final String date;
+  final int userId;
 
   PurchaseDto({
     required this.purchaseList,
     required this.date,
+    required this.userId
   });
 
   Map<String, dynamic> toJson() {
@@ -17,7 +19,8 @@ class PurchaseDto {
     }
     return {
       "purchaseList": purchaseList,
-      "date": date
+      "date": date,
+      "userId": userId
     };
   }
 }

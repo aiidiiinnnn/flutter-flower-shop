@@ -1,9 +1,9 @@
-import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/widget/vendor_flower_search_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 
 import '../../controller/user_flower_list_controller.dart';
+import '../widget/user_flower_search_card.dart';
 
 
 class UserFlowerSearch extends  GetView<UserFlowerListController> {
@@ -42,23 +42,20 @@ class UserFlowerSearch extends  GetView<UserFlowerListController> {
                         child: TextFormField(
                           enableSuggestions: false,
                           onChanged: (text) => {
-                            // text= controller.searchController.text.toLowerCase(),
-                            // controller.searchFlower(text),
+                            text= controller.searchController.text.toLowerCase(),
+                            controller.searchFlowers(text),
                           },
                           style: const TextStyle(color: Color(0xff050a0a)),
-                          decoration: InputDecoration(
-                            prefixIcon: InkWell(
-                                onTap: () => {},
-                                child: const Icon(Icons.search_outlined)
-                            ),
-                            enabledBorder: const OutlineInputBorder(
+                          decoration: const InputDecoration(
+                            prefixIcon: Icon(Icons.search_outlined),
+                            enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Color(0xff050a0a))
                             ),
-                            focusedBorder: const OutlineInputBorder(
+                            focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Color(0xff050a0a))
                             ),
                             labelText: "Search",
-                            labelStyle: const TextStyle(color: Color(0xff050a0a)),
+                            labelStyle: TextStyle(color: Color(0xff050a0a)),
                           ),
                           controller: controller.searchController,
                         ),
@@ -78,16 +75,16 @@ class UserFlowerSearch extends  GetView<UserFlowerListController> {
                   ],
                 ),
               ),
-              // Expanded(
-              //   child: Obx(() => ListView.builder(
-              //       shrinkWrap: true,
-              //       itemCount: controller.searchedFlowersList.length,
-              //       itemBuilder: (_,index) => VendorFlowerSearchCard(
-              //           vendorFlower: controller.searchedFlowersList[index],
-              //           index: index
-              //       )
-              //   ))
-              // )
+              Expanded(
+                child: Obx(() => ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: controller.searchList.length,
+                    itemBuilder: (_,index) => UserFlowerSearchCard(
+                        userFlower: controller.searchList[index],
+                        index: index
+                    )
+                ))
+              )
             ],
           ),
         )

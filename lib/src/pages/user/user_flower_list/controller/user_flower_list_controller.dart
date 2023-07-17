@@ -1,5 +1,7 @@
 import 'package:either_dart/either.dart';
 import 'package:flower_shop/src/pages/user/user_flower_cart/models/cart_Flower/cart_flower_view_model.dart';
+import 'package:flower_shop/src/pages/user/user_flower_cart/models/confirm_purchase/purchase_view_model.dart';
+import 'package:flower_shop/src/pages/user/user_flower_list/view/screens/user_flower_history.dart';
 import 'package:flower_shop/src/pages/user/user_flower_list/view/screens/user_flower_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -13,7 +15,11 @@ import '../view/screens/user_flower_profile.dart';
 
 class UserFlowerListController extends GetxController{
   RxList<UserFlowerViewModel> flowersList =RxList();
+  RxList<UserFlowerViewModel> searchList = RxList();
+  RxList<PurchaseViewModel> historyList = RxList();
+  RxList<CartFlowerViewModel> purchasedFlowers = RxList();
   RxBool isChecked = false.obs;
+  RxBool textFlag = true.obs;
   RxInt pageIndex=RxInt(0);
   final TextEditingController searchController = TextEditingController();
   final UserFlowerListRepository _repository = UserFlowerListRepository();
@@ -32,7 +38,7 @@ class UserFlowerListController extends GetxController{
 
   final screens = [
     const UserFlowerHome(),
-    const Center(child: Text('History',style: TextStyle(fontSize: 72),)),
+    const UserFlowerHistory(),
     const UserFlowerSearch(),
     const UserFlowerProfile(),
   ];
@@ -43,6 +49,7 @@ class UserFlowerListController extends GetxController{
     await sharedUser().then((id) => userId=id);
     await getUserById();
     await getFlowers();
+    await purchaseHistory();
   }
 
   Future<int?> sharedUser() async {
@@ -87,9 +94,51 @@ class UserFlowerListController extends GetxController{
         },
             (right){
           flowersList.addAll(right);
+          int i=0;
           for(final flower in flowersList){
-            buyCounting[flower.id-1]=1;
+            buyCounting[i]=1;
+            i++;
             maxCount.add(flower.count);
+          }
+          isLoading.value=false;
+        }
+    );
+  }
+
+  Future<void> searchFlowers(String nameToSearch) async{
+    searchList.clear();
+    isLoading.value=true;
+    isRetry.value=false;
+    final Either<String,List<UserFlowerViewModel>> flower = await _repository.searchFlowers(nameToSearch);
+    flower.fold(
+            (left) {
+          print(left);
+          isLoading.value=false;
+          isRetry.value=true;
+        },
+            (right){
+              searchList.addAll(right);
+              isLoading.value=false;
+        }
+    );
+  }
+
+  Future<void> purchaseHistory() async{
+    historyList.clear();
+    purchasedFlowers.clear();
+    isLoading.value=true;
+    isRetry.value=false;
+    final Either<String,List<PurchaseViewModel>> flower = await _repository.purchaseHistory(userId!);
+    flower.fold(
+            (left) {
+          print(left);
+          isLoading.value=false;
+          isRetry.value=true;
+        },
+            (right){
+          historyList.addAll(right);
+          for(final history in right){
+            purchasedFlowers.addAll(history.purchaseList);
           }
           isLoading.value=false;
         }
@@ -120,8 +169,7 @@ class UserFlowerListController extends GetxController{
         count: buyCounting[index],
         id: flowersList[index].id,
         totalCount: flowersList[index].count
-    )
-    );
+    ));
     final result = await _repository.userEditFlowerList(
       dto: user!,
       id: userId!,

@@ -13,5 +13,6 @@ class RouteNames{
   static const userFlowerList='/UserFlowerList';
   static const userFlowerHome='/UserFlowerHome';
   static const userFlowerProfile='/UserFlowerProfile';
+  static const userFlowerHistory='/UserFlowerHistory';
   static const userFlowerCart='/UserFlowerCart';
 }

@@ -33,8 +33,7 @@ class UserFlowerCartController extends GetxController {
 
   void setDate() {
     DateTime now = DateTime.now();
-    DateTime yearMonthDay = DateTime(now.year, now.month, now.day);
-    date = "$yearMonthDay";
+    date = "${now.year}-${now.month}-${now.day} ${now.hour}:${now.minute}";
   }
 
   Future<void> getUserById() async {
@@ -60,7 +59,8 @@ class UserFlowerCartController extends GetxController {
     setDate();
     final dto = PurchaseDto(
         purchaseList: user!.userFlowerList,
-        date: date!
+        date: date!,
+        userId: userId!
     );
     final Either<String, PurchaseViewModel> request = await _repository
         .purchaseFlower(dto);

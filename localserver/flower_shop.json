@@ -146,7 +146,7 @@
       "price": 450,
       "color": [],
       "category": [],
-      "count": 5,
+      "count": 2,
       "vendorId": 4,
       "id": 2
     },
@@ -160,17 +160,6 @@
       "count": 5,
       "vendorId": 4,
       "id": 3
-    },
-    {
-      "name": "fourth",
-      "imageAddress": "",
-      "description": "bdmnhikendibneilkbnuernhier",
-      "price": 1250,
-      "color": [],
-      "category": [],
-      "count": 5,
-      "vendorId": 4,
-      "id": 4
     },
     {
       "name": "fifth",
@@ -223,7 +212,7 @@
         "takht",
         "home"
       ],
-      "count": 17,
+      "count": 15,
       "vendorId": 5,
       "id": 8
     },
@@ -344,7 +333,8 @@
           "totalCount": 15
         }
       ],
-      "date": "2023-07-17 00:00:00.000",
+      "date": "2023-07-17",
+      "userId": 1,
       "id": 1
     },
     {
@@ -370,8 +360,112 @@
           "totalCount": 13
         }
       ],
-      "date": "2023-07-17 00:00:00.000",
+      "date": "2023-07-17",
+      "userId": 1,
       "id": 2
+    },
+    {
+      "purchaseList": [
+        {
+          "id": 8,
+          "name": "Mamad",
+          "imageAddress": "",
+          "description": "mamad daroo re va kon ",
+          "price": 80000,
+          "color": [
+            4288725536,
+            4280693311,
+            4284119193,
+            4293782068,
+            4289863272,
+            4278190080,
+            4294705923
+          ],
+          "category": [
+            "khune",
+            "programming ",
+            "takht",
+            "home"
+          ],
+          "count": 2,
+          "vendorId": 5,
+          "totalCount": 17
+        }
+      ],
+      "date": "2023-07-17",
+      "userId": 1,
+      "id": 3
+    },
+    {
+      "purchaseList": [
+        {
+          "id": 2,
+          "name": "second",
+          "imageAddress": "",
+          "description": "erbdbdbdbdnubdnjbkndubgueidhbierbe",
+          "price": 450,
+          "color": [],
+          "category": [],
+          "count": 2,
+          "vendorId": 4,
+          "totalCount": 5
+        },
+        {
+          "id": 3,
+          "name": "third",
+          "imageAddress": "",
+          "description": "rsmbimlrlnukgerbiubnriehuuebeh",
+          "price": 650,
+          "color": [],
+          "category": [],
+          "count": 1,
+          "vendorId": 4,
+          "totalCount": 5
+        },
+        {
+          "id": 6,
+          "name": "Flower1",
+          "imageAddress": "",
+          "description": "FLower gol Flower gol Flower gol",
+          "price": 14000,
+          "color": [
+            4293493689,
+            4289580058,
+            4280104038,
+            4290683491
+          ],
+          "category": [
+            "ww",
+            "qq",
+            "oo"
+          ],
+          "count": 1,
+          "vendorId": 5,
+          "totalCount": 13
+        }
+      ],
+      "date": "2023-07-17",
+      "userId": 1,
+      "id": 4
+    },
+    {
+      "purchaseList": [
+        {
+          "id": 2,
+          "name": "second",
+          "imageAddress": "",
+          "description": "erbdbdbdbdnubdnjbkndubgueidhbierbe",
+          "price": 450,
+          "color": [],
+          "category": [],
+          "count": 1,
+          "vendorId": 4,
+          "totalCount": 3
+        }
+      ],
+      "date": "2023-7-17",
+      "userId": 1,
+      "id": 5
     }
   ]
 }
