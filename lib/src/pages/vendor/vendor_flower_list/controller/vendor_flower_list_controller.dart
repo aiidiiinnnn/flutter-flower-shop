@@ -1,18 +1,23 @@
 import 'package:either_dart/either.dart';
 import 'package:flower_shop/src/pages/login_page/models/vendor_models/login_vendor_view_model.dart';
+import 'package:flower_shop/src/pages/user/user_flower_cart/models/cart_Flower/cart_flower_view_model.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/models/vendor_flower_view_model.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/repositories/vendor_flower_list_repository.dart';
+import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_history.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_profile.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../flower_shop.dart';
+import '../../../user/user_flower_cart/models/confirm_purchase/purchase_view_model.dart';
 import '../models/vendor_flower_dto.dart';
 import '../view/screens/vendor_flower_home.dart';
 
 
 class VendorFlowerListController extends GetxController{
+  RxList<PurchaseViewModel> historyList = RxList();
+  RxList<Map<dynamic,dynamic>> salesList = RxList();
   LoginVendorViewModel? vendor;
   final GlobalKey<FormState> searchKey=GlobalKey();
   final TextEditingController searchController = TextEditingController();
@@ -32,20 +37,10 @@ class VendorFlowerListController extends GetxController{
 
   final screens = [
     const VendorFlowerHome(),
-    const Center(child: Text('History',style: TextStyle(fontSize: 72),)),
+    const VendorFlowerHistory(),
     const VendorFlowerSearch(),
     const VendorFlowerProfile(),
   ];
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
   @override
   Future<void> onInit() async {
@@ -53,6 +48,7 @@ class VendorFlowerListController extends GetxController{
     await sharedVendor().then((id) => vendorId=id);
     await getVendorById();
     await getFlowersByVendorId();
+    await purchaseHistory();
   }
 
 
@@ -230,6 +226,31 @@ class VendorFlowerListController extends GetxController{
       var flowerDescription = searchedFlower.description.toLowerCase();
       return flowerName.contains(searchedText) || flowerDescription.contains(searchedText);
     }).toList();
+  }
+
+  Future<void> purchaseHistory() async{
+    historyList.clear();
+    isLoading.value=true;
+    isRetry.value=false;
+    final Either<String,List<PurchaseViewModel>> flower = await _repository.purchaseHistory();
+    flower.fold(
+            (left) {
+          print(left);
+          isLoading.value=false;
+          isRetry.value=true;
+        },
+            (right){
+              historyList.addAll(right);
+              for(final flower in right){
+                for(final purchase in flower.purchaseList){
+                  if(purchase.vendorId==vendorId!){
+                    salesList.add({"card":purchase, "date":flower.date});
+                  }
+                }
+              }
+          isLoading.value=false;
+        }
+    );
   }
 
 

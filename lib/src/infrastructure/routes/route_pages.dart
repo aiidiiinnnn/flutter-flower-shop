@@ -1,6 +1,7 @@
 import 'package:flower_shop/src/pages/user/user_flower_cart/view/user_flower_cart.dart';
 import 'package:flower_shop/src/pages/user/user_flower_list/view/screens/user_flower_history.dart';
 import 'package:flower_shop/src/pages/vendor/add_vendor_flower/view/add_vendor_flower.dart';
+import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_history.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_profile.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_search.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/vendor_flower_list.dart';
@@ -14,6 +15,7 @@ import '../../pages/user/user_flower_cart/commons/user_flower_cart_binding.dart'
 import '../../pages/user/user_flower_list/commons/user_flower_list_binding.dart';
 import '../../pages/user/user_flower_list/view/screens/user_flower_home.dart';
 import '../../pages/user/user_flower_list/view/screens/user_flower_profile.dart';
+import '../../pages/user/user_flower_list/view/screens/user_flower_search.dart';
 import '../../pages/user/user_flower_list/view/user_flower_list.dart';
 import '../../pages/vendor/add_vendor_flower/commons/add_vendor_flower_binding.dart';
 import '../../pages/vendor/edit_vendor_flower/commons/edit_vendor_flower_binding.dart';
@@ -69,6 +71,11 @@ class RoutePages{
             page: () => const VendorFlowerSearch(),
             binding: VendorFlowerListBinding(),
           ),
+          GetPage(
+            name: RouteNames.vendorFlowerHistory,
+            page: () => const VendorFlowerHistory(),
+            binding: VendorFlowerListBinding(),
+          ),
         ]
     ),
 
@@ -97,6 +104,11 @@ class RoutePages{
           GetPage(
             name: RouteNames.userFlowerHistory,
             page: () => const UserFlowerHistory(),
+            binding: UserFlowerListBinding(),
+          ),
+          GetPage(
+            name: RouteNames.userFlowerSearch,
+            page: () => const UserFlowerSearch(),
             binding: UserFlowerListBinding(),
           ),
         ]

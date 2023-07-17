@@ -69,7 +69,6 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
           ],
       ),
     );
-    // return _vendorFlower();
   }
 
   Widget _retryButton() => Center(
@@ -77,18 +76,21 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
         onPressed: controller.getFlowersByVendorId, child: const Icon(Icons.keyboard_return_outlined)),
   );
 
-  Widget _vendorFlower() => Obx(() => GridView.builder(
-    itemCount: controller.vendorFlowersList.length,
-    itemBuilder: (_,index) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-        child: VendorFlowerCard(
-            vendorFlower: controller.vendorFlowersList[index],
-            index: index
-        )
-    ),
-    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 2,
-      // crossAxisSpacing: 0,
+  Widget _vendorFlower() => Obx(() => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 5),
+    child: GridView.builder(
+      itemCount: controller.vendorFlowersList.length,
+      itemBuilder: (_,index) => Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+          child: VendorFlowerCard(
+              vendorFlower: controller.vendorFlowersList[index],
+              index: index
+          )
+      ),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        // crossAxisSpacing: 0,
+      ),
     ),
   ));
 

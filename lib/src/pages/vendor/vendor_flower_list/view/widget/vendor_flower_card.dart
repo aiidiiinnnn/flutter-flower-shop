@@ -24,108 +24,119 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
     }
     return InkWell(
       onTap: ()=> flowerShowDialog(context),
-      child: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-            color: const Color(0xffe9e9e9),
-            border: Border.all(color: const Color(0xff9d9d9d)),
-            borderRadius: BorderRadius.circular(20)),
-        child: Column(
-          children: [
-            Container(
-                height: 115,
-                width: 145,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15)
-                ),
-                child: vendorFlower.imageAddress.isNotEmpty
-                    ? ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: SizedBox.fromSize(
-                        child: Image.memory(
-                          base64Decode(vendorFlower.imageAddress),
-                          fit: BoxFit.fill,
-                        )))
-                    : const Icon(Icons.image_outlined, size: 30)
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Stack(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 28),
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+                color: const Color(0xffe9e9e9),
+                border: Border.all(color: const Color(0xff9d9d9d)),
+                borderRadius: BorderRadius.circular(20)),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 90),
+              child: Column(
                 children: [
-                  Text(
-                    vendorFlower.name,
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.w500),
-                  ),
-                  Text("\$${vendorFlower.price}",
-                      style: const TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.w300))
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 35,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 6),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                  child: secondHalfText.isEmpty
-                      ? Center(
-                    child: Text(
-                      firstHalfText,
-                      style: const TextStyle(fontSize: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          vendorFlower.name,
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w500),
+                        ),
+                        Text("\$${vendorFlower.price}",
+                            style: const TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w300))
+                      ],
                     ),
-                  )
-                      : Column(
-                    children: [
-                      Text(
-                        controller.textFlag.value
-                            ? ("$firstHalfText...")
-                            : (firstHalfText + secondHalfText),
-                        style: const TextStyle(fontSize: 10),
-                      ),
-                      InkWell(
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                  ),
+                  SizedBox(
+                    height: 35,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 6),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                        child: secondHalfText.isEmpty
+                            ? Center(
+                          child: Text(
+                            firstHalfText,
+                            style: const TextStyle(fontSize: 10),
+                          ),
+                        )
+                            : Column(
                           children: [
                             Text(
-                              "show more",
-                              style:
-                              TextStyle(color: Colors.blue, fontSize: 9),
+                              controller.textFlag.value
+                                  ? ("$firstHalfText...")
+                                  : (firstHalfText + secondHalfText),
+                              style: const TextStyle(fontSize: 10),
+                            ),
+                            InkWell(
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    "show more",
+                                    style:
+                                    TextStyle(color: Colors.blue, fontSize: 9),
+                                  ),
+                                ],
+                              ),
+                              onTap: () {
+                                _showDescription(context);
+                              },
                             ),
                           ],
                         ),
-                        onTap: () {
-                          _showDescription(context);
-                        },
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          decrementButton(context),
+                          Text(
+                            "${vendorFlower.count}",
+                            style:
+                            const TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
+                          ),
+                          incrementButton()
+                        ],
                       ),
                     ],
                   ),
-                ),
+                ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    decrementButton(context),
-                    Text(
-                      "${vendorFlower.count}",
-                      style:
-                      const TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
-                    ),
-                    incrementButton()
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: Container(
+              height: 117,
+              width: 165,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.black),
+                  borderRadius: BorderRadius.circular(15)
+              ),
+              child: vendorFlower.imageAddress.isNotEmpty
+                  ? ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: SizedBox.fromSize(
+                      child: Image.memory(
+                        base64Decode(vendorFlower.imageAddress),
+                        fit: BoxFit.fill,
+                      )))
+                  : const Icon(Icons.image_outlined, size: 30)
+          ),)
+        ],
       ),
     );
   }

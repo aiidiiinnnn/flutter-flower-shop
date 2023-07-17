@@ -4,6 +4,7 @@ import 'package:flower_shop/src/pages/login_page/models/vendor_models/login_vend
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/models/vendor_flower_view_model.dart';
 import 'package:http/http.dart' as http;
 import '../../../../infrastructure/common/repository_url.dart';
+import '../../../user/user_flower_cart/models/confirm_purchase/purchase_view_model.dart';
 import '../models/vendor_flower_dto.dart';
 class VendorFlowerListRepository{
   final httpClient = http.Client();
@@ -61,6 +62,25 @@ class VendorFlowerListRepository{
     }
     else {
       return 'error ${response.statusCode}';
+    }
+  }
+
+  Future<Either<String,List<PurchaseViewModel>>> purchaseHistory() async{
+    final url = Uri.http(RepositoryUrls.fullBaseUrl, 'purchase');
+    final response = await http.get(url,headers: customHeaders);
+
+    if(response.statusCode >= 200 && response.statusCode <400){
+      final List<PurchaseViewModel> history =[];
+      final List<dynamic> historyList = json.decode(response.body);
+
+      for(final items in historyList){
+        final userFlowerViewModel = PurchaseViewModel.fromJson(items);
+        history.add(userFlowerViewModel);
+      }
+      return Right(history);
+    }
+    else{
+      return Left("Error: ${response.statusCode}");
     }
   }
 

@@ -1,5 +1,4 @@
 import 'package:flower_shop/src/pages/user/user_flower_list/view/widget/user_flower_history_card.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';

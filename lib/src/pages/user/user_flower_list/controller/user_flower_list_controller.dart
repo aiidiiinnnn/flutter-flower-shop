@@ -17,7 +17,6 @@ class UserFlowerListController extends GetxController{
   RxList<UserFlowerViewModel> flowersList =RxList();
   RxList<UserFlowerViewModel> searchList = RxList();
   RxList<PurchaseViewModel> historyList = RxList();
-  RxList<CartFlowerViewModel> purchasedFlowers = RxList();
   RxBool isChecked = false.obs;
   RxBool textFlag = true.obs;
   RxInt pageIndex=RxInt(0);
@@ -125,7 +124,6 @@ class UserFlowerListController extends GetxController{
 
   Future<void> purchaseHistory() async{
     historyList.clear();
-    purchasedFlowers.clear();
     isLoading.value=true;
     isRetry.value=false;
     final Either<String,List<PurchaseViewModel>> flower = await _repository.purchaseHistory(userId!);
@@ -137,9 +135,6 @@ class UserFlowerListController extends GetxController{
         },
             (right){
           historyList.addAll(right);
-          for(final history in right){
-            purchasedFlowers.addAll(history.purchaseList);
-          }
           isLoading.value=false;
         }
     );

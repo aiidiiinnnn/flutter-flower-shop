@@ -1,94 +1,79 @@
-// import 'package:flower_shop/src/pages/user/user_flower_list/view/widget/user_flower_history_card.dart';
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-// import 'package:get/get_state_manager/src/simple/get_view.dart';
-// import '../../controller/user_flower_list_controller.dart';
-//
-// class UserFlowerHistory extends  GetView<UserFlowerListController>{
-//   const UserFlowerHistory({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return SafeArea(
-//         child: Scaffold(
-//           backgroundColor: const Color(0xfff3f7f7),
-//           appBar: AppBar(
-//             backgroundColor: const Color(0xfff3f7f7),
-//             title: const Text("User History",style: TextStyle(
-//                 color: Color(0xff050a0a),
-//                 fontWeight: FontWeight.w600,
-//                 fontSize: 22
-//             ),),
-//             iconTheme: const IconThemeData(
-//               color: Color(0xff050a0a),
-//               weight: 2,
-//             ),
-//           ),
-//           body: Obx(() => ListView.builder(
-//               itemCount: controller.historyList.length,
-//               itemBuilder: (_,index) => Padding(
-//                 padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 20),
-//                 // child: SizedBox(
-//                 //   width: double.infinity,
-//                 //   height: 40,
-//                 //   child: ElevatedButton(
-//                 //     style: ElevatedButton.styleFrom(
-//                 //       backgroundColor: const Color(0xff6cba00),
-//                 //     ),
-//                 //     onPressed: ()=>{
-//                 //       showDialog(
-//                 //           context: context,
-//                 //           builder: (BuildContext context) => AlertDialog(
-//                 //             backgroundColor: const Color(0xffe9e9e9),
-//                 //             shape: RoundedRectangleBorder(
-//                 //               borderRadius: BorderRadius.circular(30),
-//                 //             ),
-//                 //             content: Container(
-//                 //               width: 400,
-//                 //               height: 490,
-//                 //               decoration: const BoxDecoration(
-//                 //                   color: Color(0xffe9e9e9)
-//                 //               ),
-//                 //               child: ListView.builder(
-//                 //                   itemCount: controller.purchasedFlowers.length,
-//                 //                   itemBuilder: (_,index) => UserFlowerHistoryCard(
-//                 //                       historyCart: controller.purchasedFlowers[index],
-//                 //                       index: index,
-//                 //                   )
-//                 //               ),
-//                 //             )
-//                 //           )
-//                 //       )
-//                 //     },
-//                 //     child: Text(controller.historyList[index].date),
-//                 //   ),
-//                 // ),
-//                 child: Column(
-//                   children: [
-//                     Text(controller.historyList[index].date,style: const TextStyle(
-//                       fontWeight: FontWeight.w400,
-//                       fontSize: 17
-//                     )),
-//                     SizedBox(
-//                       child: Expanded(
-//                         child: ListView.builder(
-//                           physics: const NeverScrollableScrollPhysics(),
-//                           shrinkWrap: true,
-//                           itemCount: controller.historyList[index].purchaseList.length,
-//                           itemBuilder: (_,index2) => UserFlowerHistoryCard(
-//                               historyCart: controller.historyList[index].purchaseList[index2],
-//                               index: index
-//                           )
-//                         ),
-//                       ),
-//                     )
-//                   ],
-//                 ),
-//               ),
-//           )),
-//         )
-//     );
-//   }
-//
-// }
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../../../../user/user_flower_cart/models/cart_Flower/cart_flower_view_model.dart';
+import '../../controller/vendor_flower_list_controller.dart';
+import '../widget/vendor_flower_history_card.dart';
+
+class VendorFlowerHistory extends  GetView<VendorFlowerListController>{
+  const VendorFlowerHistory({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+        child: Scaffold(
+          backgroundColor: const Color(0xfff3f7f7),
+          appBar: AppBar(
+            backgroundColor: const Color(0xfff3f7f7),
+            title: const Text("User History",style: TextStyle(
+                color: Color(0xff050a0a),
+                fontWeight: FontWeight.w600,
+                fontSize: 22
+            ),),
+            iconTheme: const IconThemeData(
+              color: Color(0xff050a0a),
+              weight: 2,
+            ),
+          ),
+          body: SizedBox(
+            child: Expanded(
+              child: Obx(() => ListView.builder(
+                shrinkWrap: true,
+                itemCount: controller.salesList.length,
+                  itemBuilder: (_, index) => VendorFlowerHistoryCard(
+                      historyCart: controller.salesList[index]["card"],
+                      index: index
+                  )
+              ),
+              ),
+            ),
+          )),
+          // body: Obx(() => ListView.builder(
+          //     itemCount: controller.historyList.length,
+          //     itemBuilder: (_,index)
+          //     {
+          //       RxList<CartFlowerViewModel> salesList = RxList();
+          //       for(final flower in controller.historyList){
+          //         for(final purchase in flower.purchaseList){
+          //           if(purchase.vendorId==controller.vendorId!){
+          //             salesList.add(purchase);
+          //           }
+          //         }
+          //       }
+          //       return Padding(
+          //         padding:
+          //             const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+          //         child: Column(
+          //           children: [
+          //             Text(controller.historyList[index].date,
+          //                 style: const TextStyle(
+          //                     fontWeight: FontWeight.w400, fontSize: 17)),
+          //             SizedBox(
+          //               child: Expanded(
+          //                 child: ListView.builder(
+          //                     physics: const NeverScrollableScrollPhysics(),
+          //                     shrinkWrap: true,
+          //                     itemCount: salesList.length,
+          //                     itemBuilder: (_, index2) => VendorFlowerHistoryCard(
+          //                         historyCart: salesList[index2],
+          //                         index: index)
+          //                 ),
+          //               ),
+          //             )
+          //           ],
+          //         ),
+          //       );
+          //     })),
+        );
+  }
+
+}
