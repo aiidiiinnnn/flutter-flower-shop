@@ -31,7 +31,7 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Container(
-                width: 350,
+                width: double.infinity,
                 height: double.infinity,
                 decoration: BoxDecoration(
                     color: const Color(0xffe9e9e9),
@@ -143,32 +143,30 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                               ),
                             )
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ConstrainedBox(
-                            constraints: const BoxConstraints(maxHeight: 25, minHeight: 0),
+                        Obx(() => (controller.categoryList.isNotEmpty) ?
+                        SizedBox(
+                            height: controller.space.value,
                             child: Expanded(
-                              child: Obx(() => ListView.builder(
+                              child: ListView.builder(
                                 shrinkWrap: true,
                                 scrollDirection: Axis.horizontal,
                                 itemCount: controller.categoryList.length,
                                 itemBuilder: (_, index) => Chip(
                                   label: Text(controller.categoryList[index]),
                                   onDeleted: () => {controller.categoryList.removeAt(index)},
-                                ),),),
-                            ),
-                          ),
-                        ),
+                                ),),
+                            )
+                        ) : const SizedBox(height: 0)),
                         ElevatedButton(
                           onPressed: ()=>{
                             _colorPickerDialog(context)
                           },
                           child: const Text("Color Picker"),
                         ),
-                        SizedBox(
-                          height: 25,
+                        Obx(() => (controller.colorList.isNotEmpty) ? SizedBox(
+                          height: controller.space.value,
                           child: Expanded(
-                              child: Obx(() => ListView.builder(
+                              child: ListView.builder(
                                   shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,
                                   itemCount: controller.colorList.length,
@@ -184,9 +182,10 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                                         ),
                                       )
                                   )
-                              ),)
+                              )
                           ),
-                        ),
+                        ) : const SizedBox(height: 0)),
+
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: SizedBox(

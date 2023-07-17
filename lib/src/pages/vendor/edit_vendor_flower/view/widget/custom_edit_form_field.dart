@@ -16,17 +16,17 @@ class CustomEditFormField extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: TextFormField(
           enableSuggestions: false,
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(color: Color(0xff050a0a)),
           decoration: InputDecoration(
             prefixIcon: Icon(icon),
             enabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white)
+                borderSide: BorderSide(color: Color(0xff050a0a))
             ),
             focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white)
+                borderSide: BorderSide(color: Color(0xff050a0a))
             ),
             labelText: name,
-            labelStyle: const TextStyle(color: Colors.white),
+            labelStyle: const TextStyle(color: Color(0xff050a0a)),
           ),
           validator: validator,
           controller: controller,

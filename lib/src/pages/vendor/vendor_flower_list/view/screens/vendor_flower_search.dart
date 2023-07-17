@@ -70,7 +70,7 @@ class VendorFlowerSearch extends  GetView<VendorFlowerListController> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xff71cc47),
                         ),
-                        onPressed: ()=>{},
+                        onPressed: ()=> flowerShowDialog(context),
                         child: const Center(child: Icon(Icons.tune_outlined,size: 17)),
                       ),
                     ),
@@ -88,6 +88,44 @@ class VendorFlowerSearch extends  GetView<VendorFlowerListController> {
                 ))
               )
             ],
+          ),
+        )
+    );
+  }
+
+  Future<dynamic> flowerShowDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          backgroundColor: const Color(0xffe9e9e9),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          title: const Text("Filter"),
+          content: Container(
+            width: 400,
+            height: 490,
+            decoration: const BoxDecoration(
+                color: Color(0xffe9e9e9)),
+            child: Column(
+              children: [
+                Obx( () => DropdownButton(
+                    hint: const Text('Categories'),
+                    onChanged: (value) {
+                      controller.setSelected(value!);
+                    },
+                    value: controller.selectedCategory?.value,
+                    items: controller.categoryList.map<DropdownMenuItem>(
+                        (dynamic value){
+                          return DropdownMenuItem(
+                              value: value,
+                              child: Text(value)
+                          );
+                        }).toList()
+                )
+                )
+              ]
+            )
           ),
         )
     );

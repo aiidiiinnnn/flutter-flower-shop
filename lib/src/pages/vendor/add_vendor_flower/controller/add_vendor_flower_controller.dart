@@ -32,6 +32,7 @@ class AddVendorFlowerController extends GetxController{
   RxString imagePath=''.obs;
   RxString savedImage=''.obs;
   int? vendorId;
+  RxDouble space=RxDouble(30);
 
 
   @override

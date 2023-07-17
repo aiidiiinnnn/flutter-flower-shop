@@ -1,6 +1,5 @@
 import 'package:either_dart/either.dart';
 import 'package:flower_shop/src/pages/login_page/models/vendor_models/login_vendor_view_model.dart';
-import 'package:flower_shop/src/pages/user/user_flower_cart/models/cart_Flower/cart_flower_view_model.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/models/vendor_flower_view_model.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/repositories/vendor_flower_list_repository.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_history.dart';
@@ -18,6 +17,9 @@ import '../view/screens/vendor_flower_home.dart';
 class VendorFlowerListController extends GetxController{
   RxList<PurchaseViewModel> historyList = RxList();
   RxList<Map<dynamic,dynamic>> salesList = RxList();
+  RxList<dynamic> categoryList=RxList();
+  RxString? selectedCategory;
+  RxList<dynamic> colorList=RxList();
   LoginVendorViewModel? vendor;
   final GlobalKey<FormState> searchKey=GlobalKey();
   final TextEditingController searchController = TextEditingController();
@@ -30,6 +32,10 @@ class VendorFlowerListController extends GetxController{
   RxBool isRetry=false.obs;
   RxBool textFlag = true.obs;
   RxInt index=RxInt(0);
+
+  void setSelected(String value){
+    selectedCategory?.value = value;
+  }
 
   void onDestinationSelected(index){
     this.index.value=index;
@@ -103,6 +109,11 @@ class VendorFlowerListController extends GetxController{
             (right){
           vendorFlowersList.addAll(right);
           searchedFlowersList.addAll(right);
+          for(final flower in right){
+            categoryList.addAll(flower.category);
+            categoryList.addAll(flower.color);
+          }
+
           isLoading.value=false;
         }
     );
