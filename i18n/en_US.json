@@ -5,6 +5,7 @@
     "Search": "Search",
     "Profile": "Profile"
   },
+
   "vendor_flower_home": {
     "flower_list": "Flower List",
     "History": "History Page",
@@ -15,5 +16,33 @@
     "logout": "logout",
     "Home": "Home",
     "there_is_no_flower_here": "There is no flower here"
+  },
+
+  "vendor_flower_card":{
+    "show_more": "show more",
+    "show_less": "show less",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "delete": "Delete",
+    "are_you_sure_you_want_to_delete_this": "Are you sure you want to delete this ?",
+    "count_in_stock": "Count in stock:",
+    "edit": "edit",
+    "description": "description"
+  },
+
+  "add_vendor_flower_card": {
+    "add_flower": "Add Flower",
+    "edit_flower": "Edit Flower",
+    "name": "Name",
+    "description": "Description",
+    "price": "Price",
+    "count": "Count",
+    "category": "Category",
+    "color_picker": "Color Picker",
+    "submit": "Submit",
+    "pick_a_color": "Pick a color!",
+    "got_it": "Got it",
+    "gallery": "Gallery",
+    "camera": "Camera"
   }
 }

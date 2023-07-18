@@ -3,7 +3,8 @@ import 'package:flower_shop/src/pages/vendor/vendor_flower_list/controller/vendo
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/models/vendor_flower_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:flower_shop/generated/locales.g.dart' as locale;
+
 class VendorFlowerCard extends GetView<VendorFlowerListController> {
   VendorFlowerCard({super.key, required this.vendorFlower, required this.index});
 
@@ -76,13 +77,13 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                               style: const TextStyle(fontSize: 10),
                             ),
                             InkWell(
-                              child: const Row(
+                              child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Text(
-                                    "show more",
+                                    locale.LocaleKeys.vendor_flower_card_show_more.tr,
                                     style:
-                                    TextStyle(color: Colors.blue, fontSize: 9),
+                                    const TextStyle(color: Colors.blue, fontSize: 9),
                                   ),
                                 ],
                               ),
@@ -183,21 +184,22 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                         child: const Icon(Icons.delete_outline,color: Colors.black,size: 28),
                         onTap: (){
                           Widget cancelButton = TextButton(
-                              child:  const Text("Cancel"),
-                              onPressed:  (){
+                              child: Text(locale.LocaleKeys.vendor_flower_card_cancel.tr),
+                              onPressed: (){
                                 Navigator.of(context).pop();
                               }
                           );
                           Widget continueButton = TextButton(
-                            child:  const Text("Continue"),
+                            child: Text(locale.LocaleKeys.vendor_flower_card_continue.tr),
                             onPressed:  () {
                               controller.deleteFlower(vendorFlower);
+                              Navigator.of(context).pop();
                               Navigator.of(context).pop();
                             },
                           );
                           AlertDialog alert = AlertDialog(
-                            title:  const Text("Delete"),
-                            content: const Text("Are you sure you want to delete this ?"),
+                            title: Text(locale.LocaleKeys.vendor_flower_card_delete.tr),
+                            content: Text(locale.LocaleKeys.vendor_flower_card_are_you_sure_you_want_to_delete_this.tr),
                             actions: [
                               cancelButton,
                               continueButton,
@@ -279,7 +281,7 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Count in stock: ${vendorFlower.count}",
+                      "${locale.LocaleKeys.vendor_flower_card_count_in_stock.tr} ${vendorFlower.count}",
                       style:
                       const TextStyle(fontWeight: FontWeight.w400, fontSize: 20),
                     ),
@@ -290,7 +292,7 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                           backgroundColor: const Color(0xff6cba00),
                         ),
                         onPressed: ()=>controller.goToEdit(vendorFlower),
-                        child: const Text('Edit'),
+                        child: Text(locale.LocaleKeys.vendor_flower_card_edit.tr),
                       ),
                     ),
                   ],
@@ -307,7 +309,7 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
     showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-              title: Text('${vendorFlower.name} description'),
+              title: Text('${vendorFlower.name} ${locale.LocaleKeys.vendor_flower_card_description.tr}'),
               content: SingleChildScrollView(
                 child: Text(
                   firstHalfText + secondHalfText,
@@ -316,7 +318,7 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
               ),
               actions: [
                 ElevatedButton(
-                  child: const Text('Show less'),
+                  child: Text(locale.LocaleKeys.vendor_flower_card_show_less.tr),
                   onPressed: () {
                     controller.textFlag.value = !controller.textFlag.value;
                     Navigator.of(context).pop();
@@ -342,17 +344,17 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
         (vendorFlower.count == 1) ? showDialog(context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title:  const Text("Delete"),
-            content: const Text("Are you sure you want to delete this ?"),
+            title: Text(locale.LocaleKeys.vendor_flower_card_delete.tr),
+            content: Text(locale.LocaleKeys.vendor_flower_card_are_you_sure_you_want_to_delete_this.tr),
             actions: [
               TextButton(
-                  child:  const Text("Cancel"),
+                  child: Text(locale.LocaleKeys.vendor_flower_card_cancel.tr),
                   onPressed:  (){
                     Navigator.of(context).pop();
                   }
               ),
               TextButton(
-                child:  const Text("Continue"),
+                child: Text(locale.LocaleKeys.vendor_flower_card_continue.tr),
                 onPressed:  () {
                   controller.deleteFlower(vendorFlower);
                   Navigator.of(context).pop();

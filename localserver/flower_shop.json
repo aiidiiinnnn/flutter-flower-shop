@@ -242,7 +242,7 @@
         "qq",
         "oo"
       ],
-      "count": 13,
+      "count": 14,
       "vendorId": 5,
       "id": 6
     },
@@ -324,25 +324,6 @@
       "count": 12,
       "vendorId": 5,
       "id": 12
-    },
-    {
-      "name": "op",
-      "imageAddress": "",
-      "description": "oppoopopopopopop",
-      "price": 13000,
-      "color": [
-        4291304824,
-        4280978795,
-        4282395835
-      ],
-      "category": [
-        "Ephemeral plant",
-        "Floral diagram",
-        "Floral scent"
-      ],
-      "count": 16,
-      "vendorId": 5,
-      "id": 14
     }
   ],
   "purchase": [

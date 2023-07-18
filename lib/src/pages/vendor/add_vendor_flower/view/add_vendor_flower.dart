@@ -2,9 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:get/get.dart';
-import '../models/categories/categories_view_model.dart';
 import 'widget/custom_add_form_field.dart';
 import '../controller/add_vendor_flower_controller.dart';
+import 'package:flower_shop/generated/locales.g.dart' as locale;
+
 class AddVendorFlower extends  GetView<AddVendorFlowerController>{
   const AddVendorFlower({super.key});
 
@@ -17,7 +18,7 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
             backgroundColor: const Color(0xfff3f7f7),
             appBar: AppBar(
               backgroundColor: const Color(0xfff3f7f7),
-              title: const Text("Add Vendor Flower",style: TextStyle(
+              title: Text(locale.LocaleKeys.add_vendor_flower_card_add_flower.tr,style: const TextStyle(
                   color: Color(0xff050a0a),
                   fontWeight: FontWeight.w600,
                   fontSize: 22
@@ -69,29 +70,29 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                             child: Column(
                               children: [
                                 CustomAddFormField(
-                                  hintText: "Name",
-                                  name: "Name",
+                                  hintText: locale.LocaleKeys.add_vendor_flower_card_name.tr,
+                                  name: locale.LocaleKeys.add_vendor_flower_card_name.tr,
                                   controller: controller.nameController,
                                   validator: controller.nameValidator,
                                   icon: Icons.spa_outlined,
                                 ),
                                 CustomAddFormField(
-                                  hintText: "Description",
-                                  name: "Description",
+                                  hintText: locale.LocaleKeys.vendor_flower_card_description.tr,
+                                  name: locale.LocaleKeys.vendor_flower_card_description.tr,
                                   controller: controller.descriptionController,
                                   validator: controller.descriptionValidator,
                                   icon: Icons.description_outlined,
                                 ),
                                 CustomAddFormField(
-                                  hintText: "Price",
-                                  name: "Price",
+                                  hintText: locale.LocaleKeys.add_vendor_flower_card_price.tr,
+                                  name: locale.LocaleKeys.add_vendor_flower_card_price.tr,
                                   controller: controller.priceController,
                                   validator: controller.priceValidator,
                                   icon: Icons.attach_money_outlined,
                                 ),
                                 CustomAddFormField(
-                                  hintText: "Count",
-                                  name: "Count",
+                                  hintText: locale.LocaleKeys.add_vendor_flower_card_count.tr,
+                                  name: locale.LocaleKeys.add_vendor_flower_card_count.tr,
                                   controller: controller.countController,
                                   validator: controller.countValidator,
                                   icon: Icons.numbers_outlined,
@@ -103,55 +104,93 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                             padding: const EdgeInsets.all(8.0),
                             child: Form(
                               key: controller.categoryKey,
-                              child: Autocomplete(
-                                optionsBuilder: (textEditingValue){
-                                  return controller.categoriesFromJson.where((category) => category.name.toLowerCase().startsWith(
-                                      textEditingValue.text.toLowerCase())
-                                  ).toList();
-                                },
-                                initialValue: TextEditingValue.empty,
-                                displayStringForOption: (final model)=>model.name,
-                                fieldViewBuilder: (context, textEditingController, focusNode, onFieldSubmitted) {
-                                    return TextFormField(
-                                      enableSuggestions: false,
-                                      style: const TextStyle(color: Color(0xff050a0a)),
-                                      decoration: InputDecoration(
-                                        suffixIcon: Padding(
-                                          padding: const EdgeInsets.all(4),
-                                          child: InkWell(
-                                              splashColor: const Color(0xffc4c4c4),
-                                              customBorder: const CircleBorder(),
-                                              onTap: ()=>controller.addCategory(controller.categoryController.text),
-                                              child: Padding(
-                                                padding: const EdgeInsets.symmetric(horizontal:8),
-                                                child: Container(
-                                                    width: 65,
-                                                    height: 10,
-                                                    decoration: BoxDecoration(
-                                                        border: Border.all(color: const Color(0xff050a0a)),
-                                                        color: const Color(0xffc4c4c4)
-                                                    ),
-                                                    child: const Icon(Icons.add,size:25)
-                                                  // child:
-                                                ),
-                                              )
+                              child: TextFormField(
+                                enableSuggestions: false,
+                                style: const TextStyle(color: Color(0xff050a0a)),
+                                decoration: InputDecoration(
+                                  suffixIcon: Padding(
+                                    padding: const EdgeInsets.all(4),
+                                    child: InkWell(
+                                        splashColor: const Color(0xffc4c4c4),
+                                        customBorder: const CircleBorder(),
+                                        onTap: ()=>controller.addCategory(controller.categoryController.text),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal:8),
+                                          child: Container(
+                                              width: 65,
+                                              height: 10,
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(color: const Color(0xff050a0a)),
+                                                  color: const Color(0xffc4c4c4)
+                                              ),
+                                              child: const Icon(Icons.add,size:25)
+                                            // child:
                                           ),
-                                        ),
-                                        prefixIcon: const Icon(Icons.category_outlined),
-                                        enabledBorder: const OutlineInputBorder(
-                                            borderSide: BorderSide(color: Color(0xff050a0a))
-                                        ),
-                                        focusedBorder: const OutlineInputBorder(
-                                            borderSide: BorderSide(color: Color(0xff050a0a))
-                                        ),
-                                        labelText: "Category",
-                                        labelStyle: const TextStyle(color: Color(0xff050a0a)),
-                                      ),
-                                      // validator: controller.categoryValidator,
-                                      // controller: controller.categoryController,
-                                    );
-                                  }
+                                        )
+                                    ),
+                                  ),
+                                  prefixIcon: const Icon(Icons.category_outlined),
+                                  enabledBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(color: Color(0xff050a0a))
+                                  ),
+                                  focusedBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(color: Color(0xff050a0a))
+                                  ),
+                                  labelText: locale.LocaleKeys.add_vendor_flower_card_category.tr,
+                                  labelStyle: const TextStyle(color: Color(0xff050a0a)),
                                 ),
+                                validator: controller.categoryValidator,
+                                controller: controller.categoryController,
+                              ),
+                              // child: Autocomplete(
+                              //   optionsBuilder: (textEditingValue){
+                              //     return controller.categoriesFromJson.where((category) => category.name.toLowerCase().startsWith(
+                              //         textEditingValue.text.toLowerCase())
+                              //     ).toList();
+                              //   },
+                              //   initialValue: TextEditingValue.empty,
+                              //   displayStringForOption: (final model)=>model.name,
+                              //   fieldViewBuilder: (context, textEditingController, focusNode, onFieldSubmitted) {
+                              //       return TextFormField(
+                              //         enableSuggestions: false,
+                              //         style: const TextStyle(color: Color(0xff050a0a)),
+                              //         decoration: InputDecoration(
+                              //           suffixIcon: Padding(
+                              //             padding: const EdgeInsets.all(4),
+                              //             child: InkWell(
+                              //                 splashColor: const Color(0xffc4c4c4),
+                              //                 customBorder: const CircleBorder(),
+                              //                 onTap: ()=>controller.addCategory(controller.categoryController.text),
+                              //                 child: Padding(
+                              //                   padding: const EdgeInsets.symmetric(horizontal:8),
+                              //                   child: Container(
+                              //                       width: 65,
+                              //                       height: 10,
+                              //                       decoration: BoxDecoration(
+                              //                           border: Border.all(color: const Color(0xff050a0a)),
+                              //                           color: const Color(0xffc4c4c4)
+                              //                       ),
+                              //                       child: const Icon(Icons.add,size:25)
+                              //                     // child:
+                              //                   ),
+                              //                 )
+                              //             ),
+                              //           ),
+                              //           prefixIcon: const Icon(Icons.category_outlined),
+                              //           enabledBorder: const OutlineInputBorder(
+                              //               borderSide: BorderSide(color: Color(0xff050a0a))
+                              //           ),
+                              //           focusedBorder: const OutlineInputBorder(
+                              //               borderSide: BorderSide(color: Color(0xff050a0a))
+                              //           ),
+                              //           labelText: locale.LocaleKeys.add_vendor_flower_card_category.tr,
+                              //           labelStyle: const TextStyle(color: Color(0xff050a0a)),
+                              //         ),
+                              //         validator: controller.categoryValidator,
+                              //         controller: controller.categoryController,
+                              //       );
+                              //     }
+                              //   ),
                               ),
                             ),
                         Obx(() => (controller.categoryList.isNotEmpty) ?
@@ -172,7 +211,7 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                           onPressed: ()=>{
                             _colorPickerDialog(context)
                           },
-                          child: const Text("Color Picker"),
+                          child: Text(locale.LocaleKeys.add_vendor_flower_card_color_picker.tr),
                         ),
                         Obx(() => (controller.colorList.isNotEmpty) ? SizedBox(
                           height: controller.space.value,
@@ -207,7 +246,7 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                                 backgroundColor: const Color(0xff6cba00),
                               ),
                               onPressed: ()=>controller.addVendorFlower(),
-                              child: const Text('Submit'),
+                              child: Text(locale.LocaleKeys.add_vendor_flower_card_submit.tr),
                             ),
                           ),
                         ),
@@ -226,7 +265,7 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
     showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: const Text('Pick a color!'),
+          title: Text(locale.LocaleKeys.add_vendor_flower_card_pick_a_color.tr),
           content: SingleChildScrollView(
             child: ColorPicker(
               pickerColor: controller.pickerColor,
@@ -237,7 +276,7 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
           ),
           actions: [
             ElevatedButton(
-              child: const Text('Got it'),
+              child: Text(locale.LocaleKeys.add_vendor_flower_card_got_it.tr),
               onPressed: () {
                 controller.changeColor(controller.currentColor);
                 Navigator.of(context).pop();
@@ -257,10 +296,10 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 InkWell(
-                  child: const Column(
+                  child: Column(
                     children: [
-                      Icon(Icons.image_outlined,size: 60),
-                      Text("Gallery",style: TextStyle(
+                      const Icon(Icons.image_outlined,size: 60),
+                      Text(locale.LocaleKeys.add_vendor_flower_card_gallery.tr,style: const TextStyle(
                           fontSize: 16
                       ),),
                     ],
@@ -271,10 +310,10 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                   },
                 ),
                 InkWell(
-                  child: const Column(
+                  child: Column(
                     children: [
-                      Icon(Icons.camera_alt_outlined,size: 60),
-                      Text("Camera",style: TextStyle(
+                      const Icon(Icons.camera_alt_outlined,size: 60),
+                      Text(locale.LocaleKeys.add_vendor_flower_card_camera.tr,style: const TextStyle(
                           fontSize: 16
                       ),),
                     ],

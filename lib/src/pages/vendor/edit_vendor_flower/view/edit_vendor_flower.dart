@@ -4,6 +4,8 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:get/get.dart';
 import '../../add_vendor_flower/view/widget/custom_add_form_field.dart';
 import '../controller/edit_vendor_flower_controller.dart';
+import 'package:flower_shop/generated/locales.g.dart' as locale;
+
 class EditVendorFlower extends  GetView<EditVendorFlowerController>{
   const EditVendorFlower({super.key});
 
@@ -14,7 +16,7 @@ class EditVendorFlower extends  GetView<EditVendorFlowerController>{
             backgroundColor: const Color(0xfff3f7f7),
             appBar: AppBar(
               backgroundColor: const Color(0xfff3f7f7),
-              title: const Text("Edit Vendor Flower",style: TextStyle(
+              title: Text(locale.LocaleKeys.add_vendor_flower_card_edit_flower.tr,style: const TextStyle(
                   color: Color(0xff050a0a),
                   fontWeight: FontWeight.w600,
                   fontSize: 22
@@ -65,8 +67,8 @@ class EditVendorFlower extends  GetView<EditVendorFlowerController>{
                             child: Column(
                               children: [
                                 CustomAddFormField(
-                                  hintText: "Name",
-                                  name: "Name",
+                                  hintText: locale.LocaleKeys.add_vendor_flower_card_name.tr,
+                                  name: locale.LocaleKeys.add_vendor_flower_card_name.tr,
                                   controller: controller.nameController,
                                   validator: controller.nameValidator,
                                   icon: Icons.spa_outlined,
@@ -79,15 +81,15 @@ class EditVendorFlower extends  GetView<EditVendorFlowerController>{
                                   icon: Icons.description_outlined,
                                 ),
                                 CustomAddFormField(
-                                  hintText: "Price",
-                                  name: "Price",
+                                  hintText: locale.LocaleKeys.vendor_flower_card_description.tr,
+                                  name: locale.LocaleKeys.vendor_flower_card_description.tr,
                                   controller: controller.priceController,
                                   validator: controller.priceValidator,
                                   icon: Icons.attach_money_outlined,
                                 ),
                                 CustomAddFormField(
-                                  hintText: "Count",
-                                  name: "Count",
+                                  hintText: locale.LocaleKeys.add_vendor_flower_card_price.tr,
+                                  name: locale.LocaleKeys.add_vendor_flower_card_price.tr,
                                   controller: controller.countController,
                                   validator: controller.countValidator,
                                   icon: Icons.numbers_outlined,
@@ -131,7 +133,7 @@ class EditVendorFlower extends  GetView<EditVendorFlowerController>{
                                   focusedBorder: const OutlineInputBorder(
                                       borderSide: BorderSide(color: Color(0xff050a0a))
                                   ),
-                                  labelText: "Category",
+                                  labelText: locale.LocaleKeys.add_vendor_flower_card_category.tr,
                                   labelStyle: const TextStyle(color: Color(0xff050a0a)),
                                 ),
                                 validator: controller.categoryValidator,
@@ -158,7 +160,7 @@ class EditVendorFlower extends  GetView<EditVendorFlowerController>{
                           onPressed: ()=>{
                             _colorPickerDialog(context)
                           },
-                          child: const Text("Color Picker"),
+                          child: Text(locale.LocaleKeys.add_vendor_flower_card_color_picker.tr),
                         ),
                         Obx(() => (controller.colorList.isNotEmpty) ?
                         SizedBox(
@@ -193,7 +195,7 @@ class EditVendorFlower extends  GetView<EditVendorFlowerController>{
                                   backgroundColor: const Color(0xff6cba00),
                                 ),
                                 onPressed: ()=>controller.editVendorFlower(),
-                                child: const Text("Submit")
+                                child: Text(locale.LocaleKeys.add_vendor_flower_card_submit.tr)
                             ),
                           ),
                         ),
@@ -211,7 +213,7 @@ class EditVendorFlower extends  GetView<EditVendorFlowerController>{
     showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: const Text('Pick a color!'),
+          title: Text(locale.LocaleKeys.add_vendor_flower_card_pick_a_color.tr),
           content: SingleChildScrollView(
             child: ColorPicker(
               pickerColor: controller.pickerColor,
@@ -222,7 +224,7 @@ class EditVendorFlower extends  GetView<EditVendorFlowerController>{
           ),
           actions: [
             ElevatedButton(
-              child: const Text('Got it'),
+              child: Text(locale.LocaleKeys.add_vendor_flower_card_got_it.tr),
               onPressed: () {
                 controller.changeColor(controller.currentColor);
                 Navigator.of(context).pop();
@@ -242,10 +244,10 @@ class EditVendorFlower extends  GetView<EditVendorFlowerController>{
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 InkWell(
-                  child: const Column(
+                  child: Column(
                     children: [
-                      Icon(Icons.image_outlined,size: 60),
-                      Text("Gallery",style: TextStyle(
+                      const Icon(Icons.image_outlined,size: 60),
+                      Text(locale.LocaleKeys.add_vendor_flower_card_gallery.tr,style: const TextStyle(
                           fontSize: 16
                       ),),
                     ],
@@ -256,10 +258,10 @@ class EditVendorFlower extends  GetView<EditVendorFlowerController>{
                   },
                 ),
                 InkWell(
-                  child: const Column(
+                  child: Column(
                     children: [
-                      Icon(Icons.camera_alt_outlined,size: 60),
-                      Text("Camera",style: TextStyle(
+                      const Icon(Icons.camera_alt_outlined,size: 60),
+                      Text(locale.LocaleKeys.add_vendor_flower_card_camera.tr,style: const TextStyle(
                           fontSize: 16
                       ),),
                     ],

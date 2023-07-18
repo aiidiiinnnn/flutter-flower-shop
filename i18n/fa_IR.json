@@ -16,5 +16,33 @@
     "Profile": "صفحه مشخصات",
     "Home": "خانه",
     "there_is_no_flower_here": "هنوز هیچ گلی اضافه نشده است"
+  },
+
+  "vendor_flower_card":{
+    "show_more": "نمایش بیشتز",
+    "show_less": "نمایش کمتر",
+    "cancel": "لغو",
+    "continue": "ادامه",
+    "delete": "حذف",
+    "are_you_sure_you_want_to_delete_this": "آیا از حذف خود اطمینان دارید ؟",
+    "count_in_stock": "موجودی:",
+    "edit": "ویرایش",
+    "description": "توضیحات"
+  },
+
+  "add_vendor_flower_card": {
+    "add_flower": "اضافه کردن گل",
+    "edit_flower": "ویرایش گل",
+    "name": "نام",
+    "description": "توضیحات",
+    "price": "قسمت",
+    "count": "تعداد",
+    "category": "دسته بندی",
+    "color_picker": "انتخاب کننده رنگ",
+    "submit": "تایید",
+    "pick_a_color": "یک رنگ انتخاب کن!",
+    "got_it": "گرفتم",
+    "gallery": "گالری",
+    "camera": "دوربین"
   }
 }

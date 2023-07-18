@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import '../../controller/vendor_flower_list_controller.dart';
 import '../../models/vendor_flower_view_model.dart';
+import 'package:flower_shop/generated/locales.g.dart' as locale;
+
 
 class VendorFlowerSearchCard extends GetView<VendorFlowerListController> {
 
@@ -88,13 +91,13 @@ class VendorFlowerSearchCard extends GetView<VendorFlowerListController> {
                           style: const TextStyle(fontSize: 12),
                         ),
                         InkWell(
-                          child: const Row(
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(
-                                "show more",
+                                locale.LocaleKeys.vendor_flower_card_show_more.tr,
                                 style:
-                                TextStyle(color: Colors.blue, fontSize: 12),
+                                const TextStyle(color: Colors.blue, fontSize: 12),
                               ),
                             ],
                           ),
@@ -179,7 +182,7 @@ class VendorFlowerSearchCard extends GetView<VendorFlowerListController> {
     showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: Text('${vendorFlower.name} description'),
+          title: Text('${vendorFlower.name} ${locale.LocaleKeys.vendor_flower_card_description.tr}'),
           content: SingleChildScrollView(
             child: Text(
               firstHalfText + secondHalfText,
@@ -188,7 +191,7 @@ class VendorFlowerSearchCard extends GetView<VendorFlowerListController> {
           ),
           actions: [
             ElevatedButton(
-              child: const Text('Show less'),
+              child: Text(locale.LocaleKeys.vendor_flower_card_show_less.tr),
               onPressed: () {
                 controller.textFlag.value = !controller.textFlag.value;
                 Navigator.of(context).pop();
