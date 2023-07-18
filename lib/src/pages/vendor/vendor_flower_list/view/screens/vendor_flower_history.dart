@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../user/user_flower_cart/models/cart_Flower/cart_flower_view_model.dart';
 import '../../controller/vendor_flower_list_controller.dart';
 import '../widget/vendor_flower_history_card.dart';
+import 'package:flower_shop/generated/locales.g.dart' as locale;
 
 class VendorFlowerHistory extends  GetView<VendorFlowerListController>{
   const VendorFlowerHistory({super.key});
@@ -14,7 +14,7 @@ class VendorFlowerHistory extends  GetView<VendorFlowerListController>{
           backgroundColor: const Color(0xfff3f7f7),
           appBar: AppBar(
             backgroundColor: const Color(0xfff3f7f7),
-            title: const Text("User History",style: TextStyle(
+            title: Text(locale.LocaleKeys.vendor_flower_home_History.tr,style: const TextStyle(
                 color: Color(0xff050a0a),
                 fontWeight: FontWeight.w600,
                 fontSize: 22

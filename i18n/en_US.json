@@ -1,0 +1,19 @@
+{
+  "bottom_navigation_bar": {
+    "Home": "Home",
+    "History": "History",
+    "Search": "Search",
+    "Profile": "Profile"
+  },
+  "vendor_flower_home": {
+    "flower_list": "Flower List",
+    "History": "History Page",
+    "Search_page": "Search Page",
+    "Search": "Search",
+    "Profile": "Profile Page",
+    "filter": "Filter",
+    "logout": "logout",
+    "Home": "Home",
+    "there_is_no_flower_here": "There is no flower here"
+  }
+}

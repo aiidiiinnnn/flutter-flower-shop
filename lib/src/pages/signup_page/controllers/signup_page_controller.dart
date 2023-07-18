@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:either_dart/either.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +22,7 @@ class SignupPageController extends GetxController {
   final TextEditingController confirmPasswordController = TextEditingController();
   RxInt selectedType = 1.obs;
   RxString imagePath=''.obs;
-  // String? image;
+  RxString savedImage=''.obs;
 
   String? firstNameValidator(final String? firstName) {
     if (firstName == null || firstName.isEmpty) {
@@ -69,8 +68,6 @@ class SignupPageController extends GetxController {
   void onChangedType(int? chosenType) {
     selectedType.value = chosenType!;
   }
-
-  RxString savedImage=''.obs;
 
   Future<void> imageFromCamera() async {
     final XFile? pickedImage = await ImagePicker().pickImage(source: ImageSource.camera);

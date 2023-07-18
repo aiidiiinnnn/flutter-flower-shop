@@ -12,7 +12,7 @@ class LoginPageController extends GetxController {
   RxList<LoginUserViewModel> usersList = RxList();
   RxList<LoginVendorViewModel> vendorList = RxList();
   final LoginPageRepository _repository = LoginPageRepository();
-  // final GlobalKey<FormState> formKey = GlobalKey();
+  final GlobalKey<FormState> formKey = GlobalKey();
   RxBool isLoading = true.obs;
   RxBool isChecked = false.obs;
   final TextEditingController emailController = TextEditingController();
@@ -135,9 +135,9 @@ class LoginPageController extends GetxController {
   }
 
   Future<void> goToNextPage() async {
-    // if (!formKey.currentState!.validate()) {
-    //   return;
-    // }
+    if (!formKey.currentState!.validate()) {
+      return;
+    }
     isLoading.value = true;
     final Either<String, List<LoginVendorViewModel>> vendorsByEmailPassword = await _repository.getVendorByEmailPassword(email: emailController.text, password: passwordController.text);
     final Either<String, List<LoginUserViewModel>> usersByEmailPassword = await _repository.getUserByEmailPassword(email: emailController.text, password: passwordController.text);

@@ -1,6 +1,7 @@
 import 'package:flower_shop/flower_shop.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'localization_service.dart';
 
 class FlowerApp extends StatelessWidget {
   FlowerApp({super.key, required this.isLogged, required this.role});
@@ -22,9 +23,8 @@ class FlowerApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner:false,
       initialRoute: isLogged == null ? RouteNames.loginPage : routeName,
-      // initialRoute: RouteNames.loginPage,
       getPages: RoutePages.pages,
-      // translations: LocalizationService(),
+      translations: LocalizationService(),
       locale: const Locale('en','US'),
     );
   }

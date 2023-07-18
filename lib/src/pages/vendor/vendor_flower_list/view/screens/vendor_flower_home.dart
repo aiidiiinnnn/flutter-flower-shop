@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/widget/vendor_flower_card.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:get/get.dart';
 import '../../controller/vendor_flower_list_controller.dart';
+import 'package:flower_shop/generated/locales.g.dart' as locale;
 
 class VendorFlowerHome extends  GetView<VendorFlowerListController>{
   const VendorFlowerHome({super.key});
@@ -15,7 +17,7 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
           backgroundColor: const Color(0xfff3f7f7),
           appBar: AppBar(
             backgroundColor: const Color(0xfff3f7f7),
-            title: const Text("Vendor Flower List",style: TextStyle(
+            title: Text(locale.LocaleKeys.vendor_flower_home_flower_list.tr,style: const TextStyle(
                 color: Color(0xff050a0a),
                 fontWeight: FontWeight.w600,
                 fontSize: 22
@@ -26,17 +28,134 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
             ),
           ),
           drawer: Drawer(
-            child: Column(
+            backgroundColor: const Color(0xfff3f7f7),
+            child: (controller.isLoading.value) ?
+            const Center(child: CircularProgressIndicator()) : Column(
               children: [
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      controller.logOut();
-                    },
-                    child: const Text("Logout")
+                Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    Container(
+                      height:200,
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                          color: Color(0xff6cba00)
+                      ),
+                    ),
+                    Positioned(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Center(
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 90),
+                            height:150,
+                            width: 150,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                color: const Color(0xff7f8283)
+                            ),
+                            child: controller.vendor!.imagePath.isNotEmpty? SizedBox(
+                                width: 100,
+                                height: 100,
+                                child: Image.memory(base64Decode(controller.vendor!.imagePath),fit: BoxFit.cover,)) :
+                            const Icon(Icons.person,color: Colors.white,size: 120),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                    padding: const EdgeInsetsDirectional.only(start: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Text(controller.vendor!.firstName,style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500
+                          ),),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Text(controller.vendor!.lastName,style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500
+                          ),),
+                        ),
+                      ],
+                    )
+                ),
+                Text(controller.vendor!.email,style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w300
+                ),),
+
+                const Divider(
+                  height: 20,
+                  color: Color(0xff9d9d9d),
+                  thickness: 1,
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 8,top: 17),
+                  child: InkWell(
+                    onTap: () => Get.updateLocale(const Locale('en','US')),
+                    child: const Row(
+                      children: [
+                        // SizedBox(
+                        //     height: 42,
+                        //     width: 42,
+                        //     child: Image(image: AssetImage('assets/united_kingdom.jpg',package: 'flower_package'))
+                        // ),
+                        Icon(Icons.language_outlined),
+                        Padding(
+                          padding: EdgeInsetsDirectional.only(start: 4),
+                          child: Text("English",style: TextStyle(
+                              fontSize:17,
+                              color: Color(0xff050a0a)
+                          ),),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 8,top: 17),
+                  child: InkWell(
+                    onTap: () => Get.updateLocale(const Locale('fa','IR')),
+                    child: const Row(
+                      children: [
+                        // SizedBox(
+                        //     height: 42,
+                        //     width: 42,
+                        //     child: Image(image: AssetImage('assets/iran.jpg',package: 'flower_package'))
+                        // ),
+                        Icon(Icons.language_outlined),
+                        Padding(
+                          padding: EdgeInsetsDirectional.only(start: 4),
+                          child: Text("فارسی",style: TextStyle(
+                              fontSize:17,
+                              color: Color(0xff050a0a)
+                          ),),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
+            // child: Column(
+            //   children: [
+            //     ElevatedButton(
+            //         onPressed: () {
+            //           Navigator.pop(context);
+            //           controller.logOut();
+            //         },
+            //         child: const Text("Logout")
+            //     ),
+            //   ],
+            // ),
           ),
           floatingActionButton: FloatingActionButton(
             backgroundColor: const Color(0xff6cba00),
@@ -60,12 +179,12 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
       return _retryButton();
     }
     return controller.vendorFlowersList.isNotEmpty ? _vendorFlower() :
-    const Center(
+    Center(
       child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Home',style: TextStyle(fontSize: 72),),
-            Text('There is no flower here', style: TextStyle(fontSize: 32, fontWeight: FontWeight.w300))
+            Text(locale.LocaleKeys.vendor_flower_home_Home.tr,style: const TextStyle(fontSize: 72),),
+            Text(locale.LocaleKeys.vendor_flower_home_there_is_no_flower_here.tr, style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w300))
           ],
       ),
     );

@@ -5,7 +5,7 @@ import 'package:flower_shop/src/pages/vendor/vendor_flower_list/repositories/ven
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_history.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_profile.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_search.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../flower_shop.dart';
@@ -16,10 +16,16 @@ import '../view/screens/vendor_flower_home.dart';
 
 class VendorFlowerListController extends GetxController{
   RxList<PurchaseViewModel> historyList = RxList();
+  RxInt selectedColor=RxInt(1);
   RxList<Map<dynamic,dynamic>> salesList = RxList();
+  RxList<int> priceList = RxList();
+  RxDouble minPrice=RxDouble(0);
+  RxDouble maxPrice= RxDouble(0);
+  RxInt division = RxInt(0);
   RxList<dynamic> categoryList=RxList();
-  RxString? selectedCategory;
+  RxString selectedCategory="".obs;
   RxList<dynamic> colorList=RxList();
+  RxList<dynamic> colors=RxList();
   LoginVendorViewModel? vendor;
   final GlobalKey<FormState> searchKey=GlobalKey();
   final TextEditingController searchController = TextEditingController();
@@ -32,9 +38,15 @@ class VendorFlowerListController extends GetxController{
   RxBool isRetry=false.obs;
   RxBool textFlag = true.obs;
   RxInt index=RxInt(0);
+  RxMap colorsOnTap={}.obs;
+  Rx<RangeValues> currentRangeValues = Rx<RangeValues>(const RangeValues(0, 100));
 
-  void setSelected(String value){
-    selectedCategory?.value = value;
+  void setRange(RangeValues value){
+    currentRangeValues.value = value;
+  }
+
+  void setSelected(String value) {
+    selectedCategory.value = value;
   }
 
   void onDestinationSelected(index){
@@ -96,6 +108,7 @@ class VendorFlowerListController extends GetxController{
   }
 
   Future<void> getFlowersByVendorId() async{
+    searchedFlowersList.clear();
     vendorFlowersList.clear();
     isLoading.value=true;
     isRetry.value=false;
@@ -111,9 +124,20 @@ class VendorFlowerListController extends GetxController{
           searchedFlowersList.addAll(right);
           for(final flower in right){
             categoryList.addAll(flower.category);
-            categoryList.addAll(flower.color);
+            colorList.addAll(flower.color);
+            priceList.add(flower.price);
           }
-
+          int i=0;
+          for(final flower in colorList){
+            colorsOnTap[i]=false;
+            i++;
+          }
+          selectedCategory.value=categoryList.first;
+          priceList.sort();
+          minPrice.value=priceList.first.toDouble();
+          maxPrice.value=priceList.last.toDouble();
+          currentRangeValues = Rx<RangeValues>(RangeValues(minPrice.value, maxPrice.value));
+          division.value = (maxPrice.value-minPrice.value).toInt();
           isLoading.value=false;
         }
     );
@@ -261,6 +285,24 @@ class VendorFlowerListController extends GetxController{
               }
           isLoading.value=false;
         }
+    );
+  }
+
+  Future<void> filterFlowers(String categoryName,int color) async{
+    searchedFlowersList.clear();
+    isLoading.value=true;
+    isRetry.value=false;
+    final Either<String,List<VendorFlowerViewModel>> flower = await _repository.filterFlowers(categoryName,color);
+    flower.fold(
+            (left) {
+          print(left);
+          isLoading.value=false;
+          isRetry.value=true;
+        },
+            (right){
+              searchedFlowersList.addAll(right);
+              isLoading.value=false;
+            }
     );
   }
 

@@ -175,7 +175,7 @@ class UserFlowerListController extends GetxController{
         },
             (right) {
               countInCart.value = user!.userFlowerList.length;
-              maxCount[index]-buyCounting[index];
+              maxCount[index]= (maxCount[index]-buyCounting[index]).toInt();
               List<CartFlowerViewModel> shoppingCart = user!.userFlowerList;
               final editedUser = user!.copyWith(
                 userFlowerList: shoppingCart,

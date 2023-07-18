@@ -43,7 +43,7 @@ class LoginPage extends  GetView<LoginPageController>{
                     ),
                   ),
                   Form(
-                      // key: controller.formKey,
+                      key: controller.formKey,
                       child: Column(
                         children: [
                           CustomLoginFormField(

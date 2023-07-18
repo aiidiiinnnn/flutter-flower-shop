@@ -3,14 +3,15 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:either_dart/either.dart';
 import 'package:flower_shop/src/pages/login_page/models/vendor_models/login_vendor_dto.dart';
-import 'package:flower_shop/src/pages/vendor/add_vendor_flower/models/add_vendor_flower_dto.dart';
-import 'package:flower_shop/src/pages/vendor/add_vendor_flower/models/add_vendor_flower_view_model.dart';
+import 'package:flower_shop/src/pages/vendor/add_vendor_flower/models/add_vendor/add_vendor_flower_view_model.dart';
+import 'package:flower_shop/src/pages/vendor/add_vendor_flower/models/categories/categories_dto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../login_page/models/vendor_models/login_vendor_view_model.dart';
+import '../models/add_vendor/add_vendor_flower_dto.dart';
+import '../models/categories/categories_view_model.dart';
 import '../repositories/add_vendor_flower_repository.dart';
 
 
@@ -33,6 +34,7 @@ class AddVendorFlowerController extends GetxController{
   RxString savedImage=''.obs;
   int? vendorId;
   RxDouble space=RxDouble(30);
+  RxList<CategoriesViewModel> categoriesFromJson=RxList();
 
 
   @override
@@ -40,6 +42,7 @@ class AddVendorFlowerController extends GetxController{
     super.onInit();
     await sharedVendor().then((id) => vendorId=id);
     await getVendorById();
+    await getCategories();
   }
 
   Future<int?> sharedVendor() async {
@@ -47,12 +50,19 @@ class AddVendorFlowerController extends GetxController{
     return prefs.getInt("vendorId");
   }
 
-  void addCategory(String category){
+  Future<void> addCategory(String category) async {
     if (!categoryKey.currentState!.validate()) {
       return;
     }
-    categoryList.add(category);
-    categoryController.clear();
+    final categoryDto = CategoriesDto(name: category);
+    final Either<String, CategoriesViewModel> categoryRequest = await _repository.addCategories(categoryDto);
+    categoryRequest.fold(
+            (left) => print(left),
+            (right) => {
+          Get.snackbar('Category', 'category successfully added'),
+          categoryList.add(category),
+          categoryController.clear(),
+        });
   }
 
   Color currentColor = const Color(0xff32623a);
@@ -191,20 +201,36 @@ class AddVendorFlowerController extends GetxController{
                 Get.snackbar('Exception', exception);
               },
                   (userId) {
-                Get.back(result: {
-                  "id": right.id,
-                  "name": right.name,
-                  "description": right.description,
-                  "price": right.price,
-                  "color": right.color,
-                  "imageAddress": right.imageAddress,
-                  "count": right.count,
-                  "category": right.category
-                });
-              });
+                    Get.back(result: {
+                      "id": right.id,
+                      "name": right.name,
+                      "description": right.description,
+                      "price": right.price,
+                      "color": right.color,
+                      "imageAddress": right.imageAddress,
+                      "count": right.count,
+                      "category": right.category
+                    });
+                  });
         }
     );}
 
-
+  Future<void> getCategories() async{
+    categoriesFromJson.clear();
+    isLoading.value=true;
+    isRetry.value=false;
+    final Either<String,List<CategoriesViewModel>> flower = await _repository.getCategories();
+    flower.fold(
+            (left) {
+          print(left);
+          isLoading.value=false;
+          isRetry.value=true;
+        },
+            (right){
+              categoriesFromJson.addAll(right);
+              isLoading.value=false;
+            }
+    );
+  }
 
 }

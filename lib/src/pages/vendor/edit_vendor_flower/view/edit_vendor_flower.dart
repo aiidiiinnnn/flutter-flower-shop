@@ -198,13 +198,12 @@ class EditVendorFlower extends  GetView<EditVendorFlowerController>{
                           ),
                         ),
                     ]
-                  )
-        ),
+                  )),
                 ),
               ),
             ),
           )
-    )
+        )
     );
   }
 

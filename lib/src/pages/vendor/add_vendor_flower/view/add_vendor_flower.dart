@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:get/get.dart';
+import '../models/categories/categories_view_model.dart';
 import 'widget/custom_add_form_field.dart';
 import '../controller/add_vendor_flower_controller.dart';
 class AddVendorFlower extends  GetView<AddVendorFlowerController>{
@@ -102,47 +103,57 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                             padding: const EdgeInsets.all(8.0),
                             child: Form(
                               key: controller.categoryKey,
-                              child: TextFormField(
-                                enableSuggestions: false,
-                                style: const TextStyle(color: Color(0xff050a0a)),
-                                decoration: InputDecoration(
-                                  suffixIcon: Padding(
-                                    padding: const EdgeInsets.all(4),
-                                    child: InkWell(
-                                        splashColor: const Color(0xffc4c4c4),
-                                        customBorder: const CircleBorder(),
-                                        onTap: ()=>controller.addCategory(controller.categoryController.text),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal:8),
-                                          child: Container(
-                                              width: 65,
-                                              height: 10,
-                                              decoration: BoxDecoration(
-                                                border: Border.all(color: const Color(0xff050a0a)),
-                                                color: const Color(0xffc4c4c4)
-                                                // borderRadius: BorderRadius.circular(200),
-                                              ),
-                                              child: const Icon(Icons.add,size:25)
-                                            // child:
+                              child: Autocomplete(
+                                optionsBuilder: (textEditingValue){
+                                  return controller.categoriesFromJson.where((category) => category.name.toLowerCase().startsWith(
+                                      textEditingValue.text.toLowerCase())
+                                  ).toList();
+                                },
+                                initialValue: TextEditingValue.empty,
+                                displayStringForOption: (final model)=>model.name,
+                                fieldViewBuilder: (context, textEditingController, focusNode, onFieldSubmitted) {
+                                    return TextFormField(
+                                      enableSuggestions: false,
+                                      style: const TextStyle(color: Color(0xff050a0a)),
+                                      decoration: InputDecoration(
+                                        suffixIcon: Padding(
+                                          padding: const EdgeInsets.all(4),
+                                          child: InkWell(
+                                              splashColor: const Color(0xffc4c4c4),
+                                              customBorder: const CircleBorder(),
+                                              onTap: ()=>controller.addCategory(controller.categoryController.text),
+                                              child: Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal:8),
+                                                child: Container(
+                                                    width: 65,
+                                                    height: 10,
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(color: const Color(0xff050a0a)),
+                                                        color: const Color(0xffc4c4c4)
+                                                    ),
+                                                    child: const Icon(Icons.add,size:25)
+                                                  // child:
+                                                ),
+                                              )
                                           ),
-                                        )
-                                    ),
-                                  ),
-                                  prefixIcon: const Icon(Icons.category_outlined),
-                                  enabledBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(color: Color(0xff050a0a))
-                                  ),
-                                  focusedBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(color: Color(0xff050a0a))
-                                  ),
-                                  labelText: "Category",
-                                  labelStyle: const TextStyle(color: Color(0xff050a0a)),
+                                        ),
+                                        prefixIcon: const Icon(Icons.category_outlined),
+                                        enabledBorder: const OutlineInputBorder(
+                                            borderSide: BorderSide(color: Color(0xff050a0a))
+                                        ),
+                                        focusedBorder: const OutlineInputBorder(
+                                            borderSide: BorderSide(color: Color(0xff050a0a))
+                                        ),
+                                        labelText: "Category",
+                                        labelStyle: const TextStyle(color: Color(0xff050a0a)),
+                                      ),
+                                      // validator: controller.categoryValidator,
+                                      // controller: controller.categoryController,
+                                    );
+                                  }
                                 ),
-                                validator: controller.categoryValidator,
-                                controller: controller.categoryController,
                               ),
-                            )
-                        ),
+                            ),
                         Obx(() => (controller.categoryList.isNotEmpty) ?
                         SizedBox(
                             height: controller.space.value,
@@ -200,13 +211,13 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                             ),
                           ),
                         ),
-                    ]
-                  )
-        ),
+                  ]),
                 ),
               ),
             ),
           )
+
+    )
     )
     );
   }

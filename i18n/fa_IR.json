@@ -1,0 +1,20 @@
+{
+  "bottom_navigation_bar": {
+    "Home": "خانه",
+    "History": "تاریخچه",
+    "Search": "جستجو",
+    "Profile": "مشخصات"
+  },
+
+  "vendor_flower_home": {
+    "flower_list": "لیست گل",
+    "History": "صفحه تاریخچه",
+    "Search_page": "صفحه جستجو",
+    "Search": "جستجو",
+    "filter": "فیلتر",
+    "logout": "خروج",
+    "Profile": "صفحه مشخصات",
+    "Home": "خانه",
+    "there_is_no_flower_here": "هنوز هیچ گلی اضافه نشده است"
+  }
+}
