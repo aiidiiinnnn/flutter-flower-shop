@@ -25,7 +25,6 @@ class VendorFlowerListController extends GetxController{
   RxList<dynamic> categoryList=RxList();
   RxString selectedCategory="".obs;
   RxList<dynamic> colorList=RxList();
-  RxList<dynamic> colors=RxList();
   LoginVendorViewModel? vendor;
   final GlobalKey<FormState> searchKey=GlobalKey();
   final TextEditingController searchController = TextEditingController();
@@ -36,6 +35,10 @@ class VendorFlowerListController extends GetxController{
   RxList<VendorFlowerViewModel> searchedFlowersList =RxList();
   RxBool isLoading=true.obs;
   RxBool isRetry=false.obs;
+  RxBool isLoadingDrawer=true.obs;
+  RxBool isRetryDrawer=false.obs;
+  RxBool isLoadingCount=true.obs;
+  RxBool isRetryCount=false.obs;
   RxBool textFlag = true.obs;
   RxInt index=RxInt(0);
   RxMap colorsOnTap={}.obs;
@@ -93,16 +96,22 @@ class VendorFlowerListController extends GetxController{
   Future<void> getVendorById() async{
     isLoading.value=true;
     isRetry.value=false;
+    isLoadingDrawer.value=true;
+    isRetryDrawer.value=false;
     final Either<String, LoginVendorViewModel> vendorById = await _repository.getVendor(vendorId!);
     vendorById.fold(
             (left) {
               print(left);
               isLoading.value=false;
               isRetry.value=true;
+              isLoadingDrawer.value=false;
+              isRetryDrawer.value=true;
             },
             (vendorViewModel) {
               vendor=vendorViewModel;
               isLoading.value=false;
+              isLoadingDrawer.value=false;
+              isLoadingCount.value=false;
             }
     );
   }
@@ -132,7 +141,7 @@ class VendorFlowerListController extends GetxController{
             colorsOnTap[i]=false;
             i++;
           }
-          selectedCategory.value=categoryList.first;
+          // selectedCategory.value=categoryList.first ;
           priceList.sort();
           minPrice.value=priceList.first.toDouble();
           maxPrice.value=priceList.last.toDouble();
@@ -144,6 +153,8 @@ class VendorFlowerListController extends GetxController{
   }
 
   Future<void> addFlowerCount({required VendorFlowerViewModel flowerToEdit, required int index}) async {
+    isLoadingCount.value=true;
+    isRetryCount.value=false;
     if (flowerToEdit.count >= 0){
       final result = await _repository.editFlowerCount(
         dto: _generatePlusDto(flowerToEdit),
@@ -152,8 +163,11 @@ class VendorFlowerListController extends GetxController{
 
       result.fold((exception) {
         Get.snackbar('Exception', exception);
+        isLoadingCount.value=false;
+        isRetryCount.value=true;
       }, (auctionId) {
         addCount(index: index);
+        isLoadingCount.value=false;
       });
     }
   }
@@ -179,6 +193,8 @@ class VendorFlowerListController extends GetxController{
 
 
   Future<void> minusFlowerCount({required VendorFlowerViewModel flowerToEdit, required int index}) async {
+    isLoadingCount.value=true;
+    isRetryCount.value=false;
     if (flowerToEdit.count > 0){
       final result = await _repository.editFlowerCount(
         dto: _generateMinusDto(flowerToEdit),
@@ -187,8 +203,11 @@ class VendorFlowerListController extends GetxController{
 
       result.fold((exception) {
         Get.snackbar('Exception', exception);
+        isLoadingCount.value=false;
+        isRetryCount.value=true;
       }, (auctionId) {
         minusCount(index: index);
+        isLoadingCount.value=false;
       });
     }
   }

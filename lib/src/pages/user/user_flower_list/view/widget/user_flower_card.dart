@@ -3,20 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controller/user_flower_list_controller.dart';
 import '../../models/user_flower_view_model.dart';
+import 'package:flower_shop/generated/locales.g.dart' as locale;
 
 class UserFlowerCard extends GetView<UserFlowerListController>{
 
   UserFlowerCard({super.key, required this.userFlower, required this.index});
   UserFlowerViewModel userFlower;
   int index;
-
+  String firstHalfText = "";
+  String secondHalfText = "";
 
   @override
   Widget build(BuildContext context) {
+    if (userFlower.description.length > 60) {
+      firstHalfText = userFlower.description.substring(0, 60);
+      secondHalfText = userFlower.description
+          .substring(60, userFlower.description.length);
+    } else {
+      firstHalfText = userFlower.description;
+      secondHalfText = "";
+    }
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Container(
-        height: 510,
+        height: 530,
         decoration: BoxDecoration(
             color: const Color(0xffe9e9e9),
             border: const Border(
@@ -65,12 +75,40 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(userFlower.description,style: const TextStyle(fontSize: 14),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                child: secondHalfText.isEmpty
+                    ? Center(
+                  child: Text(
+                    firstHalfText,
+                    style: const TextStyle(fontSize: 12),
                   ),
-                ],
+                )
+                    : Column(
+                  children: [
+                    Text(
+                      controller.textFlag.value
+                          ? ("$firstHalfText...")
+                          : (firstHalfText + secondHalfText),
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                    InkWell(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            locale.LocaleKeys.vendor_flower_card_show_more.tr,
+                            style:
+                            const TextStyle(color: Colors.blue, fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      onTap: () {
+                        _showDescription(context);
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
             Padding(
@@ -93,10 +131,10 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
                       context: context,
                       builder: (BuildContext context) => AlertDialog(
                         backgroundColor: const Color(0xffe9e9e9),
-                        content: (userFlower.count==0) ? const Text(
-                          "Out of stock",
+                        content: (userFlower.count==0) ? Text(
+                          locale.LocaleKeys.shopping_cart_out_of_stock.tr,
                           style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 21),
+                          const TextStyle(fontWeight: FontWeight.w500, fontSize: 21),
                         ) : Obx(() => Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -118,19 +156,25 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
                           ],
                         )),
                         actions: [
-                          ElevatedButton(
-                            child: const Row(
+                          Obx(() => ElevatedButton(
+                            child: (controller.isLoadingAddToCart.value) ? const Center(
+                              child: SizedBox(
+                                  width: 50,
+                                  child: LinearProgressIndicator()
+                              ),
+                            ) :
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Icon(Icons.shopping_cart_outlined),
-                                Text('Add to cart'),
+                                const Icon(Icons.shopping_cart_outlined),
+                                Text(locale.LocaleKeys.shopping_cart_add_to_cart.tr),
                               ],
                             ),
                             onPressed: () => {
                               controller.addToCart(index),
                               Navigator.of(context).pop(),
                             },
-                          ),
+                          ),)
                         ],
                       ),
                       ),
@@ -145,6 +189,30 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
           ],
         ),
       ),
+    );
+  }
+
+  void _showDescription(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text('${userFlower.name} ${locale.LocaleKeys.vendor_flower_card_description.tr}'),
+          content: SingleChildScrollView(
+            child: Text(
+              firstHalfText + secondHalfText,
+              style: const TextStyle(fontSize: 14),
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+              child: Text(locale.LocaleKeys.vendor_flower_card_show_less.tr),
+              onPressed: () {
+                controller.textFlag.value = !controller.textFlag.value;
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        )
     );
   }
 

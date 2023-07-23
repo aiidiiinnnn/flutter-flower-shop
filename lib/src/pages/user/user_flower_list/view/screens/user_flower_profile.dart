@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
-
+import 'package:flower_shop/generated/locales.g.dart' as locale;
 import '../../controller/user_flower_list_controller.dart';
 
 class UserFlowerProfile extends  GetView<UserFlowerListController>{
@@ -15,7 +14,7 @@ class UserFlowerProfile extends  GetView<UserFlowerListController>{
         backgroundColor: const Color(0xfff3f7f7),
         appBar: AppBar(
           backgroundColor: const Color(0xfff3f7f7),
-          title: const Text("User Profile",style: TextStyle(
+          title: Text(locale.LocaleKeys.vendor_flower_home_Profile.tr,style: const TextStyle(
               color: Color(0xff050a0a),
               fontWeight: FontWeight.w600,
               fontSize: 22
@@ -107,7 +106,7 @@ class UserFlowerProfile extends  GetView<UserFlowerListController>{
                                   onPressed: () {
                                     controller.logOut();
                                   },
-                                  child: const Text("Logout")
+                                  child: Text(locale.LocaleKeys.vendor_flower_home_logout.tr)
                               ),
                             ),
                           ],

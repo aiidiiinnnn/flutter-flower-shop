@@ -1,8 +1,6 @@
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/widget/vendor_flower_search_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:flower_shop/generated/locales.g.dart' as locale;
 import '../../controller/vendor_flower_list_controller.dart';
 
@@ -110,23 +108,22 @@ class VendorFlowerSearch extends  GetView<VendorFlowerListController> {
                   color: Color(0xffe9e9e9)),
               child: Column(
                   children: [
-                    SizedBox(
-                      child: Obx( () => DropdownButton(
-                          hint: const Text('Categories'),
-                          onChanged: (value) {
-                            controller.setSelected(value!);
-                          },
-                          value: controller.selectedCategory.value,
-                          items: controller.categoryList.map<DropdownMenuItem>(
-                                  (dynamic value){
-                                return DropdownMenuItem(
-                                    value: value,
-                                    child: Text("$value")
-                                );
-                              }).toList()
-                      )
-                      ),
-                    ),
+                    // SizedBox(
+                    //   child: Obx( () => DropdownButton(
+                    //       hint: const Text('Categories'),
+                    //       onChanged: (value) {
+                    //         controller.setSelected(value!);
+                    //       },
+                    //       value: controller.selectedCategory.value,
+                    //       items: controller.categoryList.map<DropdownMenuItem>(
+                    //               (dynamic value){
+                    //             return DropdownMenuItem(
+                    //                 value: value,
+                    //                 child: Text("$value")
+                    //             );
+                    //           }).toList()
+                    //   )),
+                    // ),
 
                     const SizedBox(height: 30),
 

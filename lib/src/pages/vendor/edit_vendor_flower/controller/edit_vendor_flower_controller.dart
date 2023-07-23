@@ -22,7 +22,6 @@ class EditVendorFlowerController extends GetxController{
   int? _selectedFlowerId;
   RxList categoryList=[].obs;
   RxList colors=[].obs;
-  RxList colorList=[].obs;
   RxString imagePath=''.obs;
   RxString savedImage=''.obs;
   int? vendorId;

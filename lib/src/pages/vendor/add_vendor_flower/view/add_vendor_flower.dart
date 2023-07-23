@@ -104,93 +104,99 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                             padding: const EdgeInsets.all(8.0),
                             child: Form(
                               key: controller.categoryKey,
-                              child: TextFormField(
-                                enableSuggestions: false,
-                                style: const TextStyle(color: Color(0xff050a0a)),
-                                decoration: InputDecoration(
-                                  suffixIcon: Padding(
-                                    padding: const EdgeInsets.all(4),
-                                    child: InkWell(
-                                        splashColor: const Color(0xffc4c4c4),
-                                        customBorder: const CircleBorder(),
-                                        onTap: ()=>controller.addCategory(controller.categoryController.text),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal:8),
-                                          child: Container(
-                                              width: 65,
-                                              height: 10,
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(color: const Color(0xff050a0a)),
-                                                  color: const Color(0xffc4c4c4)
+                              child: RawAutocomplete(
+                                optionsBuilder: (TextEditingValue textEditingValue) {
+                                  if (textEditingValue.text == '') {
+                                    return const Iterable<String>.empty();
+                                  }else{
+                                    List<String> matches = <String>[];
+                                    for(final item in controller.categoriesFromJson){
+                                      matches.add(item.name);
+                                    }
+                                    matches.retainWhere((name){
+                                      return name.toLowerCase().contains(textEditingValue.text.toLowerCase());
+                                    });
+                                    return matches;
+                                  }
+                                },
+
+                                onSelected: (String selection) {
+                                  controller.categoryController.text=selection;
+                                  controller.categoryList.add(selection);
+                                  print('You just selected $selection');
+                                },
+
+                                fieldViewBuilder: (BuildContext context, TextEditingController textEditingController,
+                                    FocusNode focusNode,
+                                    VoidCallback onFieldSubmitted) {
+                                  return TextField(
+                                    decoration: InputDecoration(
+                                      suffixIcon: Padding(
+                                        padding: const EdgeInsets.all(4),
+                                        child: InkWell(
+                                            splashColor: const Color(0xffc4c4c4),
+                                            customBorder: const CircleBorder(),
+                                            onTap: ()=>controller.addCategory(textEditingController.text),
+                                            child: Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal:8),
+                                              child: Container(
+                                                  width: 65,
+                                                  height: 10,
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(color: const Color(0xff050a0a)),
+                                                      color: const Color(0xffc4c4c4)
+                                                  ),
+                                                  child: const Icon(Icons.add,size:25)
+                                                // child:
                                               ),
-                                              child: const Icon(Icons.add,size:25)
-                                            // child:
-                                          ),
+                                            )
+                                        ),
+                                      ),
+                                      prefixIcon: const Icon(Icons.category_outlined),
+                                      enabledBorder: const OutlineInputBorder(
+                                          borderSide: BorderSide(color: Color(0xff050a0a))
+                                      ),
+                                      focusedBorder: const OutlineInputBorder(
+                                          borderSide: BorderSide(color: Color(0xff050a0a))
+                                      ),
+                                      labelText: locale.LocaleKeys.add_vendor_flower_card_category.tr,
+                                      labelStyle: const TextStyle(color: Color(0xff050a0a)),
+                                    ),
+                                    controller: textEditingController,
+                                    focusNode: focusNode,
+                                    onSubmitted: (String value) {
+                                    },
+                                  );
+                                },
+
+                                optionsViewBuilder: (BuildContext context, void Function(String) onSelected,
+                                    Iterable<String> options) {
+                                  return Container(
+                                    height: 50,
+                                    padding: const EdgeInsets.only(right:60),
+                                    child: Material(
+                                        child:SingleChildScrollView(
+                                            child: Column(
+                                              children: options.map((opt){
+                                                return InkWell(
+                                                    onTap: (){
+                                                      onSelected(opt);
+                                                    },
+                                                    child:Card(
+                                                        child: Container(
+                                                          width: double.infinity,
+                                                          padding: const EdgeInsets.all(10),
+                                                          child:Text(opt),
+                                                        )
+                                                    )
+                                                );
+                                              }).toList(),
+                                            )
                                         )
                                     ),
-                                  ),
-                                  prefixIcon: const Icon(Icons.category_outlined),
-                                  enabledBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(color: Color(0xff050a0a))
-                                  ),
-                                  focusedBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(color: Color(0xff050a0a))
-                                  ),
-                                  labelText: locale.LocaleKeys.add_vendor_flower_card_category.tr,
-                                  labelStyle: const TextStyle(color: Color(0xff050a0a)),
-                                ),
-                                validator: controller.categoryValidator,
-                                controller: controller.categoryController,
+                                  );
+                                },
                               ),
-                              // child: Autocomplete(
-                              //   optionsBuilder: (textEditingValue){
-                              //     return controller.categoriesFromJson.where((category) => category.name.toLowerCase().startsWith(
-                              //         textEditingValue.text.toLowerCase())
-                              //     ).toList();
-                              //   },
-                              //   initialValue: TextEditingValue.empty,
-                              //   displayStringForOption: (final model)=>model.name,
-                              //   fieldViewBuilder: (context, textEditingController, focusNode, onFieldSubmitted) {
-                              //       return TextFormField(
-                              //         enableSuggestions: false,
-                              //         style: const TextStyle(color: Color(0xff050a0a)),
-                              //         decoration: InputDecoration(
-                              //           suffixIcon: Padding(
-                              //             padding: const EdgeInsets.all(4),
-                              //             child: InkWell(
-                              //                 splashColor: const Color(0xffc4c4c4),
-                              //                 customBorder: const CircleBorder(),
-                              //                 onTap: ()=>controller.addCategory(controller.categoryController.text),
-                              //                 child: Padding(
-                              //                   padding: const EdgeInsets.symmetric(horizontal:8),
-                              //                   child: Container(
-                              //                       width: 65,
-                              //                       height: 10,
-                              //                       decoration: BoxDecoration(
-                              //                           border: Border.all(color: const Color(0xff050a0a)),
-                              //                           color: const Color(0xffc4c4c4)
-                              //                       ),
-                              //                       child: const Icon(Icons.add,size:25)
-                              //                     // child:
-                              //                   ),
-                              //                 )
-                              //             ),
-                              //           ),
-                              //           prefixIcon: const Icon(Icons.category_outlined),
-                              //           enabledBorder: const OutlineInputBorder(
-                              //               borderSide: BorderSide(color: Color(0xff050a0a))
-                              //           ),
-                              //           focusedBorder: const OutlineInputBorder(
-                              //               borderSide: BorderSide(color: Color(0xff050a0a))
-                              //           ),
-                              //           labelText: locale.LocaleKeys.add_vendor_flower_card_category.tr,
-                              //           labelStyle: const TextStyle(color: Color(0xff050a0a)),
-                              //         ),
-                              //         validator: controller.categoryValidator,
-                              //         controller: controller.categoryController,
-                              //       );
-                              //     }
-                              //   ),
                               ),
                             ),
                         Obx(() => (controller.categoryList.isNotEmpty) ?

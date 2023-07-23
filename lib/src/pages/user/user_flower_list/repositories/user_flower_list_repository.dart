@@ -5,6 +5,7 @@ import '../../../../infrastructure/common/repository_url.dart';
 import 'package:http/http.dart' as http;
 import '../../../login_page/models/user_models/login_user_dto.dart';
 import '../../../login_page/models/user_models/login_user_view_model.dart';
+import '../../../vendor/add_vendor_flower/models/categories/categories_view_model.dart';
 import '../../user_flower_cart/models/confirm_purchase/purchase_view_model.dart';
 import '../models/user_flower_view_model.dart';
 
@@ -93,4 +94,24 @@ class UserFlowerListRepository{
       return Left("Error: ${response.statusCode}");
     }
   }
+
+  Future<Either<String,List<CategoriesViewModel>>> getCategories() async{
+    final url = Uri.http(RepositoryUrls.fullBaseUrl, 'categories');
+    final response = await http.get(url,headers: customHeaders);
+
+    if(response.statusCode >= 200 && response.statusCode <400){
+      final List<CategoriesViewModel> categoriesList =[];
+      final List<dynamic> categories = json.decode(response.body);
+
+      for(final items in categories){
+        final userFlowerViewModel = CategoriesViewModel.fromJson(items);
+        categoriesList.add(userFlowerViewModel);
+      }
+      return Right(categoriesList);
+    }
+    else{
+      return Left("Error: ${response.statusCode}");
+    }
+  }
+
 }

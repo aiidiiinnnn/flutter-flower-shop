@@ -44,5 +44,13 @@
     "got_it": "Got it",
     "gallery": "Gallery",
     "camera": "Camera"
+  },
+
+  "shopping_cart": {
+    "shopping_cart": "Shopping Cart",
+    "total_price": "Total Price:",
+    "confirm_purchase": "Confirm purchase",
+    "add_to_cart": "Add to cart",
+    "out_of_stock": "Out of stock"
   }
 }

@@ -71,14 +71,14 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          padding: const EdgeInsets.symmetric(horizontal: 3),
                           child: Text(controller.vendor!.firstName,style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w500
                           ),),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          padding: const EdgeInsets.symmetric(horizontal: 3),
                           child: Text(controller.vendor!.lastName,style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w500
@@ -100,14 +100,12 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
                 Padding(
                   padding: const EdgeInsetsDirectional.only(start: 8,top: 17),
                   child: InkWell(
-                    onTap: () => Get.updateLocale(const Locale('en','US')),
+                    onTap: () {
+                      Get.updateLocale(const Locale('en','US'));
+                      Navigator.of(context).pop();
+                    },
                     child: const Row(
                       children: [
-                        // SizedBox(
-                        //     height: 42,
-                        //     width: 42,
-                        //     child: Image(image: AssetImage('assets/united_kingdom.jpg',package: 'flower_package'))
-                        // ),
                         Icon(Icons.language_outlined),
                         Padding(
                           padding: EdgeInsetsDirectional.only(start: 4),
@@ -123,14 +121,12 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
                 Padding(
                   padding: const EdgeInsetsDirectional.only(start: 8,top: 17),
                   child: InkWell(
-                    onTap: () => Get.updateLocale(const Locale('fa','IR')),
+                    onTap: () {
+                      Get.updateLocale(const Locale('fa', 'IR'));
+                      Navigator.of(context).pop();
+                    },
                     child: const Row(
                       children: [
-                        // SizedBox(
-                        //     height: 42,
-                        //     width: 42,
-                        //     child: Image(image: AssetImage('assets/iran.jpg',package: 'flower_package'))
-                        // ),
                         Icon(Icons.language_outlined),
                         Padding(
                           padding: EdgeInsetsDirectional.only(start: 4),
@@ -165,7 +161,7 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
 
           body: Obx(() => RefreshIndicator(
             onRefresh: controller.getFlowersByVendorId,
-            child: _pageContent(),
+            child: (controller.vendorFlowersList.isEmpty) ? _emptyPageContent() : _pageContent(),
           ),),
 
         )
@@ -175,20 +171,48 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
   Widget _pageContent() {
     if (controller.isLoading.value) {
       return const Center(child: CircularProgressIndicator());
-    } else if (controller.isRetry.value) {
+    }
+    else if (controller.isRetry.value) {
       return _retryButton();
     }
-    return controller.vendorFlowersList.isNotEmpty ? _vendorFlower() :
-    Center(
+    return _vendorFlower();
+  }
+
+  Widget _emptyPageContent() {
+    // if (controller.isLoading.value) {
+    //   return const Center(child: CircularProgressIndicator());
+    // }
+    // else if (controller.isRetry.value) {
+    //   return _retryButton();
+    // }
+    return Center(
       child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(locale.LocaleKeys.vendor_flower_home_Home.tr,style: const TextStyle(fontSize: 72),),
-            Text(locale.LocaleKeys.vendor_flower_home_there_is_no_flower_here.tr, style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w300))
-          ],
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(locale.LocaleKeys.vendor_flower_home_Home.tr,style: const TextStyle(fontSize: 72),),
+          Text(locale.LocaleKeys.vendor_flower_home_there_is_no_flower_here.tr, style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w300))
+        ],
       ),
     );
   }
+
+  // Widget _pageContent() {
+  //   if (controller.isLoading.value) {
+  //     return const Center(child: CircularProgressIndicator());
+  //   } else if (controller.isRetry.value) {
+  //     return _retryButton();
+  //   }
+  //   return controller.vendorFlowersList.isNotEmpty ? _vendorFlower() :
+  //   Center(
+  //     child: Column(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           Text(locale.LocaleKeys.vendor_flower_home_Home.tr,style: const TextStyle(fontSize: 72),),
+  //           Text(locale.LocaleKeys.vendor_flower_home_there_is_no_flower_here.tr, style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w300))
+  //         ],
+  //     ),
+  //   );
+  // }
 
   Widget _retryButton() => Center(
     child: OutlinedButton(

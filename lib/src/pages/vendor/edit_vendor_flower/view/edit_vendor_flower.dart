@@ -162,21 +162,21 @@ class EditVendorFlower extends  GetView<EditVendorFlowerController>{
                           },
                           child: Text(locale.LocaleKeys.add_vendor_flower_card_color_picker.tr),
                         ),
-                        Obx(() => (controller.colorList.isNotEmpty) ?
+                        Obx(() => (controller.colors.isNotEmpty) ?
                         SizedBox(
                           height: controller.space.value,
                           child: Expanded(
                               child: ListView.builder(
                                   shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,
-                                  itemCount: controller.colorList.length,
+                                  itemCount: controller.colors.length,
                                   itemBuilder: (_,index) => Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Container(
                                         height: 30,
                                         width: 30,
                                         decoration: BoxDecoration(
-                                          color: controller.colorList[index],
+                                          color: Color(controller.colors[index]),
                                           border: Border.all(color: Colors.black),
                                           borderRadius: BorderRadius.circular(200),
                                         ),

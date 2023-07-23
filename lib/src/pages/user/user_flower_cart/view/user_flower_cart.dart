@@ -1,8 +1,8 @@
 import 'package:flower_shop/src/pages/user/user_flower_cart/view/widget/shopping_cart_card.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:get/get.dart';
 import '../controller/user_flower_cart_controller.dart';
+import 'package:flower_shop/generated/locales.g.dart' as locale;
 
 class UserFlowerCart extends  GetView<UserFlowerCartController>{
 
@@ -15,7 +15,7 @@ class UserFlowerCart extends  GetView<UserFlowerCartController>{
           backgroundColor: const Color(0xfff3f7f7),
           appBar: AppBar(
             backgroundColor: const Color(0xfff3f7f7),
-            title: const Text("Shopping Cart",style: TextStyle(
+            title: Text(locale.LocaleKeys.shopping_cart_shopping_cart.tr,style: const TextStyle(
                 color: Color(0xff050a0a),
                 fontWeight: FontWeight.w600,
                 fontSize: 22
@@ -62,6 +62,22 @@ class UserFlowerCart extends  GetView<UserFlowerCartController>{
               )
           ),
         ),
+        Obx(() => Padding(
+          padding: const EdgeInsets.only(top: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(locale.LocaleKeys.shopping_cart_total_price.tr,style: const TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 20
+              ),),
+              Text("${controller.totalPrice.value}\$",style: const TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 18,
+              )),
+            ],
+          ),
+        )),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 20),
           child: SizedBox(
@@ -74,7 +90,12 @@ class UserFlowerCart extends  GetView<UserFlowerCartController>{
               onPressed: ()=>{
                 controller.purchaseFlower()
               },
-              child: const Text('Confirm purchase'),
+              child: Obx(() => (controller.isLoadingPurchase.value) ? const Center(
+                child: SizedBox(
+                    width: 50,
+                    child: LinearProgressIndicator()
+                ),
+              ) : Text(locale.LocaleKeys.shopping_cart_confirm_purchase.tr),)
             ),
           ),
         ),

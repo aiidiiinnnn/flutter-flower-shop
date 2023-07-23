@@ -96,9 +96,15 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                       ),
                     ),
                   ),
-                  Row(
+                  Obx(() => Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      (controller.isLoadingCount.value) ? const Center(
+                        child: SizedBox(
+                            width: 50,
+                            child: LinearProgressIndicator()
+                        ),
+                      ) :
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -112,7 +118,7 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                         ],
                       ),
                     ],
-                  ),
+                  ),)
                 ],
               ),
             ),
@@ -160,8 +166,8 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
               Stack(
                 children: [
                   Container(
-                      height: 280,
-                      width: 280,
+                      height: 210,
+                      width: 210,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(color: Colors.black),
@@ -234,7 +240,7 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Text(vendorFlower.description,style: const TextStyle(fontSize: 14,fontWeight: FontWeight.w300),
+                child: Text(vendorFlower.description,style: const TextStyle(fontSize: 12,fontWeight: FontWeight.w300),
                 ),
               ),
               Padding(

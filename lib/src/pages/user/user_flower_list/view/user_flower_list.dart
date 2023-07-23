@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import '../controller/user_flower_list_controller.dart';
+import 'package:flower_shop/generated/locales.g.dart' as locale;
+
 
 class UserFlowerList extends  GetView<UserFlowerListController>{
 
@@ -16,26 +19,26 @@ class UserFlowerList extends  GetView<UserFlowerListController>{
             bottomNavigationBar: Obx(() => BottomNavigationBar(
               currentIndex: controller.pageIndex.value,
               onTap: (index)=>controller.onDestinationSelected(index),
-              items: const [
+              items: [
                 BottomNavigationBarItem(
-                    backgroundColor: Color(0xffc4c4c4),
-                    icon: Icon(Icons.home),
-                    label: "Home"
+                    backgroundColor: const Color(0xffc4c4c4),
+                    icon: const Icon(Icons.home),
+                    label: locale.LocaleKeys.bottom_navigation_bar_Home.tr
                 ),
                 BottomNavigationBarItem(
-                    backgroundColor: Color(0xffc4c4c4),
-                    icon: Icon(Icons.history),
-                    label: "History"
+                    backgroundColor: const Color(0xffc4c4c4),
+                    icon: const Icon(Icons.history),
+                    label: locale.LocaleKeys.bottom_navigation_bar_History.tr
                 ),
                 BottomNavigationBarItem(
-                    backgroundColor: Color(0xffc4c4c4),
-                    icon: Icon(Icons.search),
-                    label: "Search"
+                    backgroundColor: const Color(0xffc4c4c4),
+                    icon: const Icon(Icons.search),
+                    label: locale.LocaleKeys.bottom_navigation_bar_Search.tr
                 ),
                 BottomNavigationBarItem(
-                    backgroundColor: Color(0xffc4c4c4),
-                    icon: Icon(Icons.person),
-                    label: "Profile"
+                    backgroundColor: const Color(0xffc4c4c4),
+                    icon: const Icon(Icons.person),
+                    label: locale.LocaleKeys.bottom_navigation_bar_Profile.tr
                 ),
               ],
             ),)

@@ -44,5 +44,13 @@
     "got_it": "گرفتم",
     "gallery": "گالری",
     "camera": "دوربین"
+  },
+
+  "shopping_cart": {
+    "shopping_cart": "سبد خرید",
+    "total_price": "قیمت کل:",
+    "confirm_purchase": "خرید نهایی",
+    "add_to_cart": "اضافه کردن به سبد خرید",
+    "out_of_stock": "نامجود"
   }
 }
