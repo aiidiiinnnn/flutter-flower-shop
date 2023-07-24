@@ -29,7 +29,7 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
           ),
           drawer: Obx(() => Drawer(
             backgroundColor: const Color(0xfff3f7f7),
-            child: (controller.isLoading.value) ?
+            child: (controller.isLoadingDrawer.value) ?
             const Center(child: CircularProgressIndicator()) : Column(
               children: [
                 Stack(
@@ -161,7 +161,7 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
 
           body: Obx(() => RefreshIndicator(
             onRefresh: controller.getFlowersByVendorId,
-            child: (controller.vendorFlowersList.isEmpty) ? _emptyPageContent() : _pageContent(),
+            child: _pageContent(),
           ),),
 
         )
@@ -175,51 +175,27 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
     else if (controller.isRetry.value) {
       return _retryButton();
     }
+    else if(controller.vendorFlowersList.isEmpty){
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.home_outlined,size: 270),
+            Text(locale.LocaleKeys.vendor_flower_home_there_is_no_flower_here.tr, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
+          ],
+        ),
+      );
+    }
     return _vendorFlower();
   }
 
-  Widget _emptyPageContent() {
-    // if (controller.isLoading.value) {
-    //   return const Center(child: CircularProgressIndicator());
-    // }
-    // else if (controller.isRetry.value) {
-    //   return _retryButton();
-    // }
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(locale.LocaleKeys.vendor_flower_home_Home.tr,style: const TextStyle(fontSize: 72),),
-          Text(locale.LocaleKeys.vendor_flower_home_there_is_no_flower_here.tr, style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w300))
-        ],
-      ),
-    );
-  }
-
-  // Widget _pageContent() {
-  //   if (controller.isLoading.value) {
-  //     return const Center(child: CircularProgressIndicator());
-  //   } else if (controller.isRetry.value) {
-  //     return _retryButton();
-  //   }
-  //   return controller.vendorFlowersList.isNotEmpty ? _vendorFlower() :
-  //   Center(
-  //     child: Column(
-  //         mainAxisAlignment: MainAxisAlignment.center,
-  //         children: [
-  //           Text(locale.LocaleKeys.vendor_flower_home_Home.tr,style: const TextStyle(fontSize: 72),),
-  //           Text(locale.LocaleKeys.vendor_flower_home_there_is_no_flower_here.tr, style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w300))
-  //         ],
-  //     ),
-  //   );
-  // }
-
   Widget _retryButton() => Center(
     child: OutlinedButton(
-        onPressed: controller.getFlowersByVendorId, child: const Icon(Icons.keyboard_return_outlined)),
+        onPressed: controller.getFlowersByVendorId, child: const Icon(Icons.refresh_outlined)
+    ),
   );
 
-  Widget _vendorFlower() => Obx(() => Padding(
+  Widget _vendorFlower() => Padding(
     padding: const EdgeInsets.symmetric(vertical: 5),
     child: GridView.builder(
       itemCount: controller.vendorFlowersList.length,
@@ -232,9 +208,8 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
       ),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        // crossAxisSpacing: 0,
       ),
     ),
-  ));
+  );
 
 }

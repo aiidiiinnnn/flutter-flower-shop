@@ -37,42 +37,6 @@ class VendorFlowerHistory extends  GetView<VendorFlowerListController>{
               ),
             ),
           )),
-          // body: Obx(() => ListView.builder(
-          //     itemCount: controller.historyList.length,
-          //     itemBuilder: (_,index)
-          //     {
-          //       RxList<CartFlowerViewModel> salesList = RxList();
-          //       for(final flower in controller.historyList){
-          //         for(final purchase in flower.purchaseList){
-          //           if(purchase.vendorId==controller.vendorId!){
-          //             salesList.add(purchase);
-          //           }
-          //         }
-          //       }
-          //       return Padding(
-          //         padding:
-          //             const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-          //         child: Column(
-          //           children: [
-          //             Text(controller.historyList[index].date,
-          //                 style: const TextStyle(
-          //                     fontWeight: FontWeight.w400, fontSize: 17)),
-          //             SizedBox(
-          //               child: Expanded(
-          //                 child: ListView.builder(
-          //                     physics: const NeverScrollableScrollPhysics(),
-          //                     shrinkWrap: true,
-          //                     itemCount: salesList.length,
-          //                     itemBuilder: (_, index2) => VendorFlowerHistoryCard(
-          //                         historyCart: salesList[index2],
-          //                         index: index)
-          //                 ),
-          //               ),
-          //             )
-          //           ],
-          //         ),
-          //       );
-          //     })),
         );
   }
 

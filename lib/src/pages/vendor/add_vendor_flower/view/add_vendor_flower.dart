@@ -45,26 +45,93 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
+                        Obx(() => controller.imagePath.isEmpty ?
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                            onTap: ()=>{
-                              _showImagePicker(context)
-                            },
-                            child: AspectRatio(
-                              aspectRatio: 1.65,
-                              child: Container(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InkWell(
+                                onTap: ()=>{
+                                  _showImagePicker(context)
+                                },
+                                child: AspectRatio(
+                                  aspectRatio: 1.65,
+                                  child: Container(
+                                      height: 250,
+                                      width: 250,
+                                      decoration: const BoxDecoration(
+                                        color: Colors.white,
+                                      ),
+                                      child: const Icon(Icons.add_a_photo_outlined,size: 50)
+                                  ),
+                                )
+                            )
+                        ) : Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
                                 height: 250,
                                 width: 250,
-                                decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                ),
-                                child: Obx(()=> controller.imagePath.isNotEmpty ? AspectRatio(aspectRatio: 2.2,
-                                child: Image(image: FileImage(File(controller.imagePath.toString())),fit: BoxFit.fill,)):
-                                const Icon(Icons.add_a_photo_outlined,size: 50))),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SizedBox(
+                                      height: 200,
+                                      width: 200,
+                                      child: AspectRatio(aspectRatio: 2.2, child: Image(image: FileImage(File(controller.imagePath.toString())),fit: BoxFit.fill,)),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 8),
+                                          child: InkWell(
+                                              splashColor: Colors.blue,
+                                              customBorder: const CircleBorder(),
+                                              onTap: (){
+                                                _showImagePicker(context);
+                                              },
+                                              child: Container(
+                                                  width: 110,
+                                                  height: 34,
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(color: Colors.black),
+                                                    color: const Color(0xffc4c4c4),
+                                                    borderRadius: BorderRadius.circular(10),
+                                                  ),
+                                                  child: const Icon(Icons.add_a_photo_outlined,size: 23)
+                                              )
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 8),
+                                          child: InkWell(
+                                              splashColor: Colors.blue,
+                                              customBorder: const CircleBorder(),
+                                              onTap: (){
+                                                _deleteImageDialog(context);
+                                              },
+                                              child: Container(
+                                                  width: 110,
+                                                  height: 34,
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(color: Colors.black),
+                                                    color: const Color(0xffc4c4c4),
+                                                    borderRadius: BorderRadius.circular(10),
+                                                  ),
+                                                  child: const Center(
+                                                    child: Text("Remove Image",style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight.w500
+                                                    ),),
+                                                  )
+                                              )
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                )
                             )
-                              )
-                          ),
+                        ),),
+
                         Form(
                             key: controller.formKey,
                             child: Column(
@@ -100,6 +167,7 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                               ],
                             )
                         ),
+
                         Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Form(
@@ -121,14 +189,11 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                                 },
 
                                 onSelected: (String selection) {
-                                  controller.categoryController.text=selection;
                                   controller.categoryList.add(selection);
                                   print('You just selected $selection');
                                 },
 
-                                fieldViewBuilder: (BuildContext context, TextEditingController textEditingController,
-                                    FocusNode focusNode,
-                                    VoidCallback onFieldSubmitted) {
+                                fieldViewBuilder: (BuildContext context, TextEditingController textEditingController, FocusNode focusNode, VoidCallback onFieldSubmitted) {
                                   return TextField(
                                     decoration: InputDecoration(
                                       suffixIcon: Padding(
@@ -136,7 +201,10 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                                         child: InkWell(
                                             splashColor: const Color(0xffc4c4c4),
                                             customBorder: const CircleBorder(),
-                                            onTap: ()=>controller.addCategory(textEditingController.text),
+                                            onTap: () {
+                                              controller.addCategory(textEditingController.text);
+                                              textEditingController.clear();
+                                            },
                                             child: Padding(
                                               padding: const EdgeInsets.symmetric(horizontal:8),
                                               child: Container(
@@ -146,11 +214,16 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                                                       border: Border.all(color: const Color(0xff050a0a)),
                                                       color: const Color(0xffc4c4c4)
                                                   ),
-                                                  child: const Icon(Icons.add,size:25)
-                                                // child:
+                                                  child: Obx(() => (controller.isLoadingCategory.value) ? const Center(
+                                                    child: SizedBox(
+                                                        width: 15,
+                                                        height: 15,
+                                                        child: CircularProgressIndicator()
+                                                    ),
+                                                  ) : const Icon(Icons.add,size:25))
                                               ),
                                             )
-                                        ),
+                                        )
                                       ),
                                       prefixIcon: const Icon(Icons.category_outlined),
                                       enabledBorder: const OutlineInputBorder(
@@ -199,6 +272,7 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                               ),
                               ),
                             ),
+
                         Obx(() => (controller.categoryList.isNotEmpty) ?
                         SizedBox(
                             height: controller.space.value,
@@ -252,7 +326,12 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                                 backgroundColor: const Color(0xff6cba00),
                               ),
                               onPressed: ()=>controller.addVendorFlower(),
-                              child: Text(locale.LocaleKeys.add_vendor_flower_card_submit.tr),
+                              child: Obx(() => (controller.isLoadingSubmit.value) ? const Center(
+                                child: SizedBox(
+                                    width: 50,
+                                    child: LinearProgressIndicator()
+                                ),
+                              ): Text(locale.LocaleKeys.add_vendor_flower_card_submit.tr),)
                             ),
                           ),
                         ),
@@ -290,6 +369,32 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
             ),
           ],
         )
+    );
+  }
+
+  void _deleteImageDialog(BuildContext context){
+    showDialog(context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Delete"),
+          content: const Text("Are you sure you want to delete this ?"),
+          actions: [
+            TextButton(
+                child: const Text("Cancel"),
+                onPressed:  (){
+                  Navigator.of(context).pop();
+                }
+            ),
+            TextButton(
+              child: const Text("Continue"),
+              onPressed:  () {
+                controller.deleteImage();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 

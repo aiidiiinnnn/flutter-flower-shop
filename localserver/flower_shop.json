@@ -1,7 +1,26 @@
 {
-  "vendors": [],
+  "vendors": [
+    {
+      "firstName": "Aidin",
+      "lastName": "Bagherinejad",
+      "email": "bagherinejad.aidin@gmail.com",
+      "password": "aidin123456",
+      "imagePath": "",
+      "vendorFlowerList": [],
+      "id": 1
+    }
+  ],
   "users": [],
-  "purchase": [],
   "vendorFlowers": [],
-  "categories": []
+  "purchase": [],
+  "categories": [
+    {
+      "name": "home",
+      "id": 1
+    },
+    {
+      "name": "garden",
+      "id": 2
+    }
+  ]
 }

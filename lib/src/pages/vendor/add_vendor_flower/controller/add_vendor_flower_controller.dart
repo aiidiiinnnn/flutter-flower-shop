@@ -22,12 +22,14 @@ class AddVendorFlowerController extends GetxController{
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
-  final TextEditingController categoryController = TextEditingController();
+  final Rx<TextEditingController> categoryController = Rx(TextEditingController());
   final TextEditingController countController = TextEditingController();
   LoginVendorViewModel? vendor;
   RxBool isLoading=true.obs;
+  RxBool isLoadingSubmit=false.obs;
   RxBool isRetry=false.obs;
-  RxList categoryList=[].obs;
+  RxBool isLoadingCategory=false.obs;
+  RxList categoryList=RxList();
   List<dynamic> colors=[];
   RxList colorList=[].obs;
   RxString imagePath=''.obs;
@@ -51,17 +53,35 @@ class AddVendorFlowerController extends GetxController{
   }
 
   Future<void> addCategory(String category) async {
-    if (!categoryKey.currentState!.validate()) {
+    if(category.isEmpty){
+      Get.snackbar('Category', "Can't add empty category");
       return;
     }
+    // for(final categoryName in categoryList){
+    //   if(categoryName.name.toLowerCase().trim()==category.toLowerCase().trim()){
+    //     Get.snackbar('Category', "This category already exist");
+    //     return;
+    //   }
+    // }
+    for(final categoryName in categoriesFromJson){
+      if(categoryName.name.toLowerCase().trim()==category.toLowerCase().trim()){
+        categoryList.add(category);
+        return;
+      }
+    }
+    isLoadingCategory.value=true;
     final categoryDto = CategoriesDto(name: category);
     final Either<String, CategoriesViewModel> categoryRequest = await _repository.addCategories(categoryDto);
     categoryRequest.fold(
-            (left) => print(left),
-            (right) => {
-          Get.snackbar('Category', 'category successfully added'),
-          categoryList.add(category),
-          categoryController.clear(),
+            (left) {
+              isLoadingCategory.value=false;
+              print(left);
+            },
+            (right) async {
+              Get.snackbar('Category', 'category successfully added');
+              categoryList.add(category);
+              await getCategories();
+              isLoadingCategory.value=false;
         });
   }
 
@@ -91,6 +111,11 @@ class AddVendorFlowerController extends GetxController{
     }
   }
 
+  void deleteImage(){
+    imagePath.value="";
+    savedImage.value="";
+  }
+
   Future<void> imageFromGallery() async {
     final XFile? pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
 
@@ -108,17 +133,17 @@ class AddVendorFlowerController extends GetxController{
     }
   }
 
-  String? categoryValidator(final String? category){
-    if(category == null || category.isEmpty){
-      return "Please enter the category";
-    }
-    for(final cat in categoryList){
-      if(category==cat){
-        return "Category has already add";
-      }
-    }
-    return null;
-  }
+  // String? categoryValidator(final String? category){
+  //   if(category == null || category.isEmpty){
+  //     return "Please enter the category";
+  //   }
+  //   for(final cat in categoryList){
+  //     if(category==cat){
+  //       return "Category has already add";
+  //     }
+  //   }
+  //   return null;
+  // }
 
   String? countValidator(final String? count){
     if(count == null || count.isEmpty){
@@ -169,6 +194,7 @@ class AddVendorFlowerController extends GetxController{
     if(!formKey.currentState!.validate()){
       return;
     }
+    isLoadingSubmit.value=true;
     final dto = AddVendorFlowerDto(
         name: nameController.text,
         description: descriptionController.text,
@@ -181,7 +207,10 @@ class AddVendorFlowerController extends GetxController{
     );
     final Either<String, AddVendorFlowerViewModel> request = await _repository.addVendorFlower(dto);
     request.fold(
-            (left) => print(left),
+            (left) {
+              print(left);
+              isLoadingSubmit.value=false;
+            },
             (right) async {
           vendor!.vendorFlowerList.add(right.id);
           final result = await _repository.vendorEditFlowerList(
@@ -201,6 +230,7 @@ class AddVendorFlowerController extends GetxController{
                 Get.snackbar('Exception', exception);
               },
                   (userId) {
+                    isLoadingSubmit.value=false;
                     Get.back(result: {
                       "id": right.id,
                       "name": right.name,
