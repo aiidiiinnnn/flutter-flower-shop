@@ -76,6 +76,24 @@ class UserFlowerListRepository{
     }
   }
 
+  Future<Either<String,List<UserFlowerViewModel>>> filteredFlower({required Map<String,String> query}) async{
+    final url = Uri.http(RepositoryUrls.fullBaseUrl, 'vendorFlowers', query);
+    final response = await http.get(url,headers: customHeaders);
+    if(response.statusCode >= 200 && response.statusCode <400){
+      final List<UserFlowerViewModel> searchedFlowers =[];
+      final List<dynamic> userFlowersList = json.decode(response.body);
+
+      for(final items in userFlowersList){
+        final userFlowerViewModel = UserFlowerViewModel.fromJson(items);
+        searchedFlowers.add(userFlowerViewModel);
+      }
+      return Right(searchedFlowers);
+    }
+    else{
+      return Left("Error: ${response.statusCode}");
+    }
+  }
+
   Future<Either<String,List<PurchaseViewModel>>> purchaseHistory(int userId) async{
     final url = Uri.http(RepositoryUrls.fullBaseUrl, 'purchase',{'userId':userId.toString()});
     final response = await http.get(url,headers: customHeaders);
@@ -113,5 +131,6 @@ class UserFlowerListRepository{
       return Left("Error: ${response.statusCode}");
     }
   }
+
 
 }

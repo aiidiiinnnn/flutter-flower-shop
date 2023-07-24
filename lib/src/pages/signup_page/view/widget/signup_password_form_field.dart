@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
 import 'dart:core';
-class CustomSignupFormField extends StatelessWidget {
-  const CustomSignupFormField({super.key, required this.hintText,required this.name, required this.controller, required this.validator,required this.icon});
+
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+class SignupPasswordFormField extends StatelessWidget {
+  SignupPasswordFormField({super.key, required this.hintText,required this.name, required this.controller, required this.validator,required this.icon});
   final String hintText;
   final String name;
   final TextEditingController controller;
   final String? Function(String?) validator;
   final IconData icon;
+  RxBool obscureText=true.obs;
+
 
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.all(8.0),
-        child: TextFormField(
+        child: Obx(() => TextFormField(
+          obscureText: obscureText.value,
           enableSuggestions: false,
           style: const TextStyle(color: Color(0xff050a0a)),
           decoration: InputDecoration(
             prefixIcon: Icon(icon),
+            suffixIcon: IconButton(
+              onPressed: ()=>obscureText.value= !obscureText.value,
+              icon: const Icon(Icons.remove_red_eye_outlined),
+            ),
             enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Color(0xff050a0a))
             ),
@@ -28,7 +38,7 @@ class CustomSignupFormField extends StatelessWidget {
           ),
           validator: validator,
           controller: controller,
-        )
+        ))
     );
   }
 }

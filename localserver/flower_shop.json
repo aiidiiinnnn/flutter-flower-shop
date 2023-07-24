@@ -1,10 +1,10 @@
 {
   "vendors": [
     {
-      "firstName": "Mohammad",
-      "lastName": "Rezayi",
-      "email": "mmdrezayi@gmail.com",
-      "password": "mm123",
+      "firstName": "Aidin",
+      "lastName": "Bagherinejad",
+      "email": "bagherinejad.aidin@gmail.com",
+      "password": "Aa123",
       "imagePath": "",
       "vendorFlowerList": [],
       "id": 1
@@ -12,207 +12,25 @@
     {
       "firstName": "Ali",
       "lastName": "Beigi",
-      "email": "beigi-ali@gmail.com",
-      "password": "ali123",
+      "email": "beigi.ali@gmail.com",
+      "password": "Aa123",
       "imagePath": "",
-      "vendorFlowerList": [
-        1,
-        1,
-        1,
-        2,
-        3,
-        1,
-        2,
-        3
-      ],
+      "vendorFlowerList": [],
       "id": 2
     }
   ],
   "users": [
     {
-      "firstName": "Aidin",
-      "lastName": "Bagherinejad",
-      "email": "bagherinejad.aidin@gmail.com",
-      "password": "Aa123",
+      "firstName": "Melika",
+      "lastName": "Jameian",
+      "email": "jameian.melika@gmail.com",
+      "password": "Mm123",
       "imagePath": "",
       "userFlowerList": [],
       "id": 1
     }
   ],
-  "vendorFlowers": [
-    {
-      "name": "Flower1",
-      "imageAddress": "",
-      "description": "flower1 is good ",
-      "price": 1300,
-      "color": [],
-      "category": [],
-      "count": 13,
-      "vendorId": 2,
-      "id": 1
-    },
-    {
-      "name": "Flower2",
-      "imageAddress": "",
-      "description": "flower2 is a flower",
-      "price": 12000,
-      "color": [],
-      "category": [],
-      "count": 17,
-      "vendorId": 2,
-      "id": 2
-    },
-    {
-      "name": "Flower3",
-      "imageAddress": "",
-      "description": "flower3 is red",
-      "price": 12000,
-      "color": [
-        4280501437
-      ],
-      "category": [],
-      "count": 19,
-      "vendorId": 2,
-      "id": 3
-    }
-  ],
-  "purchase": [
-    {
-      "purchaseList": [
-        {
-          "id": 2,
-          "name": "Flower2",
-          "imageAddress": "",
-          "description": "flower2 is a flower",
-          "price": 12000,
-          "color": [],
-          "category": [],
-          "count": 1,
-          "vendorId": 2,
-          "totalCount": 3
-        }
-      ],
-      "date": "2023-7-23 10:51",
-      "userId": 1,
-      "id": 1
-    },
-    {
-      "purchaseList": [
-        {
-          "id": 2,
-          "name": "Flower2",
-          "imageAddress": "",
-          "description": "flower2 is a flower",
-          "price": 12000,
-          "color": [],
-          "category": [],
-          "count": 1,
-          "vendorId": 2,
-          "totalCount": 3
-        },
-        {
-          "id": 2,
-          "name": "Flower2",
-          "imageAddress": "",
-          "description": "flower2 is a flower",
-          "price": 12000,
-          "color": [],
-          "category": [],
-          "count": 1,
-          "vendorId": 2,
-          "totalCount": 3
-        },
-        {
-          "id": 2,
-          "name": "Flower2",
-          "imageAddress": "",
-          "description": "flower2 is a flower",
-          "price": 12000,
-          "color": [],
-          "category": [],
-          "count": 1,
-          "vendorId": 2,
-          "totalCount": 2
-        }
-      ],
-      "date": "2023-7-23 10:59",
-      "userId": 1,
-      "id": 2
-    },
-    {
-      "purchaseList": [
-        {
-          "id": 1,
-          "name": "Flower1",
-          "imageAddress": "",
-          "description": "flower1 is good ",
-          "price": 1300,
-          "color": [],
-          "category": [],
-          "count": 1,
-          "vendorId": 2,
-          "totalCount": 1
-        }
-      ],
-      "date": "2023-7-23 11:0",
-      "userId": 1,
-      "id": 3
-    },
-    {
-      "purchaseList": [
-        {
-          "id": 1,
-          "name": "Flower1",
-          "imageAddress": "",
-          "description": "flower1 is good ",
-          "price": 1300,
-          "color": [],
-          "category": [],
-          "count": 1,
-          "vendorId": 2,
-          "totalCount": 1
-        },
-        {
-          "id": 2,
-          "name": "Flower2",
-          "imageAddress": "",
-          "description": "flower2 is a flower",
-          "price": 12000,
-          "color": [],
-          "category": [],
-          "count": 1,
-          "vendorId": 2,
-          "totalCount": 1
-        }
-      ],
-      "date": "2023-7-23 11:1",
-      "userId": 1,
-      "id": 4
-    },
-    {
-      "purchaseList": [
-        {
-          "id": 1,
-          "name": "Flower1",
-          "imageAddress": "",
-          "description": "flower1 is good ",
-          "price": 1300,
-          "color": [],
-          "category": [],
-          "count": 1,
-          "vendorId": 2,
-          "totalCount": 14
-        }
-      ],
-      "date": "2023-7-23 11:3",
-      "userId": 1,
-      "id": 5
-    }
-  ],
-  "categories": [
-    {
-      "name": "home",
-      "id": 1
-    }
-  ]
+  "vendorFlowers": [],
+  "purchase": [],
+  "categories": []
 }

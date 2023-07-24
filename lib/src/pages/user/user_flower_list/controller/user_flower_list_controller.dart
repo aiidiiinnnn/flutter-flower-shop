@@ -24,26 +24,21 @@ class UserFlowerListController extends GetxController{
   RxInt pageIndex=RxInt(0);
   RxList<int> priceList = RxList();
   RxInt division = RxInt(0);
-  RxString selectedCategory="".obs;
-  RxList<dynamic> colorList=RxList();
   final TextEditingController searchController = TextEditingController();
   final UserFlowerListRepository _repository = UserFlowerListRepository();
   LoginUserViewModel? user;
   int? userId;
   RxDouble minPrice=RxDouble(0);
   RxDouble maxPrice= RxDouble(0);
-  RxInt selectedColor=RxInt(1);
   RxBool isLoading=true.obs;
   RxBool isLoadingDrawer=true.obs;
   RxBool isRetry=false.obs;
   RxBool isLoadingAddToCart=true.obs;
   RxBool isRetryAddToCart=false.obs;
   RxMap buyCounting={}.obs;
-  RxMap colorsOnTap={}.obs;
   RxInt countInCart = RxInt(0);
   List<int> maxCount=[];
   final GlobalKey<FormState> searchKey=GlobalKey();
-  RxList<CategoriesViewModel> categoriesFromJson=RxList();
   Rx<RangeValues> currentRangeValues = Rx<RangeValues>(const RangeValues(0, 100));
 
   void setRange(RangeValues value){
@@ -66,14 +61,25 @@ class UserFlowerListController extends GetxController{
     super.onInit();
     await sharedUser().then((id) => userId=id);
     await getUserById();
-    // await getFlowers();
     await purchaseHistory();
     await getCategories();
   }
 
+  RxBool isCheckedCategory=false.obs;
+  RxBool isCheckedColor=false.obs;
+  RxBool isCheckedPrice=false.obs;
+
+  RxList<String> categoriesFromJson=RxList();
+  RxString selectedCategory="".obs;
   void setSelectedCategory(String value) {
     selectedCategory.value = value;
   }
+  RxList<dynamic> colorList=RxList();
+  RxInt selectedColor=RxInt(1);
+  void setSelectedColor(int colorValue) {
+    selectedColor.value = colorValue;
+  }
+
 
   Future<int?> sharedUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -127,10 +133,6 @@ class UserFlowerListController extends GetxController{
             priceList.add(flower.price);
             colorList.addAll(flower.color);
           }
-          for(final flowerColor in colorList){
-            colorsOnTap[i]=false;
-            i++;
-          }
           priceList.sort();
           minPrice.value=priceList.first.toDouble();
           maxPrice.value=priceList.last.toDouble();
@@ -154,8 +156,12 @@ class UserFlowerListController extends GetxController{
           isRetry.value=true;
         },
             (right){
-          categoriesFromJson.addAll(right);
-          // selectedCategory.value=categoriesFromJson.first.name;
+              for(final category in right){
+                categoriesFromJson.add(category.name);
+              }
+              if(categoriesFromJson.isNotEmpty){
+                selectedCategory.value=categoriesFromJson.first;
+              }
           isLoading.value=false;
         }
     );
@@ -210,9 +216,54 @@ class UserFlowerListController extends GetxController{
     }
   }
 
-  Future<void> addToCart(int index) async{
-    // user!.userFlowerList.clear();
+  Future filterFlowers() async{
+    Map<String, String> query ={};
+    if(isCheckedCategory.value){
+      query["category_like"]=selectedCategory.value;
+    }
+    if(isCheckedColor.value){
+      query["color_like"]=selectedColor.value.toString();
+    }
+    if(isCheckedPrice.value){
+      query["price_gte"]= minPrice.value.toString();
+      query["price_lte"]=maxPrice.value.toString();
+    }
 
+    isLoading.value=true;
+    final Either<String,List<UserFlowerViewModel>> flower = await _repository.filteredFlower(query: query);
+    flower.fold(
+            (left) {
+          print(left);
+          isLoading.value=false;
+          isRetry.value=true;
+        },
+            (right){
+          searchList.clear();
+          searchList.addAll(right);
+          isLoading.value=false;
+        }
+    );
+  }
+
+  Future deleteFilter() async{
+    Map<String, String> query ={};
+    isLoading.value=true;
+    final Either<String,List<UserFlowerViewModel>> flower = await _repository.filteredFlower(query: query);
+    flower.fold(
+            (left) {
+          print(left);
+          isLoading.value=false;
+          isRetry.value=true;
+        },
+            (right){
+          searchList.clear();
+          searchList.addAll(right);
+          isLoading.value=false;
+        }
+    );
+  }
+
+  Future<void> addToCart(int index) async{
     isLoadingAddToCart.value=true;
     isRetryAddToCart.value=false;
     user!.userFlowerList.add(

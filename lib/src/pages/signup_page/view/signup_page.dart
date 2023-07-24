@@ -1,5 +1,6 @@
 import 'package:flower_shop/src/pages/signup_page/view/widget/custom_signup_form_field.dart';
 import 'package:flower_shop/src/pages/signup_page/view/widget/profile_picture.dart';
+import 'package:flower_shop/src/pages/signup_page/view/widget/signup_password_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/signup_page_controller.dart';
@@ -54,21 +55,19 @@ class SignupPage extends GetView<SignupPageController>{
                           validator: controller.emailValidator,
                           icon: Icons.alternate_email,
                         ),
-                        CustomSignupFormField(
+                        SignupPasswordFormField(
                           hintText: "Password",
                           name: "Password",
                           controller: controller.passwordController,
                           validator: controller.passwordValidator,
                           icon: Icons.lock_outlined,
-                          obscureText: true,
                         ),
-                        CustomSignupFormField(
+                        SignupPasswordFormField(
                           hintText: "Confirm Password",
                           name: "Confirm Password",
                           controller: controller.confirmPasswordController,
                           validator: controller.confirmPasswordValidator,
                           icon: Icons.verified_user_outlined,
-                          obscureText: true,
                         ),
 
                         Obx(() => Row(
@@ -108,13 +107,20 @@ class SignupPage extends GetView<SignupPageController>{
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xff6cba00),
                       ),
-                      onPressed: () => {
+                      onPressed: () {
                         if(controller.selectedType.value==1){
-                          controller.addVendor()
-                        },
-                        controller.addUser()
+                          controller.addVendor();
+                        }
+                        else{
+                          controller.addUser();
+                        }
                       },
-                      child: const Text('Signup'),
+                      child: Obx(() => (controller.isLoadingSignup.value) ? const Center(
+                        child: SizedBox(
+                            width: 50,
+                            child: LinearProgressIndicator()
+                        ),
+                      ) : const Text("Signup"),),
                     ),
                   ),
                 ),

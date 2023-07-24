@@ -38,9 +38,7 @@ class UserFlowerHome extends  GetView<UserFlowerListController>{
                     ),
                     onPressed: () async{
                       await Get.toNamed("${RouteNames.userFlowerList}${RouteNames.userFlowerHome}${RouteNames.userFlowerCart}");
-
                        controller.getUserById();
-
                     },
                   ),
                   Positioned(

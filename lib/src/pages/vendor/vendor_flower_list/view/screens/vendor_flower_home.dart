@@ -27,7 +27,7 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
               weight: 2,
             ),
           ),
-          drawer: Drawer(
+          drawer: Obx(() => Drawer(
             backgroundColor: const Color(0xfff3f7f7),
             child: (controller.isLoading.value) ?
             const Center(child: CircularProgressIndicator()) : Column(
@@ -152,7 +152,7 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
             //     ),
             //   ],
             // ),
-          ),
+          ),),
           floatingActionButton: FloatingActionButton(
             backgroundColor: const Color(0xff6cba00),
             onPressed: ()=> controller.goToAdd(),

@@ -69,7 +69,7 @@ class UserFlowerSearch extends  GetView<UserFlowerListController> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xff71cc47),
                         ),
-                        onPressed: ()=> {},
+                        onPressed: ()=> flowerShowDialog(context),
                         child: const Center(child: Icon(Icons.tune_outlined,size: 17)),
                       ),
                     ),
@@ -91,112 +91,221 @@ class UserFlowerSearch extends  GetView<UserFlowerListController> {
         )
     );
   }
-  //
-  // Future<dynamic> flowerShowDialog(BuildContext context) {
-  //   return showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) => AlertDialog(
-  //       backgroundColor: const Color(0xffe9e9e9),
-  //       shape: RoundedRectangleBorder(
-  //         borderRadius: BorderRadius.circular(30),
-  //       ),
-  //       title: Text(locale.LocaleKeys.vendor_flower_home_filter.tr),
-  //       content: Obx(() => Container(
-  //           width: 300,
-  //           height: 300,
-  //           decoration: const BoxDecoration(
-  //               color: Color(0xffe9e9e9)),
-  //           child: Column(
-  //               children: [
-  //                 SizedBox(
-  //                   height: 30,
-  //                   child: Obx( () => DropdownButton(
-  //                       hint: const Text('Categories'),
-  //                       onChanged: (value) {
-  //                         controller.setSelectedCategory(value!);
-  //                       },
-  //                       value: controller.selectedCategory.value,
-  //                       items: controller.categoriesFromJson.map<DropdownMenuItem>(
-  //                               (dynamic value){
-  //                             return DropdownMenuItem(
-  //                                 value: value,
-  //                                 child: Text("$value")
-  //                             );
-  //                           }).toList()
-  //                   )),
-  //                 ),
-  //
-  //                 const SizedBox(height: 30),
-  //
-  //                 SizedBox(
-  //                   height: 30,
-  //                   child: Expanded(
-  //                       child: ListView.builder(
-  //                           shrinkWrap: true,
-  //                           scrollDirection: Axis.horizontal,
-  //                           itemCount: controller.colorList.length,
-  //                           itemBuilder: (_,index) => Padding(
-  //                               padding: const EdgeInsets.all(4.0),
-  //                               child: Obx(() => Container(
-  //                                 height: 30,
-  //                                 width: 30,
-  //                                 decoration: BoxDecoration(
-  //                                   color: (controller.colorsOnTap[index]) ? Colors.grey : Color(controller.colorList[index]),
-  //                                   border: Border.all(color: Colors.black),
-  //                                   borderRadius: BorderRadius.circular(200),
-  //                                 ),
-  //                                 child: InkWell(
-  //                                     onTap: () {
-  //                                       int i=0;
-  //                                       for(final color in controller.colorList){
-  //                                         controller.colorsOnTap[i]=false;
-  //                                         i++;
-  //                                       }
-  //                                       controller.colorsOnTap[index] = !controller.colorsOnTap[index];
-  //                                       controller.selectedColor.value=controller.colorList[index];
-  //                                     }),
-  //                               ),)
-  //                           )
-  //                       )
-  //                   ),
-  //                 ),
-  //
-  //                 const SizedBox(height: 30),
-  //
-  //                 Obx(() => RangeSlider(
-  //                   values: controller.currentRangeValues.value,
-  //                   min: controller.minPrice.value,
-  //                   max: controller.maxPrice.value,
-  //                   divisions: controller.division.value,
-  //                   labels: RangeLabels(
-  //                     controller.currentRangeValues.value.start.round().toString(),
-  //                     controller.currentRangeValues.value.end.round().toString(),
-  //                   ),
-  //                   onChanged: (RangeValues values) {
-  //                     controller.setRange(values);
-  //                   },
-  //                 ))
-  //               ]
-  //           )
-  //       ),),
-  //
-  //       actions: [
-  //         ElevatedButton(
-  //           child: Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //             children: [
-  //               const Icon(Icons.filter_list_outlined),
-  //               Text(locale.LocaleKeys.vendor_flower_home_filter.tr),
-  //             ],
-  //           ),
-  //           onPressed: () => {
-  //             // controller.filterFlowers(controller.selectedCategory.value,controller.selectedColor.value),
-  //             Navigator.of(context).pop(),
-  //           },
-  //         ),
-  //       ],
-  //     ),
-  //
-  //   );
-  // }
+
+  Future<dynamic> flowerShowDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        backgroundColor: const Color(0xffe9e9e9),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+        title: Text(locale.LocaleKeys.vendor_flower_home_filter.tr),
+        content: Obx(() => Container(
+            width: 300,
+            height: 300,
+            decoration: const BoxDecoration(
+                color: Color(0xffe9e9e9)),
+            child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                            height: 24.0,
+                            width: 24.0,
+                            child: Theme(
+                              data: ThemeData(
+                                  unselectedWidgetColor: Colors.blue
+                              ),
+                              child: Obx(() => Checkbox(
+                                  value: controller.isCheckedCategory.value,
+                                  onChanged: (value) {
+                                    controller.isCheckedCategory.value=value!;
+                                  }
+                              ),),
+                            )),
+                        const SizedBox(width: 10.0),
+                        const Text("Colors", style: TextStyle(
+                            color: Color(0xff050a0a),
+                            fontSize: 12,
+                            fontFamily: 'Rubric')
+                        )
+                      ],
+                    ),
+                  ),
+                  (controller.isCheckedCategory.value) ?
+                  SizedBox(
+                    height: 30,
+                    child: DropdownButton<String>(
+                        hint: const Text('Categories'),
+                        onChanged: (value) {
+                          controller.setSelectedCategory(value!);
+                        },
+                        value: controller.selectedCategory.value,
+                        items: controller.categoriesFromJson.map<DropdownMenuItem<String>>(
+                                (dynamic value){
+                              return DropdownMenuItem(
+                                  value: value,
+                                  child: Text("$value")
+                              );
+                            }).toList()
+                    )
+                  ) : const SizedBox(),
+
+                  const SizedBox(height: 30),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                            height: 24.0,
+                            width: 24.0,
+                            child: Theme(
+                              data: ThemeData(
+                                  unselectedWidgetColor: Colors.blue
+                              ),
+                              child: Obx(() => Checkbox(
+                                  value: controller.isCheckedColor.value,
+                                  onChanged: (value) {
+                                    controller.isCheckedColor.value=value!;
+                                  }
+                              ),),
+                            )),
+                        const SizedBox(width: 10.0),
+                        const Text("Categories", style: TextStyle(
+                            color: Color(0xff050a0a),
+                            fontSize: 12,
+                            fontFamily: 'Rubric')
+                        )
+                      ],
+                    ),
+                  ),
+                  (controller.isCheckedColor.value) ?
+                  SizedBox(
+                    height: 30,
+                    child: Expanded(
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: controller.colorList.length,
+                            itemBuilder: (_,index) => Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: InkWell(
+                                  onTap: ()=> controller.setSelectedColor(controller.colorList[index]),
+                                  child: Obx(() => (controller.selectedColor==controller.colorList[index]) ?
+                                  Container(
+                                    height: 35,
+                                    width: 35,
+                                    decoration: BoxDecoration(
+                                      color: Color(controller.colorList[index]),
+                                      border: Border.all(color: Colors.black),
+                                      borderRadius: BorderRadius.circular(200),
+                                    ),
+                                        child: const Center(child: Icon(Icons.check,size: 16,color: Colors.white,)),
+                                  ): Container(
+                                    height: 30,
+                                    width: 30,
+                                    decoration: BoxDecoration(
+                                      color: Color(controller.colorList[index]),
+                                      border: Border.all(color: Colors.black),
+                                      borderRadius: BorderRadius.circular(200),
+                                    ),
+                                  )
+                                  )
+                                )
+                            )
+                        )
+                    ),
+                  ): const SizedBox(),
+
+                  const SizedBox(height: 30),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                            height: 24.0,
+                            width: 24.0,
+                            child: Theme(
+                              data: ThemeData(
+                                  unselectedWidgetColor: Colors.blue
+                              ),
+                              child: Obx(() => Checkbox(
+                                  value: controller.isCheckedPrice.value,
+                                  onChanged: (value) {
+                                    controller.isCheckedPrice.value=value!;
+                                  }
+                              ),),
+                            )),
+                        const SizedBox(width: 10.0),
+                        const Text("Range Price", style: TextStyle(
+                            color: Color(0xff050a0a),
+                            fontSize: 12,
+                            fontFamily: 'Rubric')
+                        )
+                      ],
+                    ),
+                  ),
+                  (controller.isCheckedPrice.value) ?
+                  Obx(() => RangeSlider(
+                    values: controller.currentRangeValues.value,
+                    min: controller.minPrice.value,
+                    max: controller.maxPrice.value,
+                    divisions: controller.division.value,
+                    labels: RangeLabels(
+                      controller.currentRangeValues.value.start.round().toString(),
+                      controller.currentRangeValues.value.end.round().toString(),
+                    ),
+                    onChanged: (RangeValues values) {
+                      controller.setRange(values);
+                    },
+                  )) : const SizedBox()
+                ]
+            )
+        ),),
+
+        actions: [
+          Center(
+            child: SizedBox(
+              width: 200,
+              child: ElevatedButton(
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Icon(Icons.filter_list_off_outlined),
+                    Text("Delete Filter"),
+                  ],
+                ),
+                onPressed: () => {
+                  controller.deleteFilter(),
+                  Navigator.of(context).pop(),
+                },
+              ),
+            ),
+          ),
+          ElevatedButton(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Icon(Icons.filter_list_outlined),
+                Text(locale.LocaleKeys.vendor_flower_home_filter.tr),
+              ],
+            ),
+            onPressed: () => {
+              controller.filterFlowers(),
+              Navigator.of(context).pop(),
+            },
+          ),
+        ],
+      ),
+
+    );
+  }
 }

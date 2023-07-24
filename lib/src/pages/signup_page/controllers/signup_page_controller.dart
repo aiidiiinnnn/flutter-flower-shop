@@ -23,6 +23,7 @@ class SignupPageController extends GetxController {
   RxInt selectedType = 1.obs;
   RxString imagePath=''.obs;
   RxString savedImage=''.obs;
+  RxBool isLoadingSignup=false.obs;
 
   String? firstNameValidator(final String? firstName) {
     if (firstName == null || firstName.isEmpty) {
@@ -104,6 +105,7 @@ class SignupPageController extends GetxController {
   }
 
   Future<void> addVendor() async {
+    isLoadingSignup.value=true;
     if (!formKey.currentState!.validate()) {
       return;
     }
@@ -118,23 +120,26 @@ class SignupPageController extends GetxController {
     final Either<String, SignupVendorViewModel> request = await _repository
         .addVendor(dto);
     request.fold(
-            (left) => print(left),
-            (right) =>
-            Get.back(
-                result: {
-                  "id": right.id,
-                  "firstName": right.firstName,
-                  "lastName": right.lastName,
-                  "email": right.email,
-                  "password": right.password,
-                  "imagePath": right.imagePath,
-                  "vendorFlowerList": right.vendorFlowerList
-                }
-            )
-    );
+            (left) {
+              isLoadingSignup.value=false;
+              print(left);
+            },
+            (right) {
+              isLoadingSignup.value=false;
+              Get.back(result: {
+                "id": right.id,
+                "firstName": right.firstName,
+                "lastName": right.lastName,
+                "email": right.email,
+                "password": right.password,
+                "imagePath": right.imagePath,
+                "vendorFlowerList": right.vendorFlowerList
+              });
+            });
   }
 
   Future<void> addUser() async {
+    isLoadingSignup.value=true;
     if (!formKey.currentState!.validate()) {
       return;
     }
@@ -149,19 +154,21 @@ class SignupPageController extends GetxController {
     final Either<String, SignupUserViewModel> request = await _repository
         .addUser(dto);
     request.fold(
-            (left) => print(left),
-            (right) =>
-            Get.back(
-                result: {
-                  "id": right.id,
-                  "firstName": right.firstName,
-                  "lastName": right.lastName,
-                  "email": right.email,
-                  "password": right.password,
-                  "imagePath": right.imagePath,
-                  "userFlowerList": right.userFlowerList
-                }
-            )
-    );
+            (left) {
+              isLoadingSignup.value=false;
+              print(left);
+            },
+            (right) {
+              isLoadingSignup.value=false;
+              Get.back(result: {
+                "id": right.id,
+                "firstName": right.firstName,
+                "lastName": right.lastName,
+                "email": right.email,
+                "password": right.password,
+                "imagePath": right.imagePath,
+                "userFlowerList": right.userFlowerList
+              });
+            });
   }
 }

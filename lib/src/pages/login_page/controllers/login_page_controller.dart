@@ -134,16 +134,19 @@ class LoginPageController extends GetxController {
     );
   }
 
+  RxBool isLoadingLogin=false.obs;
   Future<void> goToNextPage() async {
     if (!formKey.currentState!.validate()) {
       return;
     }
+    isLoadingLogin.value=true;
     isLoading.value = true;
     final Either<String, List<LoginVendorViewModel>> vendorsByEmailPassword = await _repository.getVendorByEmailPassword(email: emailController.text, password: passwordController.text);
     final Either<String, List<LoginUserViewModel>> usersByEmailPassword = await _repository.getUserByEmailPassword(email: emailController.text, password: passwordController.text);
     vendorsByEmailPassword.fold(
             (left) {
           print(left);
+          isLoadingLogin.value=false;
           isLoading.value = false;
         },
             (right) {
@@ -197,10 +200,12 @@ class LoginPageController extends GetxController {
                   else{
                     Get.snackbar('Email', 'has not found');
                   }
+                  isLoadingLogin.value=false;
                   isLoading.value = false;
                 }
             );
           }
+          isLoadingLogin.value=false;
           isLoading.value = false;
         }
     );

@@ -209,7 +209,8 @@ class AddVendorFlowerController extends GetxController{
                       "color": right.color,
                       "imageAddress": right.imageAddress,
                       "count": right.count,
-                      "category": right.category
+                      "category": right.category,
+                      "vendorId":right.vendorId
                     });
                   });
         }

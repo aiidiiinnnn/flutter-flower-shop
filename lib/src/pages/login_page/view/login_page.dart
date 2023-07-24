@@ -1,4 +1,5 @@
 import 'package:flower_shop/src/pages/login_page/view/widget/custom_login_form_field.dart';
+import 'package:flower_shop/src/pages/login_page/view/widget/login_password_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/login_page_controller.dart';
@@ -53,14 +54,21 @@ class LoginPage extends  GetView<LoginPageController>{
                             validator: controller.emailValidator,
                             icon: Icons.accessibility_outlined,
                           ),
-                          CustomLoginFormField(
+                          LoginPasswordFormField(
                             hintText: "Password",
                             name: "Password",
                             controller: controller.passwordController,
                             validator: controller.passwordValidator,
                             icon: Icons.lock_outlined,
-                            obscureText: true,
                           ),
+                          // CustomLoginFormField(
+                          //   hintText: "Password",
+                          //   name: "Password",
+                          //   controller: controller.passwordController,
+                          //   validator: controller.passwordValidator,
+                          //   icon: Icons.lock_outlined,
+                          //   obscureText: true,
+                          // ),
                         ],
                       )
                   ),
@@ -104,7 +112,12 @@ class LoginPage extends  GetView<LoginPageController>{
                           backgroundColor: const Color(0xff6cba00),
                         ),
                         onPressed: controller.goToNextPage,
-                        child: const Text('Login'),
+                        child: Obx(() => (controller.isLoadingLogin.value) ? const Center(
+                          child: SizedBox(
+                              width: 50,
+                              child: LinearProgressIndicator()
+                          ),
+                        ) : const Text("Login"),),
                       ),
                     ),
                   ),

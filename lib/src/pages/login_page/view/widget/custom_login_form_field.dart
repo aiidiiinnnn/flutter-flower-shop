@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'dart:core';
 class CustomLoginFormField extends StatelessWidget {
-  const CustomLoginFormField({super.key, required this.hintText,required this.name, required this.controller, required this.validator,required this.icon, this.obscureText=false});
+  const CustomLoginFormField({super.key, required this.hintText,required this.name, required this.controller, required this.validator,required this.icon});
   final String hintText;
   final String name;
   final TextEditingController controller;
   final String? Function(String?) validator;
   final IconData icon;
-  final bool obscureText;
+
 
 
   @override
@@ -15,7 +15,6 @@ class CustomLoginFormField extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.all(8.0),
         child: TextFormField(
-          obscureText: obscureText,
           enableSuggestions: false,
           style: const TextStyle(color: Color(0xff050a0a)),
           decoration: InputDecoration(

@@ -72,6 +72,14 @@ class VendorFlowerListController extends GetxController{
     await purchaseHistory();
   }
 
+  RxBool isCheckedCategory=false.obs;
+  RxBool isCheckedColor=false.obs;
+  RxBool isCheckedPrice=false.obs;
+
+  void setSelectedColor(int colorValue) {
+    selectedColor.value = colorValue;
+  }
+
 
   Future<int?> sharedVendor() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -307,11 +315,21 @@ class VendorFlowerListController extends GetxController{
     );
   }
 
-  Future<void> filterFlowers(String categoryName,int color) async{
-    searchedFlowersList.clear();
+  Future filterFlowers() async{
+    Map<String, String> query ={};
+    if(isCheckedCategory.value){
+      query["category_like"]=selectedCategory.value;
+    }
+    if(isCheckedColor.value){
+      query["color_like"]=selectedColor.value.toString();
+    }
+    if(isCheckedPrice.value){
+      query["price_gte"]= minPrice.value.toString();
+      query["price_lte"]=maxPrice.value.toString();
+    }
+
     isLoading.value=true;
-    isRetry.value=false;
-    final Either<String,List<VendorFlowerViewModel>> flower = await _repository.filterFlowers(categoryName,color);
+    final Either<String,List<VendorFlowerViewModel>> flower = await _repository.filteredFlower(query: query);
     flower.fold(
             (left) {
           print(left);
@@ -319,11 +337,48 @@ class VendorFlowerListController extends GetxController{
           isRetry.value=true;
         },
             (right){
-              searchedFlowersList.addAll(right);
-              isLoading.value=false;
-            }
+              searchedFlowersList.clear();
+          searchedFlowersList.addAll(right);
+          isLoading.value=false;
+        }
     );
   }
+
+  Future deleteFilter() async{
+    Map<String, String> query ={};
+    isLoading.value=true;
+    final Either<String,List<VendorFlowerViewModel>> flower = await _repository.filteredFlower(query: query);
+    flower.fold(
+            (left) {
+          print(left);
+          isLoading.value=false;
+          isRetry.value=true;
+        },
+            (right){
+              searchedFlowersList.clear();
+          searchedFlowersList.addAll(right);
+          isLoading.value=false;
+        }
+    );
+  }
+
+  // Future<void> filterFlowers(String categoryName,int color) async{
+  //   searchedFlowersList.clear();
+  //   isLoading.value=true;
+  //   isRetry.value=false;
+  //   final Either<String,List<VendorFlowerViewModel>> flower = await _repository.filterFlowers(categoryName,color);
+  //   flower.fold(
+  //           (left) {
+  //         print(left);
+  //         isLoading.value=false;
+  //         isRetry.value=true;
+  //       },
+  //           (right){
+  //             searchedFlowersList.addAll(right);
+  //             isLoading.value=false;
+  //           }
+  //   );
+  // }
 
 
 

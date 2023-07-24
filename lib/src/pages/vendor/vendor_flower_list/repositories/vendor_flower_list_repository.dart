@@ -84,19 +84,18 @@ class VendorFlowerListRepository{
     }
   }
 
-  Future<Either<String,List<VendorFlowerViewModel>>> filterFlowers(String categoryName,int color) async{
-    final url = Uri.http(RepositoryUrls.fullBaseUrl, 'vendorFlowers',{'category_like':categoryName,'color_like':color});
+  Future<Either<String,List<VendorFlowerViewModel>>> filteredFlower({required Map<String,String> query}) async{
+    final url = Uri.http(RepositoryUrls.fullBaseUrl, 'vendorFlowers',query);
     final response = await http.get(url,headers: customHeaders);
-
     if(response.statusCode >= 200 && response.statusCode <400){
-      final List<VendorFlowerViewModel> filterFlowers =[];
-      final List<dynamic> filterFlowerList = json.decode(response.body);
+      final List<VendorFlowerViewModel> searchedFlowers =[];
+      final List<dynamic> userFlowersList = json.decode(response.body);
 
-      for(final items in filterFlowerList){
+      for(final items in userFlowersList){
         final userFlowerViewModel = VendorFlowerViewModel.fromJson(items);
-        filterFlowers.add(userFlowerViewModel);
+        searchedFlowers.add(userFlowerViewModel);
       }
-      return Right(filterFlowers);
+      return Right(searchedFlowers);
     }
     else{
       return Left("Error: ${response.statusCode}");
