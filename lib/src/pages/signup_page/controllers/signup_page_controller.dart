@@ -110,6 +110,11 @@ class SignupPageController extends GetxController {
     }
   }
 
+  void deleteImage(){
+    imagePath.value="";
+    savedImage.value="";
+  }
+
   Future<void> addVendor() async {
     if (!formKey.currentState!.validate()) {
       return;

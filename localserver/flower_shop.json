@@ -1,36 +1,7 @@
 {
-  "vendors": [
-    {
-      "firstName": "Aidin",
-      "lastName": "Bagherinejad",
-      "email": "bagherinejad.aidin@gmail.com",
-      "password": "Aa123",
-      "imagePath": "",
-      "vendorFlowerList": [],
-      "id": 1
-    },
-    {
-      "firstName": "Ali",
-      "lastName": "Beigi",
-      "email": "beigi.ali@gmail.com",
-      "password": "Aa123",
-      "imagePath": "",
-      "vendorFlowerList": [],
-      "id": 2
-    }
-  ],
-  "users": [
-    {
-      "firstName": "Melika",
-      "lastName": "Jameian",
-      "email": "jameian.melika@gmail.com",
-      "password": "Mm123",
-      "imagePath": "",
-      "userFlowerList": [],
-      "id": 1
-    }
-  ],
-  "vendorFlowers": [],
+  "vendors": [],
+  "users": [],
   "purchase": [],
+  "vendorFlowers": [],
   "categories": []
 }

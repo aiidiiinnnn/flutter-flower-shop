@@ -1,5 +1,6 @@
 import 'package:flower_shop/src/pages/signup_page/view/widget/custom_signup_form_field.dart';
-import 'package:flower_shop/src/pages/signup_page/view/widget/profile_picture.dart';
+import 'package:flower_shop/src/pages/signup_page/view/widget/empty_profile_picture.dart';
+import 'package:flower_shop/src/pages/signup_page/view/widget/image_profile_picture.dart';
 import 'package:flower_shop/src/pages/signup_page/view/widget/signup_password_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,7 +34,9 @@ class SignupPage extends GetView<SignupPageController>{
                     key: controller.formKey,
                     child: Column(
                       children: [
-                        ProfilePicture(shapeSize: 150),
+                        Obx(() => controller.imagePath.isEmpty?
+                        EmptyProfilePicture(shapeSize: 150):ImageProfilePicture(shapeSize: 170)),
+
                         CustomSignupFormField(
                           hintText: "First Name",
                           name: "First Name",

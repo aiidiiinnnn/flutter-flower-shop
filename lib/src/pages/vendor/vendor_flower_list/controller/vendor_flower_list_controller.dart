@@ -362,24 +362,5 @@ class VendorFlowerListController extends GetxController{
     );
   }
 
-  // Future<void> filterFlowers(String categoryName,int color) async{
-  //   searchedFlowersList.clear();
-  //   isLoading.value=true;
-  //   isRetry.value=false;
-  //   final Either<String,List<VendorFlowerViewModel>> flower = await _repository.filterFlowers(categoryName,color);
-  //   flower.fold(
-  //           (left) {
-  //         print(left);
-  //         isLoading.value=false;
-  //         isRetry.value=true;
-  //       },
-  //           (right){
-  //             searchedFlowersList.addAll(right);
-  //             isLoading.value=false;
-  //           }
-  //   );
-  // }
-
-
 
 }

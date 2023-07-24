@@ -50,6 +50,13 @@ class LoginPageController extends GetxController {
     );
     isChecked.value = value;
   }
+  void handleLogin(String role) {
+    SharedPreferences.getInstance().then(
+          (prefs) {
+        prefs.setString('role', role);
+      },
+    );
+  }
 
   void saveVendor(int id){
     SharedPreferences.getInstance().then(
@@ -68,7 +75,12 @@ class LoginPageController extends GetxController {
   }
 
   Future<void> goToSignup() async {
-    Get.toNamed("${RouteNames.loginPage}${RouteNames.signupPage}");
+    final result = await Get.toNamed("${RouteNames.loginPage}${RouteNames.signupPage}");
+    final bool isSignedUp = result != null;
+    if(isSignedUp){
+      emailController.text=result["email"];
+      passwordController.text=result["password"];
+    }
   }
 
   Future<void> getVendor() async {
@@ -167,6 +179,9 @@ class LoginPageController extends GetxController {
                   if(isChecked.value){
                     handleRememberMe(chosenRole, isChecked.value);
                   }
+                  else{
+                    handleLogin(chosenRole);
+                  }
                   saveVendor(loginVendor.id);
                   Get.offAndToNamed(RouteNames.vendorFlowerList);
                 }
@@ -193,6 +208,9 @@ class LoginPageController extends GetxController {
                           chosenRole ="user";
                           if(isChecked.value){
                             handleRememberMe(chosenRole, isChecked.value);
+                          }
+                          else{
+                            handleLogin(chosenRole);
                           }
                           saveUser(loginUser.id);
                           Get.offAndToNamed(RouteNames.userFlowerList);
