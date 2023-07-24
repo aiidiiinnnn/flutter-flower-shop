@@ -43,12 +43,18 @@ class SignupPageController extends GetxController {
     if (email == null || email.isEmpty) {
       return "Please enter your email address";
     }
+    if(!RegExp(r'\S+@\S+\.\S+').hasMatch(email)){
+      return "Please enter a valid email address";
+    }
     return null;
   }
 
   String? passwordValidator(final String? password) {
     if (password == null || password.isEmpty) {
       return "please enter your password";
+    }
+    else if(!RegExp(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$").hasMatch(password)){
+      return "Password must have minimum eight characters, at least one letter and one number";
     }
     else if (password != confirmPasswordController.text) {
       return "Passwords do not match";
@@ -105,10 +111,10 @@ class SignupPageController extends GetxController {
   }
 
   Future<void> addVendor() async {
-    isLoadingSignup.value=true;
     if (!formKey.currentState!.validate()) {
       return;
     }
+    isLoadingSignup.value=true;
     final dto = SignupVendorDto(
       firstName: firstNameController.text,
       lastName: lastNameController.text,
@@ -139,10 +145,10 @@ class SignupPageController extends GetxController {
   }
 
   Future<void> addUser() async {
-    isLoadingSignup.value=true;
     if (!formKey.currentState!.validate()) {
       return;
     }
+    isLoadingSignup.value=true;
     final dto = SignupUserDto(
       firstName: firstNameController.text,
       lastName: lastNameController.text,

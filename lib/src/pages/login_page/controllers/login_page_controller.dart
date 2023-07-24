@@ -27,6 +27,9 @@ class LoginPageController extends GetxController {
     if (email == null || email.isEmpty) {
       return "Please enter your email address";
     }
+    if(!RegExp(r'\S+@\S+\.\S+').hasMatch(email)){
+      return "Please enter a valid email address";
+    }
     return null;
   }
 

@@ -61,14 +61,6 @@ class LoginPage extends  GetView<LoginPageController>{
                             validator: controller.passwordValidator,
                             icon: Icons.lock_outlined,
                           ),
-                          // CustomLoginFormField(
-                          //   hintText: "Password",
-                          //   name: "Password",
-                          //   controller: controller.passwordController,
-                          //   validator: controller.passwordValidator,
-                          //   icon: Icons.lock_outlined,
-                          //   obscureText: true,
-                          // ),
                         ],
                       )
                   ),
