@@ -30,7 +30,7 @@ class AddVendorFlowerController extends GetxController{
   RxBool isRetry=false.obs;
   RxBool isLoadingCategory=false.obs;
   RxList categoryList=RxList();
-  List<dynamic> colors=[];
+  List colors=[];
   RxList colorList=[].obs;
   RxString imagePath=''.obs;
   RxString savedImage=''.obs;
@@ -52,6 +52,7 @@ class AddVendorFlowerController extends GetxController{
     return prefs.getInt("vendorId");
   }
 
+  // RxBool isCategoryAdded=false.obs;
   Future<void> addCategory(String category) async {
     if(category.isEmpty){
       Get.snackbar('Category', "Can't add empty category");
@@ -60,7 +61,7 @@ class AddVendorFlowerController extends GetxController{
     // for(final categoryName in categoryList){
     //   if(categoryName.name.toLowerCase().trim()==category.toLowerCase().trim()){
     //     Get.snackbar('Category', "This category already exist");
-    //     return;
+    //     isCategoryAdded.value=true;
     //   }
     // }
     for(final categoryName in categoriesFromJson){
@@ -92,6 +93,11 @@ class AddVendorFlowerController extends GetxController{
     pickerColor = color;
     colorList.add(pickerColor);
     colors.add(pickerColor.value);
+  }
+
+  void removeColor(Color color) {
+    colorList.remove(pickerColor);
+    colors.remove(pickerColor.value);
   }
 
   Future<void> imageFromCamera() async {
@@ -149,6 +155,9 @@ class AddVendorFlowerController extends GetxController{
     if(count == null || count.isEmpty){
       return "Please enter the count";
     }
+    else if(!RegExp(r"^[1-9]\d*$").hasMatch(count)){
+      return "Enter a valid count";
+    }
     return null;
   }
 
@@ -169,6 +178,9 @@ class AddVendorFlowerController extends GetxController{
   String? priceValidator(final String? basePrice){
     if(basePrice == null || basePrice.isEmpty){
       return "Please enter price correctly";
+    }
+    else if(!RegExp(r"^[1-9]\d*$").hasMatch(basePrice)){
+    return "Enter a valid price";
     }
     return null;
   }

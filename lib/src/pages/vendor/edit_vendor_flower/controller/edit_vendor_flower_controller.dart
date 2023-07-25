@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import '../../add_vendor_flower/models/categories/categories_dto.dart';
+import '../../add_vendor_flower/models/categories/categories_view_model.dart';
 import '../models/edit_vendor_flower_view_model.dart';
 import '../repositories/edit_vendor_flower_repository.dart';
 
@@ -26,6 +28,11 @@ class EditVendorFlowerController extends GetxController{
   RxString savedImage=''.obs;
   int? vendorId;
   RxDouble space=RxDouble(30);
+  RxList<CategoriesViewModel> categoriesFromJson=RxList();
+  RxBool isLoadingCategory=false.obs;
+  RxBool isLoading=true.obs;
+  RxBool isRetry=false.obs;
+  RxBool isLoadingSubmit=false.obs;
 
   @override
   Future<void> onInit() async {
@@ -39,7 +46,13 @@ class EditVendorFlowerController extends GetxController{
     categoryList.value=Get.arguments['category'];
     savedImage.value=Get.arguments['imageAddress'];
     colors.value=Get.arguments['color'];
-    getFlowerById();
+    await getFlowerById();
+    await getCategories();
+  }
+
+  void deleteImage(){
+    imagePath.value="";
+    savedImage.value="";
   }
 
   Future<int?> sharedVendor() async {
@@ -47,13 +60,55 @@ class EditVendorFlowerController extends GetxController{
     return prefs.getInt("vendorId");
   }
 
-  void addCategory(String category){
-    if (!categoryKey.currentState!.validate()) {
+  Future<void> getCategories() async{
+    categoriesFromJson.clear();
+    isLoading.value=true;
+    isRetry.value=false;
+    final Either<String,List<CategoriesViewModel>> flower = await _repository.getCategories();
+    flower.fold(
+            (left) {
+          print(left);
+          isLoading.value=false;
+          isRetry.value=true;
+        },
+            (right){
+          categoriesFromJson.addAll(right);
+          isLoading.value=false;
+        }
+    );
+  }
+
+  Future<void> addCategory(String category) async {
+    if(category.isEmpty){
+      Get.snackbar('Category', "Can't add empty category");
       return;
     }
-    categoryList.add(category);
-    categoryController.clear();
-    print(categoryList);
+    // for(final categoryName in categoryList){
+    //   if(categoryName.name.toLowerCase().trim()==category.toLowerCase().trim()){
+    //     Get.snackbar('Category', "This category already exist");
+    //     isCategoryAdded.value=true;
+    //   }
+    // }
+    for(final categoryName in categoriesFromJson){
+      if(categoryName.name.toLowerCase().trim()==category.toLowerCase().trim()){
+        categoryList.add(category);
+        return;
+      }
+    }
+    isLoadingCategory.value=true;
+    final categoryDto = CategoriesDto(name: category);
+    final Either<String, CategoriesViewModel> categoryRequest = await _repository.addCategories(categoryDto);
+    categoryRequest.fold(
+            (left) {
+          isLoadingCategory.value=false;
+          print(left);
+        },
+            (right) async {
+          Get.snackbar('Category', 'category successfully added');
+          categoryList.add(category);
+          await getCategories();
+          isLoadingCategory.value=false;
+        });
   }
 
   Color currentColor = const Color(0xff32623a);
@@ -63,7 +118,9 @@ class EditVendorFlowerController extends GetxController{
     pickerColor = color;
     colors.add(pickerColor.value);
   }
-
+  void removeColor(Color color) {
+    colors.remove(pickerColor.value);
+  }
   void editColor(Color color){
     pickerColor = color;
   }
@@ -137,6 +194,8 @@ class EditVendorFlowerController extends GetxController{
     return null;
   }
 
+
+
   Future<void> getFlowerById () async{
     final Either<String, EditVendorFlowerViewModel> flowerById = await _repository.getFlowerById(_selectedFlowerId!);
     flowerById.fold(
@@ -159,11 +218,14 @@ class EditVendorFlowerController extends GetxController{
     if(!formKey.currentState!.validate()){
       return;
     }
+    isLoadingSubmit.value=true;
     final EditVendorFlowerDto dataTransferObject = _generateDto();
     final result = await _repository.editFlower( flowerDto:dataTransferObject);
     if(result.isLeft){
+      isLoadingSubmit.value=false;
       Get.snackbar('Error', result.left);
     }else {
+      isLoadingSubmit.value=false;
       Get.back(result: result.right);
     }
   }

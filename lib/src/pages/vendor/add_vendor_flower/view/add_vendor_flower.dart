@@ -175,8 +175,14 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                               child: RawAutocomplete(
                                 optionsBuilder: (TextEditingValue textEditingValue) {
                                   if (textEditingValue.text == '') {
-                                    return const Iterable<String>.empty();
-                                  }else{
+                                    // return const Iterable<String>.empty();
+                                    List<String> matches = <String>[];
+                                    for(final item in controller.categoriesFromJson){
+                                      matches.add(item.name);
+                                    }
+                                    return matches;
+                                  }
+                                  else{
                                     List<String> matches = <String>[];
                                     for(final item in controller.categoriesFromJson){
                                       matches.add(item.name);
@@ -274,9 +280,10 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                             ),
 
                         Obx(() => (controller.categoryList.isNotEmpty) ?
-                        SizedBox(
-                            height: controller.space.value,
-                            child: Expanded(
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: SizedBox(
+                              height: controller.space.value,
                               child: ListView.builder(
                                 shrinkWrap: true,
                                 scrollDirection: Axis.horizontal,
@@ -284,8 +291,8 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                                 itemBuilder: (_, index) => Chip(
                                   label: Text(controller.categoryList[index]),
                                   onDeleted: () => {controller.categoryList.removeAt(index)},
-                                ),),
-                            )
+                                ),)
+                          ),
                         ) : const SizedBox(height: 0)),
                         ElevatedButton(
                           onPressed: ()=>{
@@ -295,22 +302,23 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                         ),
                         Obx(() => (controller.colorList.isNotEmpty) ? SizedBox(
                           height: controller.space.value,
-                          child: Expanded(
-                              child: ListView.builder(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: controller.colorList.length,
-                                  itemBuilder: (_,index) => Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Container(
-                                        height: 30,
-                                        width: 30,
-                                        decoration: BoxDecoration(
-                                          color: controller.colorList[index],
-                                          border: Border.all(color: Colors.black),
-                                          borderRadius: BorderRadius.circular(200),
-                                        ),
-                                      )
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: controller.colorList.length,
+                              itemBuilder: (_,index) => Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: InkWell(
+                                    onTap:()=>controller.removeColor(controller.colorList[index]),
+                                    child: Container(
+                                      height: 30,
+                                      width: 30,
+                                      decoration: BoxDecoration(
+                                        color: controller.colorList[index],
+                                        border: Border.all(color: Colors.black),
+                                        borderRadius: BorderRadius.circular(200),
+                                      ),
+                                    ),
                                   )
                               )
                           ),
@@ -381,7 +389,7 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
           actions: [
             TextButton(
                 child: const Text("Cancel"),
-                onPressed:  (){
+                onPressed: (){
                   Navigator.of(context).pop();
                 }
             ),

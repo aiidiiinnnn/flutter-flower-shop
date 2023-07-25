@@ -35,15 +35,20 @@ class VendorFlowerListController extends GetxController{
   RxList<VendorFlowerViewModel> vendorFlowersList =RxList();
   RxList<VendorFlowerViewModel> searchedFlowersList =RxList();
   RxBool isLoading=true.obs;
+  RxString isLoadingDelete="".obs;
+  RxBool disableLoading=false.obs;
   RxBool isRetry=false.obs;
   RxBool isLoadingDrawer=true.obs;
   RxBool isRetryDrawer=false.obs;
-  RxBool isLoadingCount=true.obs;
-  RxBool isRetryCount=false.obs;
+  RxList<String> countLoading=RxList();
+  RxList<bool> isOutOfStock=RxList();
   RxBool textFlag = true.obs;
   RxInt index=RxInt(0);
   RxMap colorsOnTap={}.obs;
   Rx<RangeValues> currentRangeValues = Rx<RangeValues>(const RangeValues(0, 100));
+  RxBool isCheckedCategory=false.obs;
+  RxBool isCheckedColor=false.obs;
+  RxBool isCheckedPrice=false.obs;
 
   void setRange(RangeValues value){
     currentRangeValues.value = value;
@@ -73,14 +78,9 @@ class VendorFlowerListController extends GetxController{
     await purchaseHistory();
   }
 
-  RxBool isCheckedCategory=false.obs;
-  RxBool isCheckedColor=false.obs;
-  RxBool isCheckedPrice=false.obs;
-
   void setSelectedColor(int colorValue) {
     selectedColor.value = colorValue;
   }
-
 
   Future<int?> sharedVendor() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -99,13 +99,14 @@ class VendorFlowerListController extends GetxController{
       final VendorFlowerViewModel newVendorFlower = VendorFlowerViewModel
           .fromJson(result);
       vendorFlowersList.add(newVendorFlower);
+      countLoading.add("");
+      isOutOfStock.add(false);
     }
   }
 
   Future<void> getVendorById() async{
     isLoading.value=true;
     isRetry.value=false;
-    isLoadingDrawer.value=true;
     isRetryDrawer.value=false;
     final Either<String, LoginVendorViewModel> vendorById = await _repository.getVendor(vendorId!);
     vendorById.fold(
@@ -120,7 +121,6 @@ class VendorFlowerListController extends GetxController{
               vendor=vendorViewModel;
               isLoading.value=false;
               isLoadingDrawer.value=false;
-              isLoadingCount.value=false;
             }
     );
   }
@@ -143,6 +143,13 @@ class VendorFlowerListController extends GetxController{
             categoryList.addAll(flower.category);
             colorList.addAll(flower.color);
             priceList.add(flower.price);
+            countLoading.add("");
+            if(flower.count==0){
+              isOutOfStock.add(true);
+            }
+            else{
+              isOutOfStock.add(false);
+            }
           }
           int i=0;
           for(final flower in colorList){
@@ -163,8 +170,9 @@ class VendorFlowerListController extends GetxController{
   }
 
   Future<void> addFlowerCount({required VendorFlowerViewModel flowerToEdit, required int index}) async {
-    isLoadingCount.value=true;
-    isRetryCount.value=false;
+    disableLoading.value=true;
+    countLoading[index]="${flowerToEdit.id}";
+    isOutOfStock[index]=false;
     if (flowerToEdit.count >= 0){
       final result = await _repository.editFlowerCount(
         dto: _generatePlusDto(flowerToEdit),
@@ -173,11 +181,12 @@ class VendorFlowerListController extends GetxController{
 
       result.fold((exception) {
         Get.snackbar('Exception', exception);
-        isLoadingCount.value=false;
-        isRetryCount.value=true;
+        disableLoading.value=false;
+        countLoading[index]="";
       }, (auctionId) {
         addCount(index: index);
-        isLoadingCount.value=false;
+        disableLoading.value=false;
+        countLoading[index]="";
       });
     }
   }
@@ -203,9 +212,13 @@ class VendorFlowerListController extends GetxController{
 
 
   Future<void> minusFlowerCount({required VendorFlowerViewModel flowerToEdit, required int index}) async {
-    isLoadingCount.value=true;
-    isRetryCount.value=false;
+    // isOutOfStock[index]=false;
+    if(flowerToEdit.count==1){
+      isOutOfStock[index]=true;
+    }
     if (flowerToEdit.count > 0){
+      countLoading[index]="${flowerToEdit.id}";
+      disableLoading.value=true;
       final result = await _repository.editFlowerCount(
         dto: _generateMinusDto(flowerToEdit),
         flowerId: flowerToEdit.id,
@@ -213,11 +226,12 @@ class VendorFlowerListController extends GetxController{
 
       result.fold((exception) {
         Get.snackbar('Exception', exception);
-        isLoadingCount.value=false;
-        isRetryCount.value=true;
+        disableLoading.value=false;
+        countLoading[index]="";
       }, (auctionId) {
         minusCount(index: index);
-        isLoadingCount.value=false;
+        disableLoading.value=false;
+        countLoading[index]="";
       });
     }
   }
@@ -242,11 +256,14 @@ class VendorFlowerListController extends GetxController{
   }
 
   Future<void> deleteFlower(VendorFlowerViewModel flower) async {
+    isLoadingDelete.value="${flower.id}";
+    disableLoading.value=true;
     final result = await _repository.deleteFlower(flowerId: flower.id);
-
     final bool isRecipeDeleted = result == null;
     if (isRecipeDeleted) {
       vendorFlowersList.remove(flower);
+      countLoading.remove("");
+      isOutOfStock.remove(false);
       vendor!.vendorFlowerList.remove(flower.id);
       final result = await _repository.vendorEditFlowerList(
         dto: LoginVendorDto(
@@ -261,9 +278,13 @@ class VendorFlowerListController extends GetxController{
       );
       result.fold(
               (exception) {
-            Get.snackbar('Exception', exception);
+                isLoadingDelete.value="";
+                Get.snackbar('Exception', exception);
+                disableLoading.value=false;
           },
               (right) {
+                isLoadingDelete.value="";
+                disableLoading.value=false;
                 Get.snackbar('Deleted', "Item has been deleted successfully");
               }
       );
