@@ -55,6 +55,7 @@ class SearchVendorFlowerController extends GetxController{
 
   Future<void> getFlowersByVendorId() async{
     searchList.clear();
+    isOutOfStock.clear();
     isLoading.value=true;
     isRetry.value=false;
     final Either<String,List<SearchVendorFlowerViewModel>> flower = await _repository.getFlowerByVendorId(vendorId!);
@@ -119,7 +120,6 @@ class SearchVendorFlowerController extends GetxController{
     );
     searchList[index] = editedFlower;
   }
-
 
   Future<void> minusFlowerCount({required SearchVendorFlowerViewModel flowerToEdit, required int index}) async {
     if(flowerToEdit.count==1){
@@ -205,6 +205,7 @@ class SearchVendorFlowerController extends GetxController{
 
   Future<void> searchFlowers(String nameToSearch) async{
     searchList.clear();
+    isOutOfStock.clear();
     isLoading.value=true;
     isRetry.value=false;
     final Either<String,List<SearchVendorFlowerViewModel>> flower = await _repository.searchFlowers(nameToSearch);
@@ -217,6 +218,15 @@ class SearchVendorFlowerController extends GetxController{
             (right){
           searchList.clear();
           searchList.addAll(right);
+          for(final flower in right){
+            if(flower.count==0){
+              isOutOfStock.add(true);
+            }
+            else{
+              isOutOfStock.add(false);
+            }
+            countLoading.add("");
+          }
           isLoading.value=false;
         }
     );

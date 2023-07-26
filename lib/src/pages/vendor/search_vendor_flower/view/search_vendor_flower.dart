@@ -102,12 +102,12 @@ class SearchVendorFlower extends  GetView<SearchVendorFlowerController> {
       return _retryButton();
     }
     else if(controller.searchList.isEmpty){
-      return Center(
+      return const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.home_outlined,size: 270),
-            Text(locale.LocaleKeys.vendor_flower_home_there_is_no_flower_here.tr, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
+            Icon(Icons.search_off_outlined,size: 270),
+            Text("No flower founded", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
           ],
         ),
       );

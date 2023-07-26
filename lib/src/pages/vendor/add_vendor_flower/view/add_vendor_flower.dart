@@ -294,11 +294,25 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                                 ),)
                           ),
                         ) : const SizedBox(height: 0)),
-                        ElevatedButton(
-                          onPressed: ()=>{
-                            _colorPickerDialog(context)
-                          },
-                          child: Text(locale.LocaleKeys.add_vendor_flower_card_color_picker.tr),
+
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: SizedBox(
+                            height: 40,
+                            width: 120,
+                            child: ElevatedButton(
+                              onPressed: ()=>{
+                                _colorPickerDialog(context)
+                              },
+                              child: Obx(() => (controller.isLoadingColor.value) ? const Center(
+                                child: SizedBox(
+                                    width: 50,
+                                    child: LinearProgressIndicator()
+                                ),
+                              ) :
+                              Text(locale.LocaleKeys.add_vendor_flower_card_color_picker.tr)),
+                            ),
+                          ),
                         ),
                         Obx(() => (controller.colorList.isNotEmpty) ? SizedBox(
                           height: controller.space.value,
@@ -371,7 +385,7 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
             ElevatedButton(
               child: Text(locale.LocaleKeys.add_vendor_flower_card_got_it.tr),
               onPressed: () {
-                controller.changeColor(controller.currentColor);
+                controller.addColor(controller.currentColor);
                 Navigator.of(context).pop();
               },
             ),

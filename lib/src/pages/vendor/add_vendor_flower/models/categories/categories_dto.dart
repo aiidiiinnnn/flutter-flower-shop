@@ -9,6 +9,4 @@ class CategoriesDto{
     "name": name,
   };
 
-
-
 }

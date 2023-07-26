@@ -15,23 +15,12 @@ import '../view/screens/vendor_flower_home.dart';
 
 class VendorFlowerListController extends GetxController{
   RxList<PurchaseViewModel> historyList = RxList();
-  RxInt selectedColor=RxInt(1);
   RxList<Map<dynamic,dynamic>> salesList = RxList();
-  RxList<int> priceList = RxList();
-  RxDouble minPrice=RxDouble(0);
-  RxDouble maxPrice= RxDouble(0);
-  RxInt division = RxInt(0);
-  RxList<dynamic> categoryList=RxList();
-  RxString selectedCategory="".obs;
-  RxList<dynamic> colorList=RxList();
   LoginVendorViewModel? vendor;
   final GlobalKey<FormState> searchKey=GlobalKey();
-  final TextEditingController searchController = TextEditingController();
   int? vendorId;
-  RxBool isChecked = false.obs;
   final VendorFlowerListRepository _repository = VendorFlowerListRepository();
   RxList<VendorFlowerViewModel> vendorFlowersList =RxList();
-  RxList<VendorFlowerViewModel> searchedFlowersList =RxList();
   RxBool isLoading=true.obs;
   RxString isLoadingDelete="".obs;
   RxBool disableLoading=false.obs;
@@ -42,19 +31,6 @@ class VendorFlowerListController extends GetxController{
   RxList<bool> isOutOfStock=RxList();
   RxBool textFlag = true.obs;
   RxInt index=RxInt(0);
-  RxMap colorsOnTap={}.obs;
-  Rx<RangeValues> currentRangeValues = Rx<RangeValues>(const RangeValues(0, 100));
-  RxBool isCheckedCategory=false.obs;
-  RxBool isCheckedColor=false.obs;
-  RxBool isCheckedPrice=false.obs;
-
-  void setRange(RangeValues value){
-    currentRangeValues.value = value;
-  }
-
-  void setSelected(String value) {
-    selectedCategory.value = value;
-  }
 
   void onDestinationSelected(index){
     this.index.value=index;
@@ -73,10 +49,6 @@ class VendorFlowerListController extends GetxController{
     await getVendorById();
     await getFlowersByVendorId();
     await purchaseHistory();
-  }
-
-  void setSelectedColor(int colorValue) {
-    selectedColor.value = colorValue;
   }
 
   Future<int?> sharedVendor() async {
@@ -128,8 +100,8 @@ class VendorFlowerListController extends GetxController{
   }
 
   Future<void> getFlowersByVendorId() async{
-    searchedFlowersList.clear();
     vendorFlowersList.clear();
+    isOutOfStock.clear();
     isLoading.value=true;
     isRetry.value=false;
     final Either<String,List<VendorFlowerViewModel>> flower = await _repository.getFlowerByVendorId(vendorId!);
@@ -140,11 +112,7 @@ class VendorFlowerListController extends GetxController{
         },
             (right){
           vendorFlowersList.addAll(right);
-          searchedFlowersList.addAll(right);
           for(final flower in right){
-            categoryList.addAll(flower.category);
-            colorList.addAll(flower.color);
-            priceList.add(flower.price);
             countLoading.add("");
             if(flower.count==0){
               isOutOfStock.add(true);
@@ -153,19 +121,6 @@ class VendorFlowerListController extends GetxController{
               isOutOfStock.add(false);
             }
           }
-          int i=0;
-          for(final flower in colorList){
-            colorsOnTap[i]=false;
-            i++;
-          }
-          // selectedCategory.value=categoryList.first ;
-          priceList.sort();
-          if(priceList.isNotEmpty){
-            minPrice.value=priceList.first.toDouble();
-            maxPrice.value=priceList.last.toDouble();
-          }
-          currentRangeValues = Rx<RangeValues>(RangeValues(minPrice.value, maxPrice.value));
-          division.value = (maxPrice.value-minPrice.value).toInt();
         }
     );
     isLoading.value=false;
@@ -214,7 +169,6 @@ class VendorFlowerListController extends GetxController{
 
 
   Future<void> minusFlowerCount({required VendorFlowerViewModel flowerToEdit, required int index}) async {
-    // isOutOfStock[index]=false;
     if(flowerToEdit.count==1){
       isOutOfStock[index]=true;
     }
@@ -327,14 +281,6 @@ class VendorFlowerListController extends GetxController{
     }
   }
 
-  void searchFlower(String searchedText){
-    searchedFlowersList.value = vendorFlowersList.where((searchedFlower) {
-      var flowerName = searchedFlower.name.toLowerCase();
-      var flowerDescription = searchedFlower.description.toLowerCase();
-      return flowerName.contains(searchedText) || flowerDescription.contains(searchedText);
-    }).toList();
-  }
-
   Future<void> purchaseHistory() async{
     historyList.clear();
     isLoading.value=true;
@@ -359,53 +305,4 @@ class VendorFlowerListController extends GetxController{
         }
     );
   }
-
-  Future filterFlowers() async{
-    Map<String, String> query ={};
-    if(isCheckedCategory.value){
-      query["category_like"]=selectedCategory.value;
-    }
-    if(isCheckedColor.value){
-      query["color_like"]=selectedColor.value.toString();
-    }
-    if(isCheckedPrice.value){
-      query["price_gte"]= minPrice.value.toString();
-      query["price_lte"]=maxPrice.value.toString();
-    }
-
-    isLoading.value=true;
-    final Either<String,List<VendorFlowerViewModel>> flower = await _repository.filteredFlower(query: query);
-    flower.fold(
-            (left) {
-          print(left);
-          isLoading.value=false;
-          isRetry.value=true;
-        },
-            (right){
-              searchedFlowersList.clear();
-          searchedFlowersList.addAll(right);
-          isLoading.value=false;
-        }
-    );
-  }
-
-  Future deleteFilter() async{
-    Map<String, String> query ={};
-    isLoading.value=true;
-    final Either<String,List<VendorFlowerViewModel>> flower = await _repository.filteredFlower(query: query);
-    flower.fold(
-            (left) {
-          print(left);
-          isLoading.value=false;
-          isRetry.value=true;
-        },
-            (right){
-              searchedFlowersList.clear();
-          searchedFlowersList.addAll(right);
-          isLoading.value=false;
-        }
-    );
-  }
-
-
 }

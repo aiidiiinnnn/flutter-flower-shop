@@ -9,6 +9,8 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import '../../add_vendor_flower/models/categories/categories_dto.dart';
 import '../../add_vendor_flower/models/categories/categories_view_model.dart';
+import '../../add_vendor_flower/models/colors/color_dto.dart';
+import '../../add_vendor_flower/models/colors/colors_view_model.dart';
 import '../models/edit_vendor_flower_view_model.dart';
 import '../repositories/edit_vendor_flower_repository.dart';
 
@@ -29,10 +31,12 @@ class EditVendorFlowerController extends GetxController{
   int? vendorId;
   RxDouble space=RxDouble(30);
   RxList<CategoriesViewModel> categoriesFromJson=RxList();
+  RxList<ColorsViewModel> colorsFromJson=RxList();
   RxBool isLoadingCategory=false.obs;
   RxBool isLoading=true.obs;
   RxBool isRetry=false.obs;
   RxBool isLoadingSubmit=false.obs;
+  RxBool isLoadingColor=false.obs;
 
   @override
   Future<void> onInit() async {
@@ -48,6 +52,7 @@ class EditVendorFlowerController extends GetxController{
     colors.value=Get.arguments['color'];
     await getFlowerById();
     await getCategories();
+    await getColors();
   }
 
   void deleteImage(){
@@ -83,12 +88,6 @@ class EditVendorFlowerController extends GetxController{
       Get.snackbar('Category', "Can't add empty category");
       return;
     }
-    // for(final categoryName in categoryList){
-    //   if(categoryName.name.toLowerCase().trim()==category.toLowerCase().trim()){
-    //     Get.snackbar('Category', "This category already exist");
-    //     isCategoryAdded.value=true;
-    //   }
-    // }
     for(final categoryName in categoriesFromJson){
       if(categoryName.name.toLowerCase().trim()==category.toLowerCase().trim()){
         categoryList.add(category);
@@ -111,12 +110,49 @@ class EditVendorFlowerController extends GetxController{
         });
   }
 
+  Future<void> getColors() async{
+    colorsFromJson.clear();
+    isLoading.value=true;
+    isRetry.value=false;
+    final Either<String,List<ColorsViewModel>> flower = await _repository.getColors();
+    flower.fold(
+            (left) {
+          print(left);
+          isLoading.value=false;
+          isRetry.value=true;
+        },
+            (right){
+          colorsFromJson.addAll(right);
+          isLoading.value=false;
+        }
+    );
+  }
+
   Color currentColor = const Color(0xff32623a);
   Color pickerColor = const Color(0xff8c4169);
 
-  void changeColor(Color color) {
-    pickerColor = color;
-    colors.add(pickerColor.value);
+  Future<void> addColor(Color color) async {
+    for(final colorCode in colorsFromJson){
+      if(colorCode.code==color.value){
+        pickerColor = color;
+        colors.add(pickerColor.value);
+        return;
+      }
+    }
+    isLoadingColor.value=true;
+    final colorDto = ColorsDto(code: color.value);
+    final Either<String, ColorsViewModel> categoryRequest = await _repository.addColors(colorDto);
+    categoryRequest.fold(
+            (left) {
+          print(left);
+        },
+            (right) async {
+          Get.snackbar('Color', 'Color successfully added');
+          pickerColor = color;
+          colors.add(pickerColor.value);
+          await getColors();
+        });
+    isLoadingColor.value=false;
   }
   void removeColor(Color color) {
     colors.remove(pickerColor.value);

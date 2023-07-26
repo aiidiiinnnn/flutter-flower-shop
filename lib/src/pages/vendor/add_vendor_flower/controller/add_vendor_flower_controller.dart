@@ -12,6 +12,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../login_page/models/vendor_models/login_vendor_view_model.dart';
 import '../models/add_vendor/add_vendor_flower_dto.dart';
 import '../models/categories/categories_view_model.dart';
+import '../models/colors/color_dto.dart';
+import '../models/colors/colors_view_model.dart';
 import '../repositories/add_vendor_flower_repository.dart';
 
 
@@ -29,6 +31,7 @@ class AddVendorFlowerController extends GetxController{
   RxBool isLoadingSubmit=false.obs;
   RxBool isRetry=false.obs;
   RxBool isLoadingCategory=false.obs;
+  RxBool isLoadingColor=false.obs;
   RxList categoryList=RxList();
   List colors=[];
   RxList colorList=[].obs;
@@ -37,6 +40,7 @@ class AddVendorFlowerController extends GetxController{
   int? vendorId;
   RxDouble space=RxDouble(30);
   RxList<CategoriesViewModel> categoriesFromJson=RxList();
+  RxList<ColorsViewModel> colorsFromJson=RxList();
 
 
   @override
@@ -45,6 +49,7 @@ class AddVendorFlowerController extends GetxController{
     await sharedVendor().then((id) => vendorId=id);
     await getVendorById();
     await getCategories();
+    await getColors();
   }
 
   Future<int?> sharedVendor() async {
@@ -52,18 +57,11 @@ class AddVendorFlowerController extends GetxController{
     return prefs.getInt("vendorId");
   }
 
-  // RxBool isCategoryAdded=false.obs;
   Future<void> addCategory(String category) async {
     if(category.isEmpty){
       Get.snackbar('Category', "Can't add empty category");
       return;
     }
-    // for(final categoryName in categoryList){
-    //   if(categoryName.name.toLowerCase().trim()==category.toLowerCase().trim()){
-    //     Get.snackbar('Category', "This category already exist");
-    //     isCategoryAdded.value=true;
-    //   }
-    // }
     for(final categoryName in categoriesFromJson){
       if(categoryName.name.toLowerCase().trim()==category.toLowerCase().trim()){
         categoryList.add(category);
@@ -93,6 +91,32 @@ class AddVendorFlowerController extends GetxController{
     pickerColor = color;
     colorList.add(pickerColor);
     colors.add(pickerColor.value);
+  }
+
+  Future<void> addColor(Color color) async {
+    for(final colorCode in colorsFromJson){
+      if(colorCode.code==color.value){
+        pickerColor = color;
+        colorList.add(pickerColor);
+        colors.add(pickerColor.value);
+        return;
+      }
+    }
+    isLoadingColor.value=true;
+    final colorDto = ColorsDto(code: color.value);
+    final Either<String, ColorsViewModel> categoryRequest = await _repository.addColors(colorDto);
+    categoryRequest.fold(
+            (left) {
+              print(left);
+        },
+            (right) async {
+          Get.snackbar('Color', 'Color successfully added');
+          pickerColor = color;
+          colorList.add(pickerColor);
+          colors.add(pickerColor.value);
+          await getColors();
+        });
+    isLoadingColor.value=false;
   }
 
   void removeColor(Color color) {
@@ -138,18 +162,6 @@ class AddVendorFlowerController extends GetxController{
       print('No image selected.');
     }
   }
-
-  // String? categoryValidator(final String? category){
-  //   if(category == null || category.isEmpty){
-  //     return "Please enter the category";
-  //   }
-  //   for(final cat in categoryList){
-  //     if(category==cat){
-  //       return "Category has already add";
-  //     }
-  //   }
-  //   return null;
-  // }
 
   String? countValidator(final String? count){
     if(count == null || count.isEmpty){
@@ -273,6 +285,23 @@ class AddVendorFlowerController extends GetxController{
               categoriesFromJson.addAll(right);
               isLoading.value=false;
             }
+    );
+  }
+  Future<void> getColors() async{
+    colorsFromJson.clear();
+    isLoading.value=true;
+    isRetry.value=false;
+    final Either<String,List<ColorsViewModel>> flower = await _repository.getColors();
+    flower.fold(
+            (left) {
+          print(left);
+          isLoading.value=false;
+          isRetry.value=true;
+        },
+            (right){
+              colorsFromJson.addAll(right);
+              isLoading.value=false;
+        }
     );
   }
 
