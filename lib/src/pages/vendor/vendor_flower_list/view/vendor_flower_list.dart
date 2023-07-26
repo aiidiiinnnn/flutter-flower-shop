@@ -32,11 +32,6 @@ class VendorFlowerList extends  GetView<VendorFlowerListController>{
               ),
               BottomNavigationBarItem(
                   backgroundColor: const Color(0xffc4c4c4),
-                  icon: const Icon(Icons.search),
-                  label: locale.LocaleKeys.bottom_navigation_bar_Search.tr
-              ),
-              BottomNavigationBarItem(
-                  backgroundColor: const Color(0xffc4c4c4),
                   icon: const Icon(Icons.person),
                   label: locale.LocaleKeys.bottom_navigation_bar_Profile.tr
               ),

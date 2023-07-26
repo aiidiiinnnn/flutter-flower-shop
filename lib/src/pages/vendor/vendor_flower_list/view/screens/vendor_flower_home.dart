@@ -100,6 +100,27 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
                 Padding(
                   padding: const EdgeInsetsDirectional.only(start: 8,top: 17),
                   child: InkWell(
+                    onTap: () => {
+                      Navigator.of(context).pop(),
+                      controller.goToSearch()
+                    },
+                    child: const Row(
+                      children: [
+                        Icon(Icons.search_outlined),
+                        Padding(
+                          padding: EdgeInsetsDirectional.only(start: 4),
+                          child: Text("Search",style: TextStyle(
+                              fontSize:17,
+                              color: Color(0xff050a0a)
+                          ),),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 8,top: 17),
+                  child: InkWell(
                     onTap: () {
                       Get.updateLocale(const Locale('en','US'));
                       Navigator.of(context).pop();

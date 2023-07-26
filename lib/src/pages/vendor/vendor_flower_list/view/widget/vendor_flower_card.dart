@@ -146,16 +146,25 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                             width: 50,
                             child: LinearProgressIndicator()
                         ),
+                      ) : (controller.isOutOfStock[index]) ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const InkWell(
+                              onTap: null,
+                              child: Icon(Icons.arrow_back_ios, size: 16),
+                          ),
+                          const Text(
+                            "Out of Stock",
+                            style:
+                            TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
+                          ),
+                          incrementButton()
+                        ],
                       ) :
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           decrementButton(context),
-                          (controller.isOutOfStock[index]) ? const Text(
-                            "Out of Stock",
-                            style:
-                            TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
-                          ):
                           Text(
                             "${vendorFlower.count}",
                             style:
@@ -274,16 +283,53 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                             width: 50,
                             child: LinearProgressIndicator()
                         ),
+                      ) : (controller.isOutOfStock[index]) ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                              child: const Icon(Icons.arrow_back_ios, size: 16),
+                              onTap: (){
+                                Widget cancelButton = TextButton(
+                                    child: Text(locale.LocaleKeys.vendor_flower_card_cancel.tr),
+                                    onPressed: (){
+                                      Navigator.of(context).pop();
+                                    }
+                                );
+                                Widget continueButton = TextButton(
+                                  child: Text(locale.LocaleKeys.vendor_flower_card_continue.tr),
+                                  onPressed:  () {
+                                    controller.deleteFlower(vendorFlower,index);
+                                    Navigator.of(context).pop();
+                                  },
+                                );
+                                AlertDialog alert = AlertDialog(
+                                  title: Text(locale.LocaleKeys.vendor_flower_card_delete.tr),
+                                  content: Text(locale.LocaleKeys.vendor_flower_card_are_you_sure_you_want_to_delete_this.tr),
+                                  actions: [
+                                    cancelButton,
+                                    continueButton,
+                                  ],
+                                );
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return alert;
+                                  },
+                                );
+                              }
+                          ),
+                          const Text(
+                            "Out of Stock",
+                            style:
+                            TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
+                          ),
+                          incrementButton()
+                        ],
                       ) :
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           decrementButton(context),
-                          (controller.isOutOfStock[index]) ? const Text(
-                            "Out of Stock",
-                            style:
-                            TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
-                          ):
                           Text(
                             "${vendorFlower.count}",
                             style:
@@ -373,7 +419,7 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                           Widget continueButton = TextButton(
                             child: Text(locale.LocaleKeys.vendor_flower_card_continue.tr),
                             onPressed:  () {
-                              controller.deleteFlower(vendorFlower);
+                              controller.deleteFlower(vendorFlower,index);
                               Navigator.of(context).pop();
                               Navigator.of(context).pop();
                             },

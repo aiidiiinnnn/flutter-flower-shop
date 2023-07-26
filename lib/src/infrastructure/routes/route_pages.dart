@@ -3,7 +3,6 @@ import 'package:flower_shop/src/pages/user/user_flower_list/view/screens/user_fl
 import 'package:flower_shop/src/pages/vendor/add_vendor_flower/view/add_vendor_flower.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_history.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_profile.dart';
-import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_search.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/vendor_flower_list.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import '../../../flower_shop.dart';
@@ -20,6 +19,8 @@ import '../../pages/user/user_flower_list/view/user_flower_list.dart';
 import '../../pages/vendor/add_vendor_flower/commons/add_vendor_flower_binding.dart';
 import '../../pages/vendor/edit_vendor_flower/commons/edit_vendor_flower_binding.dart';
 import '../../pages/vendor/edit_vendor_flower/view/edit_vendor_flower.dart';
+import '../../pages/vendor/search_vendor_flower/commons/search_vendor_flower_binding.dart';
+import '../../pages/vendor/search_vendor_flower/view/search_vendor_flower.dart';
 import '../../pages/vendor/vendor_flower_list/commons/vendor_flower_list_binding.dart';
 import '../../pages/vendor/vendor_flower_list/view/screens/vendor_flower_home.dart';
 
@@ -59,17 +60,17 @@ class RoutePages{
                     page: () => const EditVendorFlower(),
                     binding: EditVendorFlowerBinding()
                 ),
+                GetPage(
+                    name: RouteNames.searchVendorFlower,
+                    page: () => const SearchVendorFlower(),
+                    binding: SearchVendorFlowerBinding()
+                ),
               ]
           ),
           GetPage(
               name: RouteNames.vendorFlowerProfile,
               page: () => const VendorFlowerProfile(),
               binding: VendorFlowerListBinding(),
-          ),
-          GetPage(
-            name: RouteNames.vendorFlowerSearch,
-            page: () => const VendorFlowerSearch(),
-            binding: VendorFlowerListBinding(),
           ),
           GetPage(
             name: RouteNames.vendorFlowerHistory,

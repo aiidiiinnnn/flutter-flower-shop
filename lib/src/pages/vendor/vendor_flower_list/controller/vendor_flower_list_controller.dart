@@ -4,7 +4,6 @@ import 'package:flower_shop/src/pages/vendor/vendor_flower_list/models/vendor_fl
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/repositories/vendor_flower_list_repository.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_history.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_profile.dart';
-import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,7 +12,6 @@ import '../../../login_page/models/vendor_models/login_vendor_dto.dart';
 import '../../../user/user_flower_cart/models/confirm_purchase/purchase_view_model.dart';
 import '../models/vendor_flower_dto.dart';
 import '../view/screens/vendor_flower_home.dart';
-
 
 class VendorFlowerListController extends GetxController{
   RxList<PurchaseViewModel> historyList = RxList();
@@ -65,7 +63,6 @@ class VendorFlowerListController extends GetxController{
   final screens = [
     const VendorFlowerHome(),
     const VendorFlowerHistory(),
-    const VendorFlowerSearch(),
     const VendorFlowerProfile(),
   ];
 
@@ -102,6 +99,11 @@ class VendorFlowerListController extends GetxController{
       countLoading.add("");
       isOutOfStock.add(false);
     }
+  }
+
+  Future<void> goToSearch() async {
+    await Get.toNamed("${RouteNames.vendorFlowerList}${RouteNames.vendorFlowerHome}${RouteNames.searchVendorFlower}");
+    getFlowersByVendorId();
   }
 
   Future<void> getVendorById() async{
@@ -255,7 +257,7 @@ class VendorFlowerListController extends GetxController{
     vendorFlowersList[index] = editedFlower;
   }
 
-  Future<void> deleteFlower(VendorFlowerViewModel flower) async {
+  Future<void> deleteFlower(VendorFlowerViewModel flower,int index) async {
     isLoadingDelete.value="${flower.id}";
     disableLoading.value=true;
     final result = await _repository.deleteFlower(flowerId: flower.id);
@@ -263,7 +265,7 @@ class VendorFlowerListController extends GetxController{
     if (isRecipeDeleted) {
       vendorFlowersList.remove(flower);
       countLoading.remove("");
-      isOutOfStock.remove(false);
+      isOutOfStock.removeAt(index);
       vendor!.vendorFlowerList.remove(flower.id);
       final result = await _repository.vendorEditFlowerList(
         dto: LoginVendorDto(

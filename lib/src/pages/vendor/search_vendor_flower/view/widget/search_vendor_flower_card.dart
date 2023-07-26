@@ -1,17 +1,16 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
-import '../../controller/vendor_flower_list_controller.dart';
-import '../../models/vendor_flower_view_model.dart';
+import '../../controller/search_vendor_flower_controller.dart';
+import '../../models/search_vendor_flower_view_model.dart';
 import 'package:flower_shop/generated/locales.g.dart' as locale;
 
 
-class VendorFlowerSearchCard extends GetView<VendorFlowerListController> {
+class SearchVendorFlowerCard extends GetView<SearchVendorFlowerController> {
 
-  VendorFlowerSearchCard({super.key, required this.vendorFlower, required this.index});
+  SearchVendorFlowerCard({super.key, required this.vendorFlower, required this.index});
 
-  VendorFlowerViewModel vendorFlower;
+  SearchVendorFlowerViewModel vendorFlower;
   int index;
   String firstHalfText = "";
   String secondHalfText = "";
@@ -117,18 +116,71 @@ class VendorFlowerSearchCard extends GetView<VendorFlowerListController> {
                       Text("\$${vendorFlower.price}",
                           style: const TextStyle(
                               fontSize: 14, fontWeight: FontWeight.w300)),
-                      Row(
+                      Obx(() => Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          decrementButton(context),
-                          Text(
-                            "${vendorFlower.count}",
-                            style:
-                            const TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
+                          (controller.countLoading[index]=="${vendorFlower.id}") ? const Center(
+                            child: SizedBox(
+                                width: 50,
+                                child: LinearProgressIndicator()
+                            ),
+                          ) : (controller.isOutOfStock[index]) ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              InkWell(
+                                  child: const Icon(Icons.arrow_back_ios, size: 16),
+                                  onTap: (){
+                                    Widget cancelButton = TextButton(
+                                        child: Text(locale.LocaleKeys.vendor_flower_card_cancel.tr),
+                                        onPressed: (){
+                                          Navigator.of(context).pop();
+                                        }
+                                    );
+                                    Widget continueButton = TextButton(
+                                      child: Text(locale.LocaleKeys.vendor_flower_card_continue.tr),
+                                      onPressed:  () {
+                                        controller.deleteFlower(vendorFlower,index);
+                                        Navigator.of(context).pop();
+                                      },
+                                    );
+                                    AlertDialog alert = AlertDialog(
+                                      title: Text(locale.LocaleKeys.vendor_flower_card_delete.tr),
+                                      content: Text(locale.LocaleKeys.vendor_flower_card_are_you_sure_you_want_to_delete_this.tr),
+                                      actions: [
+                                        cancelButton,
+                                        continueButton,
+                                      ],
+                                    );
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return alert;
+                                      },
+                                    );
+                                  }
+                              ),
+                              const Text(
+                                "Out of Stock",
+                                style:
+                                TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
+                              ),
+                              incrementButton()
+                            ],
+                          ) :
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              decrementButton(context),
+                              Text(
+                                "${vendorFlower.count}",
+                                style:
+                                const TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
+                              ),
+                              incrementButton()
+                            ],
                           ),
-                          incrementButton()
                         ],
-                      ),
+                      ),)
                     ],
                   ),
                 )
@@ -152,29 +204,7 @@ class VendorFlowerSearchCard extends GetView<VendorFlowerListController> {
     return InkWell(
         child: const Icon(Icons.arrow_back_ios, size: 16),
         onTap: () => {
-          (vendorFlower.count == 1) ? showDialog(context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title:  const Text("Delete"),
-                content: const Text("Are you sure you want to delete this ?"),
-                actions: [
-                  TextButton(
-                      child:  const Text("Cancel"),
-                      onPressed:  (){
-                        Navigator.of(context).pop();
-                      }
-                  ),
-                  TextButton(
-                    child:  const Text("Continue"),
-                    onPressed:  () {
-                      controller.deleteFlower(vendorFlower,index);
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            },
-          ) : controller.minusFlowerCount(flowerToEdit: vendorFlower, index: index)
+          controller.minusFlowerCount(flowerToEdit: vendorFlower, index: index)
         });
   }
 

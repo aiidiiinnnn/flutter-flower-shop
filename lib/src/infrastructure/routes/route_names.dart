@@ -2,11 +2,13 @@ class RouteNames{
   static const loginPage='/LoginPage';
   static const signupPage='/SignupPage';
 
-  static const vendorFlowerHome='/VendorFlowerHome';
   static const vendorFlowerList='/VendorFlowerList';
+  static const vendorFlowerHome='/VendorFlowerHome';
   static const vendorFlowerProfile='/VendorFlowerProfile';
-  static const vendorFlowerSearch='/VendorFlowerSearch';
+  static const searchVendorFlower='/SearchVendorFlower';
+
   static const vendorFlowerHistory='/VendorFlowerHistory';
+
   static const addVendorFlower='/AddVendorFlower';
   static const editVendorFlower='/EditVendorFlower';
 
