@@ -100,30 +100,32 @@ class VendorFlowerListController extends GetxController{
   }
 
   Future<void> getFlowersByVendorId() async{
-    vendorFlowersList.clear();
-    isOutOfStock.clear();
-    isLoading.value=true;
-    isRetry.value=false;
-    final Either<String,List<VendorFlowerViewModel>> flower = await _repository.getFlowerByVendorId(vendorId!);
-    flower.fold(
-            (left) {
-          print(left);
-          isRetry.value=true;
-        },
-            (right){
-          vendorFlowersList.addAll(right);
-          for(final flower in right){
-            countLoading.add("");
-            if(flower.count==0){
-              isOutOfStock.add(true);
-            }
-            else{
-              isOutOfStock.add(false);
+    if(disableLoading.value==false){
+      vendorFlowersList.clear();
+      isOutOfStock.clear();
+      isLoading.value=true;
+      isRetry.value=false;
+      final Either<String,List<VendorFlowerViewModel>> flower = await _repository.getFlowerByVendorId(vendorId!);
+      flower.fold(
+              (left) {
+            print(left);
+            isRetry.value=true;
+          },
+              (right){
+            vendorFlowersList.addAll(right);
+            for(final flower in right){
+              countLoading.add("");
+              if(flower.count==0){
+                isOutOfStock.add(true);
+              }
+              else{
+                isOutOfStock.add(false);
+              }
             }
           }
-        }
-    );
-    isLoading.value=false;
+      );
+      isLoading.value=false;
+    }
   }
 
   Future<void> addFlowerCount({required VendorFlowerViewModel flowerToEdit, required int index}) async {
@@ -278,7 +280,14 @@ class VendorFlowerListController extends GetxController{
           vendorId: result['vendorId'],
           count: result['count']
       );
+      if(vendorFlowersList[index].count==0){
+        isOutOfStock[index]=true;
+      }
+      else{
+        isOutOfStock[index]=false;
+      }
     }
+
   }
 
   Future<void> purchaseHistory() async{
@@ -305,4 +314,5 @@ class VendorFlowerListController extends GetxController{
         }
     );
   }
+
 }

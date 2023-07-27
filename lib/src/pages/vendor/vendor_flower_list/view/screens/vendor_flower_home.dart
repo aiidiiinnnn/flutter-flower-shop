@@ -27,6 +27,7 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
               weight: 2,
             ),
           ),
+
           drawer: Obx(() => Drawer(
             backgroundColor: const Color(0xfff3f7f7),
             child: (controller.isLoadingDrawer.value) ?
@@ -98,7 +99,7 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
                   thickness: 1,
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.only(start: 8,top: 17),
+                  padding: const EdgeInsetsDirectional.only(start: 10,top: 20),
                   child: InkWell(
                     onTap: () => {
                       Navigator.of(context).pop(),
@@ -119,7 +120,48 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.only(start: 8,top: 17),
+                  padding: const EdgeInsetsDirectional.only(start: 10,top: 30),
+                  child: InkWell(
+                    onTap: () => {
+                      Navigator.of(context).pop(),
+                    },
+                    child: const Row(
+                      children: [
+                        Icon(Icons.history_outlined),
+                        Padding(
+                          padding: EdgeInsetsDirectional.only(start: 4),
+                          child: Text("History",style: TextStyle(
+                              fontSize:17,
+                              color: Color(0xff050a0a)
+                          ),),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 10,top: 30),
+                  child: InkWell(
+                    onTap: () => {
+                      Navigator.of(context).pop(),
+                      controller.logOut(),
+                    },
+                    child: const Row(
+                      children: [
+                        Icon(Icons.login_outlined),
+                        Padding(
+                          padding: EdgeInsetsDirectional.only(start: 4),
+                          child: Text("Logout",style: TextStyle(
+                              fontSize:17,
+                              color: Color(0xff050a0a)
+                          ),),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 10,top: 30),
                   child: InkWell(
                     onTap: () {
                       Get.updateLocale(const Locale('en','US'));
@@ -140,7 +182,7 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.only(start: 8,top: 17),
+                  padding: const EdgeInsetsDirectional.only(start: 10,top: 30),
                   child: InkWell(
                     onTap: () {
                       Get.updateLocale(const Locale('fa', 'IR'));
@@ -162,17 +204,6 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
                 ),
               ],
             ),
-            // child: Column(
-            //   children: [
-            //     ElevatedButton(
-            //         onPressed: () {
-            //           Navigator.pop(context);
-            //           controller.logOut();
-            //         },
-            //         child: const Text("Logout")
-            //     ),
-            //   ],
-            // ),
           ),),
           floatingActionButton: FloatingActionButton(
             backgroundColor: const Color(0xff6cba00),
@@ -181,7 +212,7 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
           ),
 
           body: Obx(() => RefreshIndicator(
-            onRefresh: controller.getFlowersByVendorId,
+            onRefresh:controller.getFlowersByVendorId,
             child: _pageContent(),
           ),),
 

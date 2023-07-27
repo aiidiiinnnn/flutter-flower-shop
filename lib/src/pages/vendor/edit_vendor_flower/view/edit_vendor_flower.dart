@@ -150,14 +150,14 @@ class EditVendorFlower extends  GetView<EditVendorFlowerController>{
                                 ),
                                 CustomAddFormField(
                                   hintText: locale.LocaleKeys.vendor_flower_card_description.tr,
-                                  name: locale.LocaleKeys.vendor_flower_card_description.tr,
+                                  name: locale.LocaleKeys.add_vendor_flower_card_price.tr,
                                   controller: controller.priceController,
                                   validator: controller.priceValidator,
                                   icon: Icons.attach_money_outlined,
                                 ),
                                 CustomAddFormField(
                                   hintText: locale.LocaleKeys.add_vendor_flower_card_price.tr,
-                                  name: locale.LocaleKeys.add_vendor_flower_card_price.tr,
+                                  name: locale.LocaleKeys.add_vendor_flower_card_count.tr,
                                   controller: controller.countController,
                                   validator: controller.countValidator,
                                   icon: Icons.numbers_outlined,
@@ -275,52 +275,6 @@ class EditVendorFlower extends  GetView<EditVendorFlowerController>{
                             ),
                           ),
                         ),
-
-                        // Padding(
-                        //     padding: const EdgeInsets.all(8.0),
-                        //     child: Form(
-                        //       key: controller.categoryKey,
-                        //       child: TextFormField(
-                        //         enableSuggestions: false,
-                        //         style: const TextStyle(color: Color(0xff050a0a)),
-                        //         decoration: InputDecoration(
-                        //           suffixIcon: Padding(
-                        //             padding: const EdgeInsets.all(4),
-                        //             child: InkWell(
-                        //                 splashColor: const Color(0xffc4c4c4),
-                        //                 customBorder: const CircleBorder(),
-                        //                 onTap: ()=>controller.addCategory(controller.categoryController.text),
-                        //                 child: Padding(
-                        //                   padding: const EdgeInsets.symmetric(horizontal:8),
-                        //                   child: Container(
-                        //                       width: 65,
-                        //                       height: 10,
-                        //                       decoration: BoxDecoration(
-                        //                           border: Border.all(color: const Color(0xff050a0a)),
-                        //                           color: const Color(0xffc4c4c4)
-                        //                       ),
-                        //                       child: const Icon(Icons.add,size:25)
-                        //                     // child:
-                        //                   ),
-                        //                 )
-                        //             ),
-                        //           ),
-                        //           prefixIcon: const Icon(Icons.category_outlined),
-                        //           enabledBorder: const OutlineInputBorder(
-                        //               borderSide: BorderSide(color: Color(0xff050a0a))
-                        //           ),
-                        //           focusedBorder: const OutlineInputBorder(
-                        //               borderSide: BorderSide(color: Color(0xff050a0a))
-                        //           ),
-                        //           labelText: locale.LocaleKeys.add_vendor_flower_card_category.tr,
-                        //           labelStyle: const TextStyle(color: Color(0xff050a0a)),
-                        //         ),
-                        //         validator: controller.categoryValidator,
-                        //         controller: controller.categoryController,
-                        //       ),
-                        //     )
-                        // ),
-
                         Obx(() => (controller.categoryList.isNotEmpty) ?
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8),

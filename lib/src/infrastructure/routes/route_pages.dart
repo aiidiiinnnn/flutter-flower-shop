@@ -14,8 +14,9 @@ import '../../pages/user/user_flower_cart/commons/user_flower_cart_binding.dart'
 import '../../pages/user/user_flower_list/commons/user_flower_list_binding.dart';
 import '../../pages/user/user_flower_list/view/screens/user_flower_home.dart';
 import '../../pages/user/user_flower_list/view/screens/user_flower_profile.dart';
-import '../../pages/user/user_flower_list/view/screens/user_flower_search.dart';
 import '../../pages/user/user_flower_list/view/user_flower_list.dart';
+import '../../pages/user/user_flower_search/commons/user_flower_search_binding.dart';
+import '../../pages/user/user_flower_search/view/user_flower_search.dart';
 import '../../pages/vendor/add_vendor_flower/commons/add_vendor_flower_binding.dart';
 import '../../pages/vendor/edit_vendor_flower/commons/edit_vendor_flower_binding.dart';
 import '../../pages/vendor/edit_vendor_flower/view/edit_vendor_flower.dart';
@@ -95,6 +96,11 @@ class RoutePages{
                 page: () => const UserFlowerCart(),
                 binding: UserFlowerCartBinding(),
               ),
+              GetPage(
+                name: RouteNames.userFlowerSearch,
+                page: () => const UserFlowerSearch(),
+                binding: UserFlowerSearchBinding(),
+              ),
             ]
           ),
           GetPage(
@@ -105,11 +111,6 @@ class RoutePages{
           GetPage(
             name: RouteNames.userFlowerHistory,
             page: () => const UserFlowerHistory(),
-            binding: UserFlowerListBinding(),
-          ),
-          GetPage(
-            name: RouteNames.userFlowerSearch,
-            page: () => const UserFlowerSearch(),
             binding: UserFlowerListBinding(),
           ),
         ]

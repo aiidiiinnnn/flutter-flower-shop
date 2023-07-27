@@ -1,13 +1,15 @@
+import 'package:flower_shop/src/pages/user/user_flower_search/view/widget/user_flower_search_card.dart';
 import 'package:flower_shop/src/pages/vendor/search_vendor_flower/view/widget/search_vendor_flower_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flower_shop/generated/locales.g.dart' as locale;
-import '../controller/search_vendor_flower_controller.dart';
+import '../../user_flower_list/view/widget/user_flower_search_card.dart';
+import '../controller/user_flower_search_controller.dart';
 
 
 
-class SearchVendorFlower extends  GetView<SearchVendorFlowerController> {
-  const SearchVendorFlower({super.key});
+class UserFlowerSearch extends  GetView<UserFlowerSearchController> {
+  const UserFlowerSearch({super.key});
 
 
   @override
@@ -84,7 +86,7 @@ class SearchVendorFlower extends  GetView<SearchVendorFlowerController> {
               ),
               Expanded(
                 child: Obx(() => RefreshIndicator(
-                  onRefresh: controller.getFlowersByVendorId,
+                  onRefresh: controller.getUserById,
                   child: _pageContent(),
                 ),),
               )
@@ -116,7 +118,7 @@ class SearchVendorFlower extends  GetView<SearchVendorFlowerController> {
 
   Widget _retryButton() => Center(
     child: OutlinedButton(
-        onPressed: controller.getFlowersByVendorId, child: const Icon(Icons.refresh_outlined)
+        onPressed: controller.getUserById, child: const Icon(Icons.refresh_outlined)
     ),
   );
 
@@ -125,8 +127,8 @@ class SearchVendorFlower extends  GetView<SearchVendorFlowerController> {
     child: ListView.builder(
         shrinkWrap: true,
         itemCount: controller.searchList.length,
-        itemBuilder: (_,index) => SearchVendorFlowerCard(
-            vendorFlower: controller.searchList[index],
+        itemBuilder: (_,index) => UserFlowerSearchCard(
+            searchFlower: controller.searchList[index],
             index: index
         )
     )

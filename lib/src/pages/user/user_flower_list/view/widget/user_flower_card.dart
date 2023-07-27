@@ -15,10 +15,10 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
 
   @override
   Widget build(BuildContext context) {
-    if (userFlower.description.length > 60) {
-      firstHalfText = userFlower.description.substring(0, 60);
+    if (userFlower.description.length > 45) {
+      firstHalfText = userFlower.description.substring(0, 45);
       secondHalfText = userFlower.description
-          .substring(60, userFlower.description.length);
+          .substring(45, userFlower.description.length);
     } else {
       firstHalfText = userFlower.description;
       secondHalfText = "";
@@ -29,12 +29,14 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
         height: 530,
         decoration: BoxDecoration(
             color: const Color(0xffe9e9e9),
-            border: const Border(
-              top: BorderSide(color: Color(0xff9d9d9d),width: 0.5),
-              left: BorderSide(color: Color(0xff9d9d9d),width: 0.5),
-              bottom: BorderSide(color: Color(0xff9d9d9d),width: 3.5),
-              right: BorderSide(color: Color(0xff9d9d9d),width: 3.5),
-            ),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xff9d9d9d).withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: const Offset(4, 4), // changes position of shadow
+              ),
+            ],
             borderRadius: BorderRadius.circular(45)
         ),
         child: Column(
@@ -127,58 +129,8 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
                         backgroundColor: const Color(0xff71cc47),
                       ),
                       onPressed: ()=>{
-                      showDialog(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        backgroundColor: const Color(0xffe9e9e9),
-                        content: (userFlower.count==0) ? Text(
-                          locale.LocaleKeys.shopping_cart_out_of_stock.tr,
-                          style:
-                          const TextStyle(fontWeight: FontWeight.w500, fontSize: 21),
-                        ) : Obx(() => Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Row(
-                              children: [
-                                (controller.buyCounting[index] == 0) ? _disableButton() : decrementButton(),
-                              ],
-                            ),
-                            Obx(() => Text(
-                              "${controller.buyCounting[index]}",
-                              style:
-                              const TextStyle(fontWeight: FontWeight.w500, fontSize: 21),
-                            )),
-                            Row(
-                              children: [
-                                (controller.buyCounting[index] == (userFlower.count)) ? _disableButton() : incrementButton(),
-                              ],
-                            )
-                          ],
-                        )),
-                        actions: [
-                          Obx(() => ElevatedButton(
-                            child: (controller.isLoadingAddToCart.value) ? const Center(
-                              child: SizedBox(
-                                  width: 50,
-                                  child: LinearProgressIndicator()
-                              ),
-                            ) :
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                const Icon(Icons.shopping_cart_outlined),
-                                Text(locale.LocaleKeys.shopping_cart_add_to_cart.tr),
-                              ],
-                            ),
-                            onPressed: () => {
-                              controller.addToCart(index),
-                              Navigator.of(context).pop(),
-                            },
-                          ),)
-                        ],
-                      ),
-                      ),
 
+                      addToCartDialog(context),
                       },
                       child: const Center(child: Icon(Icons.add,size: 17)),
                     ),
@@ -188,6 +140,60 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Future<dynamic> addToCartDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        backgroundColor: const Color(0xffe9e9e9),
+        content: (userFlower.count==0) ? Text(
+          locale.LocaleKeys.shopping_cart_out_of_stock.tr,
+          style:
+          const TextStyle(fontWeight: FontWeight.w500, fontSize: 21),
+        ) : Obx(() => Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Row(
+              children: [
+                (controller.buyCounting[index] == 0) ? _disableButton() : decrementButton(),
+              ],
+            ),
+            Obx(() => Text(
+              "${controller.buyCounting[index]}",
+              style:
+              const TextStyle(fontWeight: FontWeight.w500, fontSize: 21),
+            )),
+            Row(
+              children: [
+                (controller.buyCounting[index] == (userFlower.count)) ? _disableButton() : incrementButton(),
+              ],
+            )
+          ],
+        )),
+        actions: [
+          Obx(() => ElevatedButton(
+            child: (controller.isLoadingAddToCart.value) ? const Center(
+              child: SizedBox(
+                  width: 50,
+                  child: LinearProgressIndicator()
+              ),
+            ) :
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Icon(Icons.shopping_cart_outlined),
+                Text(locale.LocaleKeys.shopping_cart_add_to_cart.tr),
+              ],
+            ),
+            onPressed: () => {
+              controller.addToCart(index),
+              Navigator.of(context).pop(),
+            },
+          ),)
+        ],
       ),
     );
   }

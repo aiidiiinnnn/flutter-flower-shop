@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import '../../../../infrastructure/common/repository_url.dart';
 import '../../../login_page/models/vendor_models/login_vendor_dto.dart';
 import '../../../login_page/models/vendor_models/login_vendor_view_model.dart';
+import '../../add_vendor_flower/models/categories/categories_view_model.dart';
+import '../../add_vendor_flower/models/colors/colors_view_model.dart';
 import '../models/search_vendor_flower_dto.dart';
 import '../models/search_vendor_flower_view_model.dart';
 
@@ -79,8 +81,8 @@ class SearchVendorFlowerRepository {
     }
   }
 
-  Future<Either<String,List<SearchVendorFlowerViewModel>>> searchFlowers(String name) async{
-    final url = Uri.http(RepositoryUrls.fullBaseUrl, 'vendorFlowers',{'name_like':name});
+  Future<Either<String,List<SearchVendorFlowerViewModel>>> searchFlowers({required Map<String,String> query}) async{
+    final url = Uri.http(RepositoryUrls.fullBaseUrl, 'vendorFlowers',query);
     final response = await http.get(url,headers: customHeaders);
 
     if(response.statusCode >= 200 && response.statusCode <400){
@@ -90,6 +92,62 @@ class SearchVendorFlowerRepository {
       for(final items in userFlowersList){
         final userFlowerViewModel = SearchVendorFlowerViewModel.fromJson(items);
         searchedFlowers.add(userFlowerViewModel);
+      }
+      return Right(searchedFlowers);
+    }
+    else{
+      return Left("Error: ${response.statusCode}");
+    }
+  }
+
+  Future<Either<String,List<CategoriesViewModel>>> getCategories() async{
+    final url = Uri.http(RepositoryUrls.fullBaseUrl, 'categories');
+    final response = await http.get(url,headers: customHeaders);
+
+    if(response.statusCode >= 200 && response.statusCode <400){
+      final List<CategoriesViewModel> categoriesList =[];
+      final List<dynamic> categories = json.decode(response.body);
+
+      for(final items in categories){
+        final userFlowerViewModel = CategoriesViewModel.fromJson(items);
+        categoriesList.add(userFlowerViewModel);
+      }
+      return Right(categoriesList);
+    }
+    else{
+      return Left("Error: ${response.statusCode}");
+    }
+  }
+
+  Future<Either<String,List<ColorsViewModel>>> getColors() async{
+    final url = Uri.http(RepositoryUrls.fullBaseUrl, 'colors');
+    final response = await http.get(url,headers: customHeaders);
+
+    if(response.statusCode >= 200 && response.statusCode <400){
+      final List<ColorsViewModel> categoriesList =[];
+      final List<dynamic> categories = json.decode(response.body);
+
+      for(final items in categories){
+        final userFlowerViewModel = ColorsViewModel.fromJson(items);
+        categoriesList.add(userFlowerViewModel);
+      }
+      return Right(categoriesList);
+    }
+    else{
+      return Left("Error: ${response.statusCode}");
+    }
+  }
+
+  Future<Either<String,List<SearchVendorFlowerViewModel>>> filteredFlower({required Map<String,String> query}) async{
+    final url = Uri.http(RepositoryUrls.fullBaseUrl, 'vendorFlowers', query);
+    final response = await http.get(url,headers: customHeaders);
+    if(response.statusCode >= 200 && response.statusCode <400){
+      final List<SearchVendorFlowerViewModel> searchedFlowers =[];
+      final List<dynamic> vendorFlowersList = json.decode(response.body);
+
+      for(final items in vendorFlowersList){
+        final vendorFlowerViewModel = SearchVendorFlowerViewModel.fromJson(items);
+        searchedFlowers.add(vendorFlowerViewModel);
       }
       return Right(searchedFlowers);
     }

@@ -134,16 +134,53 @@ class UserFlowerHome extends  GetView<UserFlowerListController>{
                   thickness: 1,
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.only(start: 8,top: 17),
+                  padding: const EdgeInsetsDirectional.only(start: 10,top: 20),
+                  child: InkWell(
+                    onTap: () => {
+                      Navigator.of(context).pop(),
+                      controller.goToSearch()
+                    },
+                    child: const Row(
+                      children: [
+                        Icon(Icons.search_outlined),
+                        Padding(
+                          padding: EdgeInsetsDirectional.only(start: 4),
+                          child: Text("Search",style: TextStyle(
+                              fontSize:17,
+                              color: Color(0xff050a0a)
+                          ),),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 10,top: 30),
+                  child: InkWell(
+                    onTap: () => {
+                      Navigator.of(context).pop(),
+                      controller.logOut(),
+                    },
+                    child: const Row(
+                      children: [
+                        Icon(Icons.login_outlined),
+                        Padding(
+                          padding: EdgeInsetsDirectional.only(start: 4),
+                          child: Text("Logout",style: TextStyle(
+                              fontSize:17,
+                              color: Color(0xff050a0a)
+                          ),),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 10,top: 30),
                   child: InkWell(
                     onTap: () => Get.updateLocale(const Locale('en','US')),
                     child: const Row(
                       children: [
-                        // SizedBox(
-                        //     height: 42,
-                        //     width: 42,
-                        //     child: Image(image: AssetImage('assets/united_kingdom.jpg',package: 'flower_package'))
-                        // ),
                         Icon(Icons.language_outlined),
                         Padding(
                           padding: EdgeInsetsDirectional.only(start: 4),
@@ -157,16 +194,11 @@ class UserFlowerHome extends  GetView<UserFlowerListController>{
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.only(start: 8,top: 17),
+                  padding: const EdgeInsetsDirectional.only(start: 10,top: 30),
                   child: InkWell(
                     onTap: () => Get.updateLocale(const Locale('fa','IR')),
                     child: const Row(
                       children: [
-                        // SizedBox(
-                        //     height: 42,
-                        //     width: 42,
-                        //     child: Image(image: AssetImage('assets/iran.jpg',package: 'flower_package'))
-                        // ),
                         Icon(Icons.language_outlined),
                         Padding(
                           padding: EdgeInsetsDirectional.only(start: 4),
@@ -181,54 +213,40 @@ class UserFlowerHome extends  GetView<UserFlowerListController>{
                 ),
               ],
             ),
-            // child: Column(
-            //   children: [
-            //     ElevatedButton(
-            //         onPressed: () {
-            //           Navigator.pop(context);
-            //           controller.logOut();
-            //         },
-            //         child: const Text("Logout")
-            //     ),
-            //   ],
-            // ),
           ),),
 
           body: Obx(() => RefreshIndicator(
-            onRefresh: controller.getFlowers,
+            onRefresh: controller.getUserById,
             child: _pageContent(),
           ),),
-
         )
     );
   }
 
   Widget _pageContent() {
     if (controller.isLoading.value) {
-      return const Center(
-        child: SizedBox(
-            width: 150,
-            child: LinearProgressIndicator()
-        ),
-      );
-    } else if (controller.isRetry.value) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    else if (controller.isRetry.value) {
       return _retryButton();
     }
-    return controller.flowersList.isNotEmpty ? _userFlower() :
-    Center(
-      child: Column(
+    else if(controller.flowersList.isEmpty){
+      return Center(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(locale.LocaleKeys.vendor_flower_home_Home.tr,style: const TextStyle(fontSize: 72),),
-            Text(locale.LocaleKeys.vendor_flower_home_there_is_no_flower_here.tr, style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w300))
+            const Icon(Icons.home_outlined,size: 270),
+            Text(locale.LocaleKeys.vendor_flower_home_there_is_no_flower_here.tr, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
           ],
-      ),
-    );
+        ),
+      );
+    }
+    return _userFlower();
   }
 
   Widget _retryButton() => Center(
     child: OutlinedButton(
-        onPressed: controller.getFlowers, child: const Icon(Icons.keyboard_return_outlined)),
+        onPressed: controller.getUserById, child: const Icon(Icons.keyboard_return_outlined)),
   );
 
   Widget _userFlower() => Obx(() => ListView.builder(
