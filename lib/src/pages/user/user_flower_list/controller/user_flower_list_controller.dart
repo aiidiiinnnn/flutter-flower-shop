@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../flower_shop.dart';
 import '../../../login_page/models/user_models/login_user_view_model.dart';
-import '../../../vendor/add_vendor_flower/models/categories/categories_view_model.dart';
 import '../models/user_flower_view_model.dart';
 import '../repositories/user_flower_list_repository.dart';
 import '../view/screens/user_flower_home.dart';
@@ -28,8 +27,11 @@ class UserFlowerListController extends GetxController{
   RxBool isLoadingAddToCart=false.obs;
   RxMap buyCounting={}.obs;
   RxInt countInCart = RxInt(0);
-  List<int> maxCount=[];
+  RxList<int> maxCount=RxList();
+  RxList<bool> isAdded=RxList();
   final GlobalKey<FormState> searchKey=GlobalKey();
+  RxBool disableLoading=false.obs;
+  RxList<CartFlowerViewModel> shoppingCartList=RxList();
 
   void onDestinationSelected(index){
     pageIndex.value=index;
@@ -61,6 +63,8 @@ class UserFlowerListController extends GetxController{
   }
 
   Future<void> getUserById() async{
+    isAdded.clear();
+    shoppingCartList.clear();
     isLoading.value=true;
     isLoadingDrawer.value=true;
     isRetry.value=false;
@@ -74,11 +78,32 @@ class UserFlowerListController extends GetxController{
         },
             (userViewModel) async {
               await getFlowers();
-          user=userViewModel;
-          countInCart.value = user!.userFlowerList.length;
-          isLoading.value=false;
-          isLoadingDrawer.value=false;
-        }
+              user=userViewModel;
+              shoppingCartList.addAll(user!.userFlowerList);
+              countInCart.value = shoppingCartList.length;
+              int i=0;
+              for(final flower in flowersList){
+                if(user!.userFlowerList.isNotEmpty){
+                  for(final cartFlower in user!.userFlowerList){
+                    if(flower.id==cartFlower.id){
+                      buyCounting[i]=cartFlower.count;
+                      isAdded.add(true);
+                    }
+                    else{
+                      buyCounting[i]=1;
+                      isAdded.add(false);
+                    }
+                  }
+                }
+                else{
+                  buyCounting[i]=1;
+                  isAdded.add(false);
+                }
+                i++;
+              }
+              isLoading.value=false;
+              isLoadingDrawer.value=false;
+            }
     );
   }
 
@@ -96,8 +121,8 @@ class UserFlowerListController extends GetxController{
           int i=0;
           for(final flower in flowersList){
             buyCounting[i]=1;
-            i++;
             maxCount.add(flower.count);
+            i++;
           }
           isLoading.value=false;
         }
@@ -139,9 +164,99 @@ class UserFlowerListController extends GetxController{
     }
   }
 
+  Future<void> onTapMinus({required int index}) async{
+    isLoadingAddToCart.value=true;
+    for(final cartFlower in user!.userFlowerList){
+      if(flowersList[index].id==cartFlower.id){
+        user!.userFlowerList.remove(cartFlower);
+      }
+    }
+    if(buyCounting[index]>0 && buyCounting[index] <= maxCount[index]){
+      buyCounting[index]--;
+    }
+    user!.userFlowerList.add(
+        CartFlowerViewModel(
+            name: flowersList[index].name,
+            imageAddress: flowersList[index].imageAddress,
+            description: flowersList[index].description,
+            price: flowersList[index].price,
+            color: flowersList[index].color,
+            category: flowersList[index].category,
+            vendorId: flowersList[index].vendorId,
+            count: buyCounting[index],
+            id: flowersList[index].id,
+            totalCount: flowersList[index].count
+        ));
+    final result = await _repository.userEditFlowerList(
+      dto: user!,
+      id: userId!,
+    );
+    result.fold(
+            (exception) {
+          Get.snackbar('Exception', exception);
+          isLoadingAddToCart.value=false;
+        },
+            (right) {
+          countInCart.value = shoppingCartList.length;
+          isAdded[index]=true;
+          maxCount[index]= (maxCount[index]-buyCounting[index]).toInt();
+          List<CartFlowerViewModel> shoppingCart = (user!.userFlowerList);
+          final editedUser = user!.copyWith(
+            userFlowerList: shoppingCart,
+          );
+          user = editedUser;
+          isLoadingAddToCart.value=false;
+        });
+  }
+
+
+  Future<void> onTapAdd({required int index}) async{
+    isLoadingAddToCart.value=true;
+    for(final cartFlower in shoppingCartList){
+      if(flowersList[index].id==cartFlower.id){
+        user!.userFlowerList.remove(cartFlower);
+      }
+    }
+    if(buyCounting[index]>=0 && buyCounting[index] < maxCount[index]){
+      buyCounting[index]++;
+    }
+    user!.userFlowerList.add(
+        CartFlowerViewModel(
+            name: flowersList[index].name,
+            imageAddress: flowersList[index].imageAddress,
+            description: flowersList[index].description,
+            price: flowersList[index].price,
+            color: flowersList[index].color,
+            category: flowersList[index].category,
+            vendorId: flowersList[index].vendorId,
+            count: buyCounting[index],
+            id: flowersList[index].id,
+            totalCount: flowersList[index].count
+        ));
+    final result = await _repository.userEditFlowerList(
+      dto: user!,
+      id: userId!,
+    );
+    result.fold(
+            (exception) {
+          Get.snackbar('Exception', exception);
+          isLoadingAddToCart.value=false;
+        },
+            (right) {
+          countInCart.value = shoppingCartList.length;
+          isAdded[index]=true;
+          maxCount[index]= (maxCount[index]-buyCounting[index]).toInt();
+          List<CartFlowerViewModel> shoppingCart = (user!.userFlowerList);
+          final editedUser = user!.copyWith(
+            userFlowerList: shoppingCart,
+          );
+          user = editedUser;
+          isLoadingAddToCart.value=false;
+        });
+  }
+
   Future<void> addToCart(int index) async{
     isLoadingAddToCart.value=true;
-
     user!.userFlowerList.add(
         CartFlowerViewModel(
         name: flowersList[index].name,
@@ -165,7 +280,8 @@ class UserFlowerListController extends GetxController{
           isLoadingAddToCart.value=false;
         },
             (right) {
-              countInCart.value = user!.userFlowerList.length;
+              countInCart.value = shoppingCartList.length;
+              isAdded[index]=true;
               maxCount[index]= (maxCount[index]-buyCounting[index]).toInt();
               List<CartFlowerViewModel> shoppingCart = (user!.userFlowerList);
               final editedUser = user!.copyWith(

@@ -572,30 +572,6 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
         child: const Icon(Icons.arrow_back_ios, size: 16),
         onTap: () => {
           controller.minusFlowerCount(flowerToEdit: vendorFlower, index: index)
-        // (vendorFlower.count == 1) ? showDialog(context: context,
-        // builder: (BuildContext context) {
-        //   return AlertDialog(
-        //     title: Text(locale.LocaleKeys.vendor_flower_card_delete.tr),
-        //     content: Text(locale.LocaleKeys.vendor_flower_card_are_you_sure_you_want_to_delete_this.tr),
-        //     actions: [
-        //       TextButton(
-        //           child: Text(locale.LocaleKeys.vendor_flower_card_cancel.tr),
-        //           onPressed:  (){
-        //             Navigator.of(context).pop();
-        //           }
-        //       ),
-        //       TextButton(
-        //         child: Text(locale.LocaleKeys.vendor_flower_card_continue.tr),
-        //         onPressed:  () {
-        //           controller.deleteFlower(vendorFlower);
-        //           Navigator.of(context).pop();
-        //         },
-        //       ),
-        //     ],
-        //   );
-        // },
-        // ) : controller.minusFlowerCount(flowerToEdit: vendorFlower, index: index)
-        //   (vendorFlower.count == 1) ? controller.isOutOfStock[index]=true : controller.minusFlowerCount(flowerToEdit: vendorFlower, index: index)
         });
   }
 }

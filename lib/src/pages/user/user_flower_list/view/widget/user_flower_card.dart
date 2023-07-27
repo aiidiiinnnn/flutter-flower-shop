@@ -121,6 +121,21 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
                   Text("\$${userFlower.price}",
                       style: const TextStyle(fontSize: 35, fontWeight: FontWeight.w600)
                   ),
+                  Obx(() => controller.isAdded[index] ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      minusButton(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: Text(
+                          "${controller.buyCounting[index]}",
+                          style:
+                          const TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                        ),
+                      ),
+                      addButton()
+                    ],
+                  ) :
                   SizedBox(
                     width: 45,
                     height: 45,
@@ -128,13 +143,13 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xff71cc47),
                       ),
-                      onPressed: ()=>{
-
-                      addToCartDialog(context),
+                      onPressed: () {
+                        controller.buyCounting[index]=1;
+                        addToCartDialog(context);
                       },
                       child: const Center(child: Icon(Icons.add,size: 17)),
                     ),
-                  ),
+                  ),)
                 ],
               ),
             )
@@ -196,6 +211,22 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
         ],
       ),
     );
+  }
+
+  Widget addButton() {
+    return InkWell(
+        child: const Icon(Icons.add_circle_outlined, size: 28,color: Color(0xff71cc47),),
+        onTap: () => {
+          controller.onTapAdd(index: index)
+        });
+  }
+
+  Widget minusButton() {
+    return InkWell(
+        child: const Icon(Icons.remove_circle_outlined, size: 28, color: Color(0xff71cc47),),
+        onTap: () => {
+          controller.onTapMinus(index: index)
+        });
   }
 
   void _showDescription(BuildContext context) {
