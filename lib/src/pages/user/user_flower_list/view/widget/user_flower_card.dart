@@ -121,19 +121,24 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
                   Text("\$${userFlower.price}",
                       style: const TextStyle(fontSize: 35, fontWeight: FontWeight.w600)
                   ),
-                  Obx(() => controller.isAdded[index] ? Row(
+                  Obx(() => controller.isAdded[userFlower.id]! ? (controller.addToCartLoading[index]) ? const SizedBox(
+                      width: 70,
+                      height: 10,
+                      child: LinearProgressIndicator()
+                  ) :
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      minusButton(),
+                      controller.buyCounting[userFlower.id]==1 ? deleteButton() : minusButton(),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4),
                         child: Text(
-                          "${controller.buyCounting[index]}",
+                          "${controller.buyCounting[userFlower.id]}",
                           style:
                           const TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
                         ),
                       ),
-                      addButton()
+                      controller.buyCounting[userFlower.id]==controller.maxCount[index]? disableAddButton() : addButton()
                     ],
                   ) :
                   SizedBox(
@@ -144,7 +149,7 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
                         backgroundColor: const Color(0xff71cc47),
                       ),
                       onPressed: () {
-                        controller.buyCounting[index]=1;
+                        controller.buyCounting[userFlower.id]=1;
                         addToCartDialog(context);
                       },
                       child: const Center(child: Icon(Icons.add,size: 17)),
@@ -173,24 +178,24 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
           children: [
             Row(
               children: [
-                (controller.buyCounting[index] == 0) ? _disableButton() : decrementButton(),
+                (controller.buyCounting[userFlower.id] == 0) ? _disableButton() : decrementButton(),
               ],
             ),
             Obx(() => Text(
-              "${controller.buyCounting[index]}",
+              "${controller.buyCounting[userFlower.id]}",
               style:
               const TextStyle(fontWeight: FontWeight.w500, fontSize: 21),
             )),
             Row(
               children: [
-                (controller.buyCounting[index] == (userFlower.count)) ? _disableButton() : incrementButton(),
+                (controller.buyCounting[userFlower.id] == (userFlower.count)) ? _disableButton() : incrementButton(),
               ],
             )
           ],
         )),
         actions: [
           Obx(() => ElevatedButton(
-            child: (controller.isLoadingAddToCart.value) ? const Center(
+            child: (controller.disableLoading.value) ? const Center(
               child: SizedBox(
                   width: 50,
                   child: LinearProgressIndicator()
@@ -213,11 +218,18 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
     );
   }
 
+  Widget disableAddButton(){
+    return const InkWell(
+        onTap: null,
+        child: Icon(Icons.add_circle_outlined, size: 28,color: Color(0xff71cc47),)
+    );
+  }
+
   Widget addButton() {
     return InkWell(
         child: const Icon(Icons.add_circle_outlined, size: 28,color: Color(0xff71cc47),),
         onTap: () => {
-          controller.onTapAdd(index: index)
+          controller.onTapAdd(flower: userFlower,index: index)
         });
   }
 
@@ -225,7 +237,15 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
     return InkWell(
         child: const Icon(Icons.remove_circle_outlined, size: 28, color: Color(0xff71cc47),),
         onTap: () => {
-          controller.onTapMinus(index: index)
+          controller.onTapMinus(flower: userFlower,index: index)
+        });
+  }
+
+  Widget deleteButton() {
+    return InkWell(
+        child: const Icon(Icons.delete, size: 28, color: Color(0xff71cc47),),
+        onTap: () => {
+          controller.onTapDelete(flower: userFlower,index: index)
         });
   }
 
@@ -263,7 +283,7 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
   Widget incrementButton() {
     return IconButton(
       onPressed: () => {
-        controller.onTapIncrement(user: userFlower,index: index),
+        controller.onTapIncrement(flower: userFlower,index: index),
       },
       icon: const Icon(Icons.arrow_forward_ios,color: Colors.black,),
     );
@@ -272,7 +292,7 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
   Widget decrementButton() {
     return IconButton(
       onPressed: () => {
-        controller.onTapDecrement(user: userFlower,index: index),
+        controller.onTapDecrement(flower: userFlower,index: index),
       },
       icon: const Icon(Icons.arrow_back_ios,color: Colors.black),
     );

@@ -23,6 +23,24 @@
       "imagePath": "",
       "userFlowerList": [
         {
+          "id": 5,
+          "name": "flower3",
+          "imageAddress": "",
+          "description": "flower 3 is gooooood very good",
+          "price": 5000,
+          "color": [
+            4294835968,
+            4294901824
+          ],
+          "category": [
+            "bad",
+            "home"
+          ],
+          "count": 8,
+          "vendorId": 1,
+          "totalCount": 25
+        },
+        {
           "id": 3,
           "name": "flower1",
           "imageAddress": "",
@@ -36,7 +54,7 @@
             "garden",
             "good"
           ],
-          "count": 3,
+          "count": 2,
           "vendorId": 1,
           "totalCount": 18
         }
@@ -97,27 +115,7 @@
       "id": 5
     }
   ],
-  "purchase": [
-    {
-      "purchaseList": [
-        {
-          "id": 3,
-          "name": "flower3",
-          "imageAddress": "",
-          "description": "vmndikjvnadinik",
-          "price": 3,
-          "color": [],
-          "category": [],
-          "count": 1,
-          "vendorId": 1,
-          "totalCount": 1
-        }
-      ],
-      "date": "2023-7-27 10:34",
-      "userId": 1,
-      "id": 1
-    }
-  ],
+  "purchase": [],
   "categories": [
     {
       "name": "home",
