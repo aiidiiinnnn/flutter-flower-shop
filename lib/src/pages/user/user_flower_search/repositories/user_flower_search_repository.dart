@@ -118,4 +118,16 @@ class UserFlowerSearchRepository {
     }
   }
 
+  Future<Either<String, int>> userEditFlowerList({required LoginUserViewModel dto,required int id,}) async {
+    final url= Uri.http(RepositoryUrls.fullBaseUrl, 'users/$id');
+    final request = await http.put(url,body: json.encode(dto.toJson()),headers: customHeaders);
+    try {
+      final editedUser = json.decode(request.body);
+      return Right(editedUser['id']);
+    }
+    catch (e) {
+      return Left('There was an error: ${request.statusCode}');
+    }
+  }
+
 }

@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'package:flower_shop/src/pages/user/user_flower_cart/models/cart_Flower/cart_flower_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-import '../../controller/user_flower_list_controller.dart';
+import '../../../user_flower_cart/models/cart_flower_view_model.dart';
+import '../../controller/user_flower_history_controller.dart';
 
-class UserFlowerHistoryCard extends GetView<UserFlowerListController> {
+class UserFlowerHistoryCard extends GetView<UserFlowerHistoryController> {
 
   UserFlowerHistoryCard({super.key,required this.historyCart,required this.index});
   CartFlowerViewModel historyCart;

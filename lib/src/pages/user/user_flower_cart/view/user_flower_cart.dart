@@ -26,9 +26,67 @@ class UserFlowerCart extends  GetView<UserFlowerCartController>{
             ),
           ),
           // body: Obx(() => _pageContent(),),
-          body: RefreshIndicator(
-            onRefresh: controller.getUserById,
-            child: Obx(() => _pageContent(),),
+          body: Column(
+            children: [
+              Expanded(
+                child: RefreshIndicator(
+                  onRefresh: controller.getUserById,
+                  child: Obx(() => _pageContent(),),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(locale.LocaleKeys.shopping_cart_total_price.tr,style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 20
+                    ),),
+                    Obx(() => Text("${controller.totalPrice.value}\$",style: const TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 18,
+                    )),)
+                  ],
+                ),
+              ),
+              Obx(() => (controller.cartFlowerList.isEmpty) ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 20),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 40,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xff6cba00),
+                      ),
+                      onPressed: null,
+                      child: Text(locale.LocaleKeys.shopping_cart_confirm_purchase.tr)
+                  ),
+                ),
+              ): Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 20),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 40,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xff6cba00),
+                      ),
+                      onPressed: ()=>{
+                        controller.purchaseFlower()
+                      },
+                      child: Obx(() => (controller.isLoadingPurchase.value) ? const Center(
+                        child: SizedBox(
+                            width: 50,
+                            child: LinearProgressIndicator()
+                        ),
+                      ) : Text(locale.LocaleKeys.shopping_cart_confirm_purchase.tr),)
+                  ),
+                ),
+              )
+              ),
+
+            ],
           )
         )
     );
@@ -41,6 +99,17 @@ class UserFlowerCart extends  GetView<UserFlowerCartController>{
     else if (controller.isRetry.value) {
       return _retryButton();
     }
+    else if(controller.cartFlowerList.isEmpty){
+      return const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.shopping_cart,size: 270),
+            Text("No flower founded to purchase", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
+          ],
+        ),
+      );
+    }
     return _cartFlower();
   }
 
@@ -50,56 +119,13 @@ class UserFlowerCart extends  GetView<UserFlowerCartController>{
   );
 
   Widget _cartFlower() {
-    return Column(
-      children: [
-        Expanded(
-          child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: controller.cartFlowerList.length,
-              itemBuilder: (_,index) => ShoppingCartCard(
-                cartFlower: controller.cartFlowerList[index],
-                index: index,
-              )
-          ),
-        ),
-        Obx(() => Padding(
-          padding: const EdgeInsets.only(top: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(locale.LocaleKeys.shopping_cart_total_price.tr,style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 20
-              ),),
-              Text("${controller.totalPrice.value}\$",style: const TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 18,
-              )),
-            ],
-          ),
-        )),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 20),
-          child: SizedBox(
-            width: double.infinity,
-            height: 40,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xff6cba00),
-              ),
-              onPressed: ()=>{
-                controller.purchaseFlower()
-              },
-              child: Obx(() => (controller.isLoadingPurchase.value) ? const Center(
-                child: SizedBox(
-                    width: 50,
-                    child: LinearProgressIndicator()
-                ),
-              ) : Text(locale.LocaleKeys.shopping_cart_confirm_purchase.tr),)
-            ),
-          ),
-        ),
-      ],
+    return ListView.builder(
+        shrinkWrap: true,
+        itemCount: controller.cartFlowerList.length,
+        itemBuilder: (_,index) => ShoppingCartCard(
+          cartFlower: controller.cartFlowerList[index],
+          index: index,
+        )
     );
   }
 }

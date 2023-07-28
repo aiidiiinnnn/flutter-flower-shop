@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flower_shop/generated/locales.g.dart' as locale;
 import '../../controller/user_flower_cart_controller.dart';
-import '../../models/cart_Flower/cart_flower_view_model.dart';
+import '../../models/cart_flower_view_model.dart';
+
 
 class ShoppingCartCard extends GetView<UserFlowerCartController> {
 
@@ -111,7 +112,11 @@ class ShoppingCartCard extends GetView<UserFlowerCartController> {
                     ),
                     SizedBox(
                       width: 170,
-                      child: Row(
+                      child: Obx(() => (controller.countLoading[index]) ? const SizedBox(
+                          width: 70,
+                          height: 10,
+                          child: LinearProgressIndicator()
+                      ) : Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("\$${cartFlower.price}",
@@ -120,17 +125,18 @@ class ShoppingCartCard extends GetView<UserFlowerCartController> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              decrementButton(context),
+                              cartFlower.count==1 ? deleteButton() : minusButton(),
                               Text(
                                 "${cartFlower.count}",
                                 style:
-                                const TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
+                                const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                               ),
-                              incrementButton()
+                              cartFlower.count==cartFlower.totalCount ? disableAddButton() : addButton()
                             ],
                           ),
                         ],
-                      ),
+                      ),),
+
                     )
                   ],
                 )
@@ -138,8 +144,8 @@ class ShoppingCartCard extends GetView<UserFlowerCartController> {
             ),
           ),
           Obx(() => Positioned(
-            right: 0,
-            top: 0,
+            right: 10,
+            top: 10,
             child: (controller.isLoadingDelete.value) ? const Center(
               child: SizedBox(
                   width: 20,
@@ -147,25 +153,13 @@ class ShoppingCartCard extends GetView<UserFlowerCartController> {
                   child: CircularProgressIndicator()
               ),
             ) : IconButton(
-                onPressed: ()=>controller.deleteFromCart(cartFlower),
+                onPressed: ()=>controller.onTapDelete(flower: cartFlower, index: index),
                 icon: const Icon(Icons.delete_outline)
             ),
           ))
         ],
       ),
     );
-  }
-
-  Widget incrementButton() {
-    return InkWell(
-        child: const Icon(Icons.arrow_forward_ios, size: 16),
-        onTap: () => {});
-  }
-
-  Widget decrementButton(BuildContext context) {
-    return InkWell(
-        child: const Icon(Icons.arrow_back_ios, size: 16),
-        onTap: () => {});
   }
 
   void _showDescription(BuildContext context) {
@@ -190,6 +184,37 @@ class ShoppingCartCard extends GetView<UserFlowerCartController> {
           ],
         )
     );
+  }
+
+  Widget disableAddButton(){
+    return const InkWell(
+      onTap: null,
+      child: Icon(Icons.arrow_forward_ios,size: 17,),
+    );
+  }
+
+  Widget addButton() {
+    return InkWell(
+        child: const Icon(Icons.arrow_forward_ios,size: 17,),
+        onTap: () => {
+          controller.onTapAdd(flower: cartFlower,index: index)
+        });
+  }
+
+  Widget minusButton() {
+    return InkWell(
+        child: const Icon(Icons.arrow_back_ios,size: 17,),
+        onTap: () => {
+          controller.onTapMinus(flower: cartFlower,index: index)
+        });
+  }
+
+  Widget deleteButton() {
+    return InkWell(
+        child: const Icon(Icons.arrow_back_ios,size: 17,),
+        onTap: () => {
+          controller.onTapDelete(flower: cartFlower,index: index)
+        });
   }
 
 }

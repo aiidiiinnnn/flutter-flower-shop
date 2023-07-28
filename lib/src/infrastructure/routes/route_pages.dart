@@ -1,5 +1,4 @@
 import 'package:flower_shop/src/pages/user/user_flower_cart/view/user_flower_cart.dart';
-import 'package:flower_shop/src/pages/user/user_flower_list/view/screens/user_flower_history.dart';
 import 'package:flower_shop/src/pages/vendor/add_vendor_flower/view/add_vendor_flower.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_history.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_profile.dart';
@@ -11,6 +10,8 @@ import '../../pages/login_page/view/login_page.dart';
 import '../../pages/signup_page/commons/signup_page_binding.dart';
 import '../../pages/signup_page/view/signup_page.dart';
 import '../../pages/user/user_flower_cart/commons/user_flower_cart_binding.dart';
+import '../../pages/user/user_flower_history/commons/user_flower_history_binding.dart';
+import '../../pages/user/user_flower_history/view/user_flower_history.dart';
 import '../../pages/user/user_flower_list/commons/user_flower_list_binding.dart';
 import '../../pages/user/user_flower_list/view/screens/user_flower_home.dart';
 import '../../pages/user/user_flower_list/view/screens/user_flower_profile.dart';
@@ -101,16 +102,16 @@ class RoutePages{
                 page: () => const UserFlowerSearch(),
                 binding: UserFlowerSearchBinding(),
               ),
+              GetPage(
+                name: RouteNames.userFlowerHistory,
+                page: () => const UserFlowerHistory(),
+                binding: UserFlowerHistoryBinding(),
+              ),
             ]
           ),
           GetPage(
             name: RouteNames.userFlowerProfile,
             page: () => const UserFlowerProfile(),
-            binding: UserFlowerListBinding(),
-          ),
-          GetPage(
-            name: RouteNames.userFlowerHistory,
-            page: () => const UserFlowerHistory(),
             binding: UserFlowerListBinding(),
           ),
         ]

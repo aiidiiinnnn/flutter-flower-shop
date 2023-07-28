@@ -76,7 +76,7 @@ class UserFlowerSearch extends  GetView<UserFlowerSearchController> {
                         ),
                         onPressed: () {
                           controller.onTapFilter();
-                          flowerShowDialog(context);
+                          filterShowDialog(context);
                         },
                         child: const Center(child: Icon(Icons.tune_outlined,size: 17)),
                       ),)
@@ -134,7 +134,7 @@ class UserFlowerSearch extends  GetView<UserFlowerSearchController> {
     )
   );
 
-  Future<dynamic> flowerShowDialog(BuildContext context) {
+  Future<dynamic> filterShowDialog(BuildContext context) {
     return showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(

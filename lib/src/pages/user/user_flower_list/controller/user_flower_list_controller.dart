@@ -1,12 +1,10 @@
 import 'package:either_dart/either.dart';
-import 'package:flower_shop/src/pages/user/user_flower_cart/models/cart_Flower/cart_flower_view_model.dart';
-import 'package:flower_shop/src/pages/user/user_flower_cart/models/confirm_purchase/purchase_view_model.dart';
-import 'package:flower_shop/src/pages/user/user_flower_list/view/screens/user_flower_history.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../flower_shop.dart';
 import '../../../login_page/models/user_models/login_user_view_model.dart';
+import '../../user_flower_cart/models/cart_flower_view_model.dart';
 import '../models/user_flower_view_model.dart';
 import '../repositories/user_flower_list_repository.dart';
 import '../view/screens/user_flower_home.dart';
@@ -14,14 +12,12 @@ import '../view/screens/user_flower_profile.dart';
 
 class UserFlowerListController extends GetxController{
   RxList<UserFlowerViewModel> flowersList =RxList();
-  RxList<PurchaseViewModel> historyList = RxList();
-  RxBool isChecked = false.obs;
   RxBool textFlag = true.obs;
   RxInt pageIndex=RxInt(0);
   final UserFlowerListRepository _repository = UserFlowerListRepository();
   LoginUserViewModel? user;
   int? userId;
-  RxBool isLoading=true.obs;
+  RxBool isLoading=false.obs;
   RxBool isLoadingDrawer=true.obs;
   RxBool isRetry=false.obs;
   RxBool disableLoading=false.obs;
@@ -29,9 +25,9 @@ class UserFlowerListController extends GetxController{
   RxInt countInCart = RxInt(0);
   RxList<int> maxCount=RxList();
   RxMap<int,bool> isAdded=RxMap();
-  final GlobalKey<FormState> searchKey=GlobalKey();
   RxList<CartFlowerViewModel> shoppingCartList=RxList();
   RxList<bool> addToCartLoading=RxList();
+  PageController? pageController;
 
   void onDestinationSelected(index){
     pageIndex.value=index;
@@ -39,16 +35,17 @@ class UserFlowerListController extends GetxController{
 
   final screens = [
     const UserFlowerHome(),
-    const UserFlowerHistory(),
     const UserFlowerProfile(),
   ];
 
   @override
   Future<void> onInit() async {
     super.onInit();
+    pageController = PageController(
+        initialPage: pageIndex.value
+    );
     await sharedUser().then((id) => userId=id);
     await getUserById();
-    await purchaseHistory();
   }
 
   Future<int?> sharedUser() async {
@@ -134,22 +131,9 @@ class UserFlowerListController extends GetxController{
     getUserById();
   }
 
-  Future<void> purchaseHistory() async{
-    historyList.clear();
-    isLoading.value=true;
-    isRetry.value=false;
-    final Either<String,List<PurchaseViewModel>> flower = await _repository.purchaseHistory(userId!);
-    flower.fold(
-            (left) {
-          print(left);
-          isLoading.value=false;
-          isRetry.value=true;
-        },
-            (right){
-          historyList.addAll(right);
-          isLoading.value=false;
-        }
-    );
+  Future<void> goToHistory() async {
+    await Get.toNamed("${RouteNames.userFlowerList}${RouteNames.userFlowerHome}${RouteNames.userFlowerHistory}");
+    getUserById();
   }
 
   Future<void> onTapIncrement({required UserFlowerViewModel flower,required int index}) async {

@@ -159,6 +159,27 @@ class UserFlowerHome extends  GetView<UserFlowerListController>{
                   child: InkWell(
                     onTap: () => {
                       Navigator.of(context).pop(),
+                      controller.goToHistory()
+                    },
+                    child: const Row(
+                      children: [
+                        Icon(Icons.history_outlined),
+                        Padding(
+                          padding: EdgeInsetsDirectional.only(start: 4),
+                          child: Text("History",style: TextStyle(
+                              fontSize:17,
+                              color: Color(0xff050a0a)
+                          ),),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 10,top: 30),
+                  child: InkWell(
+                    onTap: () => {
+                      Navigator.of(context).pop(),
                       controller.logOut(),
                     },
                     child: const Row(
