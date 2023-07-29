@@ -17,7 +17,6 @@ class UserFlowerList extends  GetView<UserFlowerListController>{
     return SafeArea(
         child: Scaffold(
             backgroundColor: const Color(0xffc4c4c4),
-            // body: Obx(() => controller.screens[controller.pageIndex.value]),
             body: Obx(() => PageView(
               controller: controller.pageController,
               onPageChanged:(index)=> controller.onDestinationSelected(index),

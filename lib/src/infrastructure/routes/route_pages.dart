@@ -1,6 +1,6 @@
 import 'package:flower_shop/src/pages/user/user_flower_cart/view/user_flower_cart.dart';
 import 'package:flower_shop/src/pages/vendor/add_vendor_flower/view/add_vendor_flower.dart';
-import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_history.dart';
+import 'package:flower_shop/src/pages/vendor/history_vendor_flower/view/history_vendor_flower.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_profile.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/vendor_flower_list.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
@@ -21,6 +21,7 @@ import '../../pages/user/user_flower_search/view/user_flower_search.dart';
 import '../../pages/vendor/add_vendor_flower/commons/add_vendor_flower_binding.dart';
 import '../../pages/vendor/edit_vendor_flower/commons/edit_vendor_flower_binding.dart';
 import '../../pages/vendor/edit_vendor_flower/view/edit_vendor_flower.dart';
+import '../../pages/vendor/history_vendor_flower/commons/history_vendor_flower_binding.dart';
 import '../../pages/vendor/search_vendor_flower/commons/search_vendor_flower_binding.dart';
 import '../../pages/vendor/search_vendor_flower/view/search_vendor_flower.dart';
 import '../../pages/vendor/vendor_flower_list/commons/vendor_flower_list_binding.dart';
@@ -67,17 +68,17 @@ class RoutePages{
                     page: () => const SearchVendorFlower(),
                     binding: SearchVendorFlowerBinding()
                 ),
+                GetPage(
+                  name: RouteNames.historyVendorFlower,
+                  page: () => const HistoryVendorFlower(),
+                  binding: HistoryVendorFlowerBinding(),
+                ),
               ]
           ),
           GetPage(
               name: RouteNames.vendorFlowerProfile,
               page: () => const VendorFlowerProfile(),
               binding: VendorFlowerListBinding(),
-          ),
-          GetPage(
-            name: RouteNames.vendorFlowerHistory,
-            page: () => const VendorFlowerHistory(),
-            binding: VendorFlowerListBinding(),
           ),
         ]
     ),

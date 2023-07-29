@@ -124,6 +124,7 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
                   child: InkWell(
                     onTap: () => {
                       Navigator.of(context).pop(),
+                      controller.goToHistory()
                     },
                     child: const Row(
                       children: [
@@ -205,11 +206,7 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
               ],
             ),
           ),),
-          floatingActionButton: FloatingActionButton(
-            backgroundColor: const Color(0xff6cba00),
-            onPressed: ()=> controller.goToAdd(),
-            child: const Icon(Icons.add,size: 40),
-          ),
+
 
           body: Obx(() => RefreshIndicator(
             onRefresh:controller.getFlowersByVendorId,

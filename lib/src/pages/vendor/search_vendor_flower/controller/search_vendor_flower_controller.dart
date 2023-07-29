@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:either_dart/either.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +41,7 @@ class SearchVendorFlowerController extends GetxController{
   RxList<String> categoryList=RxList();
   RxList<ColorsViewModel> colorsFromJson=RxList();
   Rx<RangeValues> currentRangeValues = Rx<RangeValues>(const RangeValues(0, 100));
+  Timer? deBouncer;
 
   @override
   Future<void> onInit() async {

@@ -2,7 +2,6 @@ import 'package:either_dart/either.dart';
 import 'package:flower_shop/src/pages/login_page/models/vendor_models/login_vendor_view_model.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/models/vendor_flower_view_model.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/repositories/vendor_flower_list_repository.dart';
-import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_history.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -30,21 +29,24 @@ class VendorFlowerListController extends GetxController{
   RxList<String> countLoading=RxList();
   RxList<bool> isOutOfStock=RxList();
   RxBool textFlag = true.obs;
-  RxInt index=RxInt(0);
+  RxInt pageIndex=RxInt(0);
+  PageController pageController= PageController();
 
   void onDestinationSelected(index){
-    this.index.value=index;
+    pageIndex.value=index;
   }
 
   final screens = [
     const VendorFlowerHome(),
-    const VendorFlowerHistory(),
     const VendorFlowerProfile(),
   ];
 
   @override
   Future<void> onInit() async {
     super.onInit();
+    pageController = PageController(
+        initialPage: pageIndex.value
+    );
     await sharedVendor().then((id) => vendorId=id);
     await getVendorById();
     await getFlowersByVendorId();
@@ -71,10 +73,18 @@ class VendorFlowerListController extends GetxController{
       countLoading.add("");
       isOutOfStock.add(false);
     }
+    pageIndex.value=0;
+    onDestinationSelected(pageIndex.value);
+    pageController!.jumpToPage(pageIndex.value);
   }
 
   Future<void> goToSearch() async {
     await Get.toNamed("${RouteNames.vendorFlowerList}${RouteNames.vendorFlowerHome}${RouteNames.searchVendorFlower}");
+    getFlowersByVendorId();
+  }
+
+  Future<void> goToHistory() async {
+    await Get.toNamed("${RouteNames.vendorFlowerList}${RouteNames.vendorFlowerHome}${RouteNames.historyVendorFlower}");
     getFlowersByVendorId();
   }
 

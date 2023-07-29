@@ -6,9 +6,7 @@ class RouteNames{
   static const vendorFlowerHome='/VendorFlowerHome';
   static const vendorFlowerProfile='/VendorFlowerProfile';
   static const searchVendorFlower='/SearchVendorFlower';
-
-  static const vendorFlowerHistory='/VendorFlowerHistory';
-
+  static const historyVendorFlower='/HistoryVendorFlower';
   static const addVendorFlower='/AddVendorFlower';
   static const editVendorFlower='/EditVendorFlower';
 

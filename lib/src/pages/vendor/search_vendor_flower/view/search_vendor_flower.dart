@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flower_shop/src/pages/vendor/search_vendor_flower/view/widget/search_vendor_flower_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -42,8 +44,11 @@ class SearchVendorFlower extends  GetView<SearchVendorFlowerController> {
                         child: TextFormField(
                           enableSuggestions: false,
                           onChanged: (text) => {
-                            text= controller.searchController.text.toLowerCase(),
-                            controller.searchFlowers(text),
+                            if(controller.deBouncer?.isActive ?? false) controller.deBouncer?.cancel(),
+                            controller.deBouncer = Timer(const Duration(milliseconds: 2000),(){
+                              text= controller.searchController.text.toLowerCase();
+                              controller.searchFlowers(text);
+                            })
                           },
                           style: const TextStyle(color: Color(0xff050a0a)),
                           decoration: InputDecoration(
@@ -243,14 +248,23 @@ class SearchVendorFlower extends  GetView<SearchVendorFlowerController> {
                                 onTap: ()=> controller.setSelectedColor(controller.colorsFromJson[index].code),
                                 child: Obx(() => (controller.selectedColor.value==controller.colorsFromJson[index].code) ?
                                 Container(
-                                  height: 35,
-                                  width: 35,
-                                  decoration: BoxDecoration(
-                                    color: Color(controller.colorsFromJson[index].code),
-                                    border: Border.all(color: Colors.black),
-                                    borderRadius: BorderRadius.circular(200),
-                                  ),
-                                  child: const Center(child: Icon(Icons.check,size: 16,color: Colors.white,)),
+                                    height: 30,
+                                    width: 30,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: const Color(0xfff3f7f7),
+                                      border: Border.all(color: Color(controller.colorsFromJson[index].code)),
+                                    ),
+                                    child: Center(
+                                      child: Container(
+                                        height: 20,
+                                        width: 20,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Color(controller.colorsFromJson[index].code),
+                                        ),
+                                      ),
+                                    )
                                 ): Container(
                                   height: 30,
                                   width: 30,

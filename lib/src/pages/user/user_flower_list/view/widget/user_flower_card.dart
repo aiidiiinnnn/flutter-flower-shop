@@ -194,7 +194,17 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
           ],
         )),
         actions: [
-          Obx(() => ElevatedButton(
+          userFlower.count==0 ?
+          ElevatedButton(
+            onPressed : null,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Icon(Icons.shopping_cart_outlined),
+                Text(locale.LocaleKeys.shopping_cart_add_to_cart.tr),
+              ],
+            )
+          ) : Obx(() => ElevatedButton(
             child: (controller.disableLoading.value) ? const Center(
               child: SizedBox(
                   width: 50,
