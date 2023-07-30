@@ -99,7 +99,7 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            locale.LocaleKeys.vendor_flower_card_show_more.tr,
+                            locale.LocaleKeys.user_show_more.tr,
                             style:
                             const TextStyle(color: Colors.blue, fontSize: 12),
                           ),
@@ -170,7 +170,7 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
       builder: (BuildContext context) => AlertDialog(
         backgroundColor: const Color(0xffe9e9e9),
         content: (userFlower.count==0) ? Text(
-          locale.LocaleKeys.shopping_cart_out_of_stock.tr,
+          locale.LocaleKeys.user_out_of_stock.tr,
           style:
           const TextStyle(fontWeight: FontWeight.w500, fontSize: 21),
         ) : Obx(() => Row(
@@ -201,7 +201,7 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Icon(Icons.shopping_cart_outlined),
-                Text(locale.LocaleKeys.shopping_cart_add_to_cart.tr),
+                Text(locale.LocaleKeys.user_add_to_cart.tr),
               ],
             )
           ) : Obx(() => ElevatedButton(
@@ -215,7 +215,7 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Icon(Icons.shopping_cart_outlined),
-                Text(locale.LocaleKeys.shopping_cart_add_to_cart.tr),
+                Text(locale.LocaleKeys.user_add_to_cart.tr),
               ],
             ),
             onPressed: () => {
@@ -263,7 +263,7 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
     showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: Text('${userFlower.name} ${locale.LocaleKeys.vendor_flower_card_description.tr}'),
+          title: Text('${userFlower.name} ${locale.LocaleKeys.user_description.tr}'),
           content: SingleChildScrollView(
             child: Text(
               firstHalfText + secondHalfText,
@@ -272,7 +272,7 @@ class UserFlowerCard extends GetView<UserFlowerListController>{
           ),
           actions: [
             ElevatedButton(
-              child: Text(locale.LocaleKeys.vendor_flower_card_show_less.tr),
+              child: Text(locale.LocaleKeys.user_show_less.tr),
               onPressed: () {
                 controller.textFlag.value = !controller.textFlag.value;
                 Navigator.of(context).pop();

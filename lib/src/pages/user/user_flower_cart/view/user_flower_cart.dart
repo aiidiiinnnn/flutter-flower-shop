@@ -15,7 +15,7 @@ class UserFlowerCart extends  GetView<UserFlowerCartController>{
           backgroundColor: const Color(0xfff3f7f7),
           appBar: AppBar(
             backgroundColor: const Color(0xfff3f7f7),
-            title: Text(locale.LocaleKeys.shopping_cart_shopping_cart.tr,style: const TextStyle(
+            title: Text(locale.LocaleKeys.user_shopping_cart.tr,style: const TextStyle(
                 color: Color(0xff050a0a),
                 fontWeight: FontWeight.w600,
                 fontSize: 22
@@ -25,7 +25,7 @@ class UserFlowerCart extends  GetView<UserFlowerCartController>{
               weight: 2,
             ),
           ),
-          // body: Obx(() => _pageContent(),),
+
           body: Column(
             children: [
               Expanded(
@@ -39,11 +39,11 @@ class UserFlowerCart extends  GetView<UserFlowerCartController>{
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(locale.LocaleKeys.shopping_cart_total_price.tr,style: const TextStyle(
+                    Text(locale.LocaleKeys.user_total_price.tr,style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 20
                     ),),
-                    Obx(() => Text("${controller.totalPrice.value}\$",style: const TextStyle(
+                    Obx(() => Text("${controller.stringPrice.value}\$",style: const TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 18,
                     )),)
@@ -60,7 +60,7 @@ class UserFlowerCart extends  GetView<UserFlowerCartController>{
                         backgroundColor: const Color(0xff6cba00),
                       ),
                       onPressed: null,
-                      child: Text(locale.LocaleKeys.shopping_cart_confirm_purchase.tr)
+                      child: Text(locale.LocaleKeys.user_confirm_purchase.tr)
                   ),
                 ),
               ): Padding(
@@ -80,7 +80,7 @@ class UserFlowerCart extends  GetView<UserFlowerCartController>{
                             width: 50,
                             child: LinearProgressIndicator()
                         ),
-                      ) : Text(locale.LocaleKeys.shopping_cart_confirm_purchase.tr),)
+                      ) : Text(locale.LocaleKeys.user_confirm_purchase.tr),)
                   ),
                 ),
               )
@@ -100,12 +100,12 @@ class UserFlowerCart extends  GetView<UserFlowerCartController>{
       return _retryButton();
     }
     else if(controller.cartFlowerList.isEmpty){
-      return const Center(
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.shopping_cart,size: 270),
-            Text("No flower founded to purchase", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
+            const Icon(Icons.shopping_cart,size: 270),
+            Text(locale.LocaleKeys.user_no_flower_founded_to_purchase.tr, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
           ],
         ),
       );

@@ -96,7 +96,7 @@ class SearchVendorFlowerCard extends GetView<SearchVendorFlowerController> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Text(
-                                    locale.LocaleKeys.vendor_flower_card_show_more.tr,
+                                    locale.LocaleKeys.vendor_show_more.tr,
                                     style:
                                     const TextStyle(color: Colors.blue, fontSize: 12),
                                   ),
@@ -260,7 +260,7 @@ class SearchVendorFlowerCard extends GetView<SearchVendorFlowerController> {
     showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: Text('${vendorFlower.name} ${locale.LocaleKeys.vendor_flower_card_description.tr}'),
+          title: Text('${vendorFlower.name} ${locale.LocaleKeys.vendor_description.tr}'),
           content: SingleChildScrollView(
             child: Text(
               firstHalfText + secondHalfText,
@@ -269,7 +269,7 @@ class SearchVendorFlowerCard extends GetView<SearchVendorFlowerController> {
           ),
           actions: [
             ElevatedButton(
-              child: Text(locale.LocaleKeys.vendor_flower_card_show_less.tr),
+              child: Text(locale.LocaleKeys.vendor_show_less.tr),
               onPressed: () {
                 controller.textFlag.value = !controller.textFlag.value;
                 Navigator.of(context).pop();

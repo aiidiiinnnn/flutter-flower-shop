@@ -18,7 +18,7 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
             backgroundColor: const Color(0xfff3f7f7),
             appBar: AppBar(
               backgroundColor: const Color(0xfff3f7f7),
-              title: Text(locale.LocaleKeys.add_vendor_flower_card_add_flower.tr,style: const TextStyle(
+              title: Text(locale.LocaleKeys.vendor_add_flower.tr,style: const TextStyle(
                   color: Color(0xff050a0a),
                   fontWeight: FontWeight.w600,
                   fontSize: 22
@@ -116,8 +116,8 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                                                     color: const Color(0xffc4c4c4),
                                                     borderRadius: BorderRadius.circular(10),
                                                   ),
-                                                  child: const Center(
-                                                    child: Text("Remove Image",style: TextStyle(
+                                                  child: Center(
+                                                    child: Text(locale.LocaleKeys.vendor_remove_image.tr,style: const TextStyle(
                                                         fontSize: 14,
                                                         fontWeight: FontWeight.w500
                                                     ),),
@@ -137,29 +137,29 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                             child: Column(
                               children: [
                                 CustomAddFormField(
-                                  hintText: locale.LocaleKeys.add_vendor_flower_card_name.tr,
-                                  name: locale.LocaleKeys.add_vendor_flower_card_name.tr,
+                                  hintText: locale.LocaleKeys.vendor_name.tr,
+                                  name: locale.LocaleKeys.vendor_name.tr,
                                   controller: controller.nameController,
                                   validator: controller.nameValidator,
                                   icon: Icons.spa_outlined,
                                 ),
                                 CustomAddFormField(
-                                  hintText: locale.LocaleKeys.vendor_flower_card_description.tr,
-                                  name: locale.LocaleKeys.vendor_flower_card_description.tr,
+                                  hintText: locale.LocaleKeys.vendor_add_description.tr,
+                                  name: locale.LocaleKeys.vendor_add_description.tr,
                                   controller: controller.descriptionController,
                                   validator: controller.descriptionValidator,
                                   icon: Icons.description_outlined,
                                 ),
                                 CustomAddFormField(
-                                  hintText: locale.LocaleKeys.add_vendor_flower_card_price.tr,
-                                  name: locale.LocaleKeys.add_vendor_flower_card_price.tr,
+                                  hintText: locale.LocaleKeys.vendor_price.tr,
+                                  name: locale.LocaleKeys.vendor_price.tr,
                                   controller: controller.priceController,
                                   validator: controller.priceValidator,
                                   icon: Icons.attach_money_outlined,
                                 ),
                                 CustomAddFormField(
-                                  hintText: locale.LocaleKeys.add_vendor_flower_card_count.tr,
-                                  name: locale.LocaleKeys.add_vendor_flower_card_count.tr,
+                                  hintText: locale.LocaleKeys.vendor_count.tr,
+                                  name: locale.LocaleKeys.vendor_count.tr,
                                   controller: controller.countController,
                                   validator: controller.countValidator,
                                   icon: Icons.numbers_outlined,
@@ -238,7 +238,7 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                                       focusedBorder: const OutlineInputBorder(
                                           borderSide: BorderSide(color: Color(0xff050a0a))
                                       ),
-                                      labelText: locale.LocaleKeys.add_vendor_flower_card_category.tr,
+                                      labelText: locale.LocaleKeys.vendor_category.tr,
                                       labelStyle: const TextStyle(color: Color(0xff050a0a)),
                                     ),
                                     controller: textEditingController,
@@ -310,7 +310,7 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                                     child: LinearProgressIndicator()
                                 ),
                               ) :
-                              Text(locale.LocaleKeys.add_vendor_flower_card_color_picker.tr)),
+                              Text(locale.LocaleKeys.vendor_color_picker.tr)),
                             ),
                           ),
                         ),
@@ -353,7 +353,7 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                                     width: 50,
                                     child: LinearProgressIndicator()
                                 ),
-                              ): Text(locale.LocaleKeys.add_vendor_flower_card_submit.tr),)
+                              ): Text(locale.LocaleKeys.vendor_submit.tr),)
                             ),
                           ),
                         ),
@@ -372,7 +372,7 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
     showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: Text(locale.LocaleKeys.add_vendor_flower_card_pick_a_color.tr),
+          title: Text(locale.LocaleKeys.vendor_pick_a_color.tr),
           content: SingleChildScrollView(
             child: ColorPicker(
               pickerColor: controller.pickerColor,
@@ -383,7 +383,7 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
           ),
           actions: [
             ElevatedButton(
-              child: Text(locale.LocaleKeys.add_vendor_flower_card_got_it.tr),
+              child: Text(locale.LocaleKeys.vendor_got_it.tr),
               onPressed: () {
                 controller.addColor(controller.currentColor);
                 Navigator.of(context).pop();
@@ -398,17 +398,17 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
     showDialog(context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Delete"),
-          content: const Text("Are you sure you want to delete this ?"),
+          title: Text(locale.LocaleKeys.vendor_delete.tr),
+          content: Text(locale.LocaleKeys.vendor_are_you_sure_you_want_to_delete_this.tr),
           actions: [
             TextButton(
-                child: const Text("Cancel"),
+                child: Text(locale.LocaleKeys.vendor_cancel.tr),
                 onPressed: (){
                   Navigator.of(context).pop();
                 }
             ),
             TextButton(
-              child: const Text("Continue"),
+              child: Text(locale.LocaleKeys.vendor_continue.tr),
               onPressed:  () {
                 controller.deleteImage();
                 Navigator.of(context).pop();
@@ -428,12 +428,12 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text("Add image!",style: TextStyle(
+                      Text(locale.LocaleKeys.vendor_add_image.tr,style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w500,
                         // color: Color(0xff050a0a)
@@ -455,10 +455,10 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       InkWell(
-                        child: const Column(
+                        child: Column(
                           children: [
-                            Icon(Icons.image_outlined,size: 55),
-                            Text("Gallery",style: TextStyle(
+                            const Icon(Icons.image_outlined,size: 55),
+                            Text(locale.LocaleKeys.vendor_gallery.tr,style: const TextStyle(
                                 fontSize: 15
                             ),),
                           ],
@@ -469,10 +469,10 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                         },
                       ),
                       InkWell(
-                        child: const Column(
+                        child: Column(
                           children: [
-                            Icon(Icons.camera_alt_outlined,size: 55),
-                            Text("Camera",style: TextStyle(
+                            const Icon(Icons.camera_alt_outlined,size: 55),
+                            Text(locale.LocaleKeys.vendor_camera.tr,style: const TextStyle(
                                 fontSize: 15
                             ),),
                           ],
@@ -490,7 +490,7 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                   child: SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      child: const Text("Cancel"),
+                      child: Text(locale.LocaleKeys.vendor_cancel.tr),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },

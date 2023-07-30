@@ -19,7 +19,7 @@ class UserFlowerSearch extends  GetView<UserFlowerSearchController> {
           backgroundColor: const Color(0xfff3f7f7),
           appBar: AppBar(
             backgroundColor: const Color(0xfff3f7f7),
-            title: Text(locale.LocaleKeys.vendor_flower_home_Search_page.tr,style: const TextStyle(
+            title: Text(locale.LocaleKeys.user_search_page.tr,style: const TextStyle(
                 color: Color(0xff050a0a),
                 fontWeight: FontWeight.w600,
                 fontSize: 22
@@ -59,7 +59,7 @@ class UserFlowerSearch extends  GetView<UserFlowerSearchController> {
                             focusedBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Color(0xff050a0a))
                             ),
-                            labelText: locale.LocaleKeys.vendor_flower_home_Search.tr,
+                            labelText: locale.LocaleKeys.user_search.tr.tr,
                             labelStyle: const TextStyle(color: Color(0xff050a0a)),
                           ),
                           controller: controller.searchController,
@@ -106,12 +106,12 @@ class UserFlowerSearch extends  GetView<UserFlowerSearchController> {
       return _retryButton();
     }
     else if(controller.searchList.isEmpty){
-      return const Center(
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.search_off_outlined,size: 270),
-            Text("No flower founded", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
+            const Icon(Icons.search_off_outlined,size: 270),
+            Text(locale.LocaleKeys.user_no_flower_founded.tr, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
           ],
         ),
       );
@@ -145,7 +145,7 @@ class UserFlowerSearch extends  GetView<UserFlowerSearchController> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),
-        title: Text(locale.LocaleKeys.vendor_flower_home_filter.tr,style: const TextStyle(
+        title: Text(locale.LocaleKeys.user_filter.tr,style: const TextStyle(
           fontWeight: FontWeight.w500,
           fontSize: 27
         ),),
@@ -177,7 +177,7 @@ class UserFlowerSearch extends  GetView<UserFlowerSearchController> {
                               ),),
                             )),
                         const SizedBox(width: 10.0),
-                        const Text("Categories", style: TextStyle(
+                        Text(locale.LocaleKeys.user_categories.tr, style: const TextStyle(
                           color: Color(0xff050a0a),
                           fontSize: 15,
                         )
@@ -189,7 +189,6 @@ class UserFlowerSearch extends  GetView<UserFlowerSearchController> {
                   SizedBox(
                       height: 40,
                       child: DropdownButton<String>(
-                          hint: const Text('Categories'),
                           onChanged: (value) {
                             controller.setSelectedCategory(value!);
                           },
@@ -227,7 +226,7 @@ class UserFlowerSearch extends  GetView<UserFlowerSearchController> {
                               ),),
                             )),
                         const SizedBox(width: 10.0),
-                        const Text("Colors", style: TextStyle(
+                        Text(locale.LocaleKeys.user_colors.tr, style: const TextStyle(
                           color: Color(0xff050a0a),
                           fontSize: 15,
                         )
@@ -302,7 +301,7 @@ class UserFlowerSearch extends  GetView<UserFlowerSearchController> {
                               ),),
                             )),
                         const SizedBox(width: 10.0),
-                        const Text("Range Price", style: TextStyle(
+                        Text(locale.LocaleKeys.user_price_range.tr, style: const TextStyle(
                             color: Color(0xff050a0a),
                             fontSize: 15,
                         )
@@ -319,9 +318,7 @@ class UserFlowerSearch extends  GetView<UserFlowerSearchController> {
                         activeTickMarkColor: Color(0xff9d9d9d),
                         inactiveTrackColor: Color(0xffcbcbcb),
                         inactiveTickMarkColor: Color(0xffe9e9e9),
-
                         trackHeight: 12,
-                        // inactiveTrackColor: Color(0xff9d9d9d),
                         thumbShape: RoundSliderThumbShape(enabledThumbRadius: 20)),
                     child: RangeSlider(
                       values: controller.currentRangeValues.value,
@@ -347,11 +344,11 @@ class UserFlowerSearch extends  GetView<UserFlowerSearchController> {
               width: 180,
               height: 40,
               child: ElevatedButton(
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Icon(Icons.filter_list_off_outlined),
-                    Text("Delete Filter"),
+                    const Icon(Icons.filter_list_off_outlined),
+                    Text(locale.LocaleKeys.user_delete_filter.tr),
                   ],
                 ),
                 onPressed: () => {
@@ -374,7 +371,7 @@ class UserFlowerSearch extends  GetView<UserFlowerSearchController> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     const Icon(Icons.filter_list_outlined),
-                    Text(locale.LocaleKeys.vendor_flower_home_filter.tr),
+                    Text(locale.LocaleKeys.user_filter.tr),
                   ],
                 ),
                 onPressed: () => {

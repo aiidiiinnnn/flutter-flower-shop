@@ -14,7 +14,7 @@ class VendorFlowerProfile extends  GetView<VendorFlowerListController>{
         backgroundColor: const Color(0xfff3f7f7),
         appBar: AppBar(
           backgroundColor: const Color(0xfff3f7f7),
-          title: Text(locale.LocaleKeys.vendor_flower_home_Profile.tr,style: const TextStyle(
+          title: Text(locale.LocaleKeys.vendor_profile_page.tr,style: const TextStyle(
               color: Color(0xff050a0a),
               fontWeight: FontWeight.w600,
               fontSize: 22
@@ -29,10 +29,10 @@ class VendorFlowerProfile extends  GetView<VendorFlowerListController>{
             alignment: Alignment.topCenter,
             children: [
               Container(
-                height:200,
+                height:250,
                 width: double.infinity,
                 decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.vertical(bottom: Radius.circular(40)),
+                    borderRadius: BorderRadius.vertical(bottom: Radius.circular(50)),
                     color: Color(0xff6cba00)
                 ),
               ),
@@ -46,7 +46,14 @@ class VendorFlowerProfile extends  GetView<VendorFlowerListController>{
                       height: 300,
                       decoration: BoxDecoration(
                         color: const Color(0xffe9e9e9),
-                        border: Border.all(color: const Color(0xff9d9d9d)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xff9d9d9d).withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(4, 4), // changes position of shadow
+                          ),
+                        ],
                         borderRadius: BorderRadius.circular(16.0),
                       ),
                       child: Padding(
@@ -106,7 +113,7 @@ class VendorFlowerProfile extends  GetView<VendorFlowerListController>{
                                   onPressed: () {
                                     controller.logOut();
                                   },
-                                  child: Text(locale.LocaleKeys.vendor_flower_home_logout.tr)
+                                  child: Text(locale.LocaleKeys.vendor_logout.tr)
                               ),
                             ),
                           ],

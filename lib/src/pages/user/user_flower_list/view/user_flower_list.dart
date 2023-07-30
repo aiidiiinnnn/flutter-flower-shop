@@ -33,12 +33,12 @@ class UserFlowerList extends  GetView<UserFlowerListController>{
                 BottomNavigationBarItem(
                     backgroundColor: const Color(0xffc4c4c4),
                     icon: const Icon(Icons.home),
-                    label: locale.LocaleKeys.bottom_navigation_bar_Home.tr
+                    label: locale.LocaleKeys.user_home.tr
                 ),
                 BottomNavigationBarItem(
                     backgroundColor: const Color(0xffc4c4c4),
                     icon: const Icon(Icons.person),
-                    label: locale.LocaleKeys.bottom_navigation_bar_Profile.tr
+                    label: locale.LocaleKeys.user_profile.tr
                 ),
               ],
             ),)

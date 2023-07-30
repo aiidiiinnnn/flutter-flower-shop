@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:get/get.dart';
@@ -17,7 +16,7 @@ class EditVendorFlower extends  GetView<EditVendorFlowerController>{
             backgroundColor: const Color(0xfff3f7f7),
             appBar: AppBar(
               backgroundColor: const Color(0xfff3f7f7),
-              title: Text(locale.LocaleKeys.add_vendor_flower_card_edit_flower.tr,style: const TextStyle(
+              title: Text(locale.LocaleKeys.vendor_edit.tr,style: const TextStyle(
                   color: Color(0xff050a0a),
                   fontWeight: FontWeight.w600,
                   fontSize: 22
@@ -115,8 +114,8 @@ class EditVendorFlower extends  GetView<EditVendorFlowerController>{
                                                     color: const Color(0xffc4c4c4),
                                                     borderRadius: BorderRadius.circular(10),
                                                   ),
-                                                  child: const Center(
-                                                    child: Text("Remove Image",style: TextStyle(
+                                                  child: Center(
+                                                    child: Text(locale.LocaleKeys.vendor_remove_image.tr,style: const TextStyle(
                                                         fontSize: 14,
                                                         fontWeight: FontWeight.w500
                                                     ),),
@@ -135,29 +134,29 @@ class EditVendorFlower extends  GetView<EditVendorFlowerController>{
                             child: Column(
                               children: [
                                 CustomAddFormField(
-                                  hintText: locale.LocaleKeys.add_vendor_flower_card_name.tr,
-                                  name: locale.LocaleKeys.add_vendor_flower_card_name.tr,
+                                  hintText: locale.LocaleKeys.vendor_name.tr,
+                                  name: locale.LocaleKeys.vendor_name.tr,
                                   controller: controller.nameController,
                                   validator: controller.nameValidator,
                                   icon: Icons.spa_outlined,
                                 ),
                                 CustomAddFormField(
-                                  hintText: "Description",
-                                  name: "Description",
+                                  hintText: locale.LocaleKeys.vendor_add_description.tr,
+                                  name: locale.LocaleKeys.vendor_add_description.tr,
                                   controller: controller.descriptionController,
                                   validator: controller.descriptionValidator,
                                   icon: Icons.description_outlined,
                                 ),
                                 CustomAddFormField(
-                                  hintText: locale.LocaleKeys.vendor_flower_card_description.tr,
-                                  name: locale.LocaleKeys.add_vendor_flower_card_price.tr,
+                                  hintText: locale.LocaleKeys.vendor_price.tr,
+                                  name: locale.LocaleKeys.vendor_price.tr,
                                   controller: controller.priceController,
                                   validator: controller.priceValidator,
                                   icon: Icons.attach_money_outlined,
                                 ),
                                 CustomAddFormField(
-                                  hintText: locale.LocaleKeys.add_vendor_flower_card_price.tr,
-                                  name: locale.LocaleKeys.add_vendor_flower_card_count.tr,
+                                  hintText: locale.LocaleKeys.vendor_count.tr,
+                                  name: locale.LocaleKeys.vendor_count.tr,
                                   controller: controller.countController,
                                   validator: controller.countValidator,
                                   icon: Icons.numbers_outlined,
@@ -389,17 +388,17 @@ class EditVendorFlower extends  GetView<EditVendorFlowerController>{
     showDialog(context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Delete"),
-          content: const Text("Are you sure you want to delete this ?"),
+          title: Text(locale.LocaleKeys.vendor_delete.tr),
+          content: Text(locale.LocaleKeys.vendor_are_you_sure_you_want_to_delete_this.tr),
           actions: [
             TextButton(
-                child: const Text("Cancel"),
+                child : Text(locale.LocaleKeys.vendor_cancel.tr),
                 onPressed:  (){
                   Navigator.of(context).pop();
                 }
             ),
             TextButton(
-              child: const Text("Continue"),
+              child: Text(locale.LocaleKeys.vendor_continue.tr),
               onPressed:  () {
                 controller.deleteImage();
                 Navigator.of(context).pop();
@@ -419,12 +418,12 @@ class EditVendorFlower extends  GetView<EditVendorFlowerController>{
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text("Add image!",style: TextStyle(
+                      Text(locale.LocaleKeys.vendor_add_image.tr,style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w500,
                         // color: Color(0xff050a0a)
@@ -446,10 +445,10 @@ class EditVendorFlower extends  GetView<EditVendorFlowerController>{
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       InkWell(
-                        child: const Column(
+                        child: Column(
                           children: [
-                            Icon(Icons.image_outlined,size: 55),
-                            Text("Gallery",style: TextStyle(
+                            const Icon(Icons.image_outlined,size: 55),
+                            Text(locale.LocaleKeys.vendor_gallery.tr,style: const TextStyle(
                                 fontSize: 15
                             ),),
                           ],
@@ -460,10 +459,10 @@ class EditVendorFlower extends  GetView<EditVendorFlowerController>{
                         },
                       ),
                       InkWell(
-                        child: const Column(
+                        child: Column(
                           children: [
-                            Icon(Icons.camera_alt_outlined,size: 55),
-                            Text("Camera",style: TextStyle(
+                            const Icon(Icons.camera_alt_outlined,size: 55),
+                            Text(locale.LocaleKeys.vendor_camera.tr,style: const TextStyle(
                                 fontSize: 15
                             ),),
                           ],
@@ -481,7 +480,7 @@ class EditVendorFlower extends  GetView<EditVendorFlowerController>{
                   child: SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      child: const Text("Cancel"),
+                      child: Text(locale.LocaleKeys.vendor_cancel.tr),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },

@@ -1,4 +1,3 @@
-import 'package:flower_shop/src/pages/user/user_flower_history/view/widget/user_flower_history_card.dart';
 import 'package:flower_shop/src/pages/vendor/history_vendor_flower/view/widget/history_vendor_flower_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,7 +15,7 @@ class HistoryVendorFlower extends  GetView<HistoryVendorFlowerController>{
           backgroundColor: const Color(0xfff3f7f7),
           appBar: AppBar(
             backgroundColor: const Color(0xfff3f7f7),
-            title: Text(locale.LocaleKeys.vendor_flower_home_History.tr,style: const TextStyle(
+            title: Text(locale.LocaleKeys.vendor_history_page.tr,style: const TextStyle(
                 color: Color(0xff050a0a),
                 fontWeight: FontWeight.w600,
                 fontSize: 22
@@ -42,12 +41,12 @@ class HistoryVendorFlower extends  GetView<HistoryVendorFlowerController>{
       return _retryButton();
     }
     else if(controller.salesList.isEmpty){
-      return const Center(
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.history_outlined,size: 270),
-            Text("Nothing has been purchased yet", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
+            const Icon(Icons.history_outlined,size: 270),
+            Text(locale.LocaleKeys.vendor_nothing_has_been_purchased_yet.tr, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
           ],
         ),
       );

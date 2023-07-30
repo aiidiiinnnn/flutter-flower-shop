@@ -19,7 +19,7 @@ class SearchVendorFlower extends  GetView<SearchVendorFlowerController> {
           backgroundColor: const Color(0xfff3f7f7),
           appBar: AppBar(
             backgroundColor: const Color(0xfff3f7f7),
-            title: Text(locale.LocaleKeys.vendor_flower_home_Search_page.tr,style: const TextStyle(
+            title: Text(locale.LocaleKeys.vendor_search_page.tr,style: const TextStyle(
                 color: Color(0xff050a0a),
                 fontWeight: FontWeight.w600,
                 fontSize: 22
@@ -59,7 +59,7 @@ class SearchVendorFlower extends  GetView<SearchVendorFlowerController> {
                             focusedBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Color(0xff050a0a))
                             ),
-                            labelText: locale.LocaleKeys.vendor_flower_home_Search.tr,
+                            labelText: locale.LocaleKeys.vendor_search.tr,
                             labelStyle: const TextStyle(color: Color(0xff050a0a)),
                           ),
                           controller: controller.searchController,
@@ -106,12 +106,12 @@ class SearchVendorFlower extends  GetView<SearchVendorFlowerController> {
       return _retryButton();
     }
     else if(controller.searchList.isEmpty){
-      return const Center(
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.search_off_outlined,size: 270),
-            Text("No flower founded", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
+            const Icon(Icons.search_off_outlined,size: 270),
+            Text(locale.LocaleKeys.vendor_no_flower_founded.tr, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
           ],
         ),
       );
@@ -145,7 +145,7 @@ class SearchVendorFlower extends  GetView<SearchVendorFlowerController> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),
-        title: Text(locale.LocaleKeys.vendor_flower_home_filter.tr,style: const TextStyle(
+        title: Text(locale.LocaleKeys.vendor_filter.tr,style: const TextStyle(
           fontWeight: FontWeight.w500,
           fontSize: 27
         ),),
@@ -177,7 +177,7 @@ class SearchVendorFlower extends  GetView<SearchVendorFlowerController> {
                               ),),
                             )),
                         const SizedBox(width: 10.0),
-                        const Text("Categories", style: TextStyle(
+                        Text(locale.LocaleKeys.vendor_categories.tr, style: const TextStyle(
                           color: Color(0xff050a0a),
                           fontSize: 15,
                         )
@@ -189,7 +189,6 @@ class SearchVendorFlower extends  GetView<SearchVendorFlowerController> {
                   SizedBox(
                       height: 40,
                       child: DropdownButton<String>(
-                          hint: const Text('Categories'),
                           onChanged: (value) {
                             controller.setSelectedCategory(value!);
                           },
@@ -227,7 +226,7 @@ class SearchVendorFlower extends  GetView<SearchVendorFlowerController> {
                               ),),
                             )),
                         const SizedBox(width: 10.0),
-                        const Text("Colors", style: TextStyle(
+                        Text(locale.LocaleKeys.vendor_colors.tr, style: const TextStyle(
                           color: Color(0xff050a0a),
                           fontSize: 15,
                         )
@@ -270,8 +269,7 @@ class SearchVendorFlower extends  GetView<SearchVendorFlowerController> {
                                   width: 30,
                                   decoration: BoxDecoration(
                                     color: Color(controller.colorsFromJson[index].code),
-                                    border: Border.all(color: Colors.black),
-                                    borderRadius: BorderRadius.circular(200),
+                                    shape: BoxShape.circle,
                                   ),
                                 )
                                 )
@@ -303,7 +301,7 @@ class SearchVendorFlower extends  GetView<SearchVendorFlowerController> {
                               ),),
                             )),
                         const SizedBox(width: 10.0),
-                        const Text("Range Price", style: TextStyle(
+                        Text(locale.LocaleKeys.vendor_price_range.tr, style: const TextStyle(
                             color: Color(0xff050a0a),
                             fontSize: 15,
                         )
@@ -348,11 +346,11 @@ class SearchVendorFlower extends  GetView<SearchVendorFlowerController> {
               width: 180,
               height: 40,
               child: ElevatedButton(
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Icon(Icons.filter_list_off_outlined),
-                    Text("Delete Filter"),
+                    const Icon(Icons.filter_list_off_outlined),
+                    Text(locale.LocaleKeys.vendor_delete_filter.tr),
                   ],
                 ),
                 onPressed: () => {
@@ -375,7 +373,7 @@ class SearchVendorFlower extends  GetView<SearchVendorFlowerController> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     const Icon(Icons.filter_list_outlined),
-                    Text(locale.LocaleKeys.vendor_flower_home_filter.tr),
+                    Text(locale.LocaleKeys.vendor_filter.tr),
                   ],
                 ),
                 onPressed: () => {

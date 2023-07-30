@@ -96,7 +96,7 @@ class ShoppingCartCard extends GetView<UserFlowerCartController> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Text(
-                                    locale.LocaleKeys.vendor_flower_card_show_more.tr,
+                                    locale.LocaleKeys.user_show_more.tr,
                                     style:
                                     const TextStyle(color: Colors.blue, fontSize: 12),
                                   ),
@@ -166,7 +166,7 @@ class ShoppingCartCard extends GetView<UserFlowerCartController> {
     showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: Text('${cartFlower.name} ${locale.LocaleKeys.vendor_flower_card_description.tr}'),
+          title: Text('${cartFlower.name} ${locale.LocaleKeys.user_description.tr}'),
           content: SingleChildScrollView(
             child: Text(
               firstHalfText + secondHalfText,
@@ -175,7 +175,7 @@ class ShoppingCartCard extends GetView<UserFlowerCartController> {
           ),
           actions: [
             ElevatedButton(
-              child: Text(locale.LocaleKeys.vendor_flower_card_show_less.tr),
+              child: Text(locale.LocaleKeys.user_show_less.tr),
               onPressed: () {
                 controller.textFlag.value = !controller.textFlag.value;
                 Navigator.of(context).pop();

@@ -18,7 +18,7 @@ class UserFlowerHome extends  GetView<UserFlowerListController>{
           backgroundColor: const Color(0xfff3f7f7),
           appBar: AppBar(
             backgroundColor: const Color(0xfff3f7f7),
-            title: Text(locale.LocaleKeys.vendor_flower_home_flower_list.tr,style: const TextStyle(
+            title: Text(locale.LocaleKeys.user_flower_list.tr,style: const TextStyle(
                 color: Color(0xff050a0a),
                 fontWeight: FontWeight.w600,
                 fontSize: 22
@@ -140,12 +140,12 @@ class UserFlowerHome extends  GetView<UserFlowerListController>{
                       Navigator.of(context).pop(),
                       controller.goToSearch()
                     },
-                    child: const Row(
+                    child: Row(
                       children: [
-                        Icon(Icons.search_outlined),
+                        const Icon(Icons.search_outlined),
                         Padding(
-                          padding: EdgeInsetsDirectional.only(start: 4),
-                          child: Text("Search",style: TextStyle(
+                          padding: const EdgeInsetsDirectional.only(start: 4),
+                          child: Text(locale.LocaleKeys.user_search.tr,style: const TextStyle(
                               fontSize:17,
                               color: Color(0xff050a0a)
                           ),),
@@ -161,12 +161,12 @@ class UserFlowerHome extends  GetView<UserFlowerListController>{
                       Navigator.of(context).pop(),
                       controller.goToHistory()
                     },
-                    child: const Row(
+                    child: Row(
                       children: [
-                        Icon(Icons.history_outlined),
+                        const Icon(Icons.history_outlined),
                         Padding(
-                          padding: EdgeInsetsDirectional.only(start: 4),
-                          child: Text("History",style: TextStyle(
+                          padding: const EdgeInsetsDirectional.only(start: 4),
+                          child: Text(locale.LocaleKeys.user_history.tr,style: const TextStyle(
                               fontSize:17,
                               color: Color(0xff050a0a)
                           ),),
@@ -182,12 +182,12 @@ class UserFlowerHome extends  GetView<UserFlowerListController>{
                       Navigator.of(context).pop(),
                       controller.logOut(),
                     },
-                    child: const Row(
+                    child: Row(
                       children: [
-                        Icon(Icons.login_outlined),
+                        const Icon(Icons.login_outlined),
                         Padding(
-                          padding: EdgeInsetsDirectional.only(start: 4),
-                          child: Text("Logout",style: TextStyle(
+                          padding: const EdgeInsetsDirectional.only(start: 4),
+                          child: Text(locale.LocaleKeys.user_Logout.tr,style: const TextStyle(
                               fontSize:17,
                               color: Color(0xff050a0a)
                           ),),
@@ -199,7 +199,10 @@ class UserFlowerHome extends  GetView<UserFlowerListController>{
                 Padding(
                   padding: const EdgeInsetsDirectional.only(start: 10,top: 30),
                   child: InkWell(
-                    onTap: () => Get.updateLocale(const Locale('en','US')),
+                    onTap: () => {
+                      Navigator.of(context).pop(),
+                      Get.updateLocale(const Locale('en', 'US'))
+                    },
                     child: const Row(
                       children: [
                         Icon(Icons.language_outlined),
@@ -217,7 +220,10 @@ class UserFlowerHome extends  GetView<UserFlowerListController>{
                 Padding(
                   padding: const EdgeInsetsDirectional.only(start: 10,top: 30),
                   child: InkWell(
-                    onTap: () => Get.updateLocale(const Locale('fa','IR')),
+                    onTap: () => {
+                      Navigator.of(context).pop(),
+                      Get.updateLocale(const Locale('fa', 'IR'))
+                    },
                     child: const Row(
                       children: [
                         Icon(Icons.language_outlined),
@@ -257,7 +263,7 @@ class UserFlowerHome extends  GetView<UserFlowerListController>{
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(Icons.home_outlined,size: 270),
-            Text(locale.LocaleKeys.vendor_flower_home_there_is_no_flower_here.tr, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
+            Text(locale.LocaleKeys.user_there_is_no_flower_here.tr, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
           ],
         ),
       );

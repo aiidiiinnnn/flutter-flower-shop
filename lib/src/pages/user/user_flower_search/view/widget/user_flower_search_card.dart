@@ -96,7 +96,7 @@ class UserFlowerSearchCard extends GetView<UserFlowerSearchController> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Text(
-                                  locale.LocaleKeys.vendor_flower_card_show_more.tr,
+                                  locale.LocaleKeys.user_show_more.tr,
                                   style:
                                   const TextStyle(color: Colors.blue, fontSize: 12),
                                 ),
@@ -274,7 +274,7 @@ class UserFlowerSearchCard extends GetView<UserFlowerSearchController> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "${locale.LocaleKeys.vendor_flower_card_count_in_stock.tr} ${searchFlower.count}",
+                          "${locale.LocaleKeys.user_count_in_stock.tr} ${searchFlower.count}",
                           style:
                           const TextStyle(fontWeight: FontWeight.w400, fontSize: 20),
                         ),
@@ -293,7 +293,7 @@ class UserFlowerSearchCard extends GetView<UserFlowerSearchController> {
     showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: Text('${searchFlower.name} ${locale.LocaleKeys.vendor_flower_card_description.tr}'),
+          title: Text('${searchFlower.name} ${locale.LocaleKeys.user_description.tr}'),
           content: SingleChildScrollView(
             child: Text(
               firstHalfText + secondHalfText,
@@ -302,7 +302,7 @@ class UserFlowerSearchCard extends GetView<UserFlowerSearchController> {
           ),
           actions: [
             ElevatedButton(
-              child: Text(locale.LocaleKeys.vendor_flower_card_show_less.tr),
+              child: Text(locale.LocaleKeys.user_show_less.tr),
               onPressed: () {
                 controller.textFlag.value = !controller.textFlag.value;
                 Navigator.of(context).pop();
@@ -319,7 +319,7 @@ class UserFlowerSearchCard extends GetView<UserFlowerSearchController> {
       builder: (BuildContext context) => AlertDialog(
         backgroundColor: const Color(0xffe9e9e9),
         content: (searchFlower.count==0) ? Text(
-          locale.LocaleKeys.shopping_cart_out_of_stock.tr,
+          locale.LocaleKeys.user_out_of_stock.tr,
           style:
           const TextStyle(fontWeight: FontWeight.w500, fontSize: 21),
         ) : Obx(() => Row(
@@ -350,7 +350,7 @@ class UserFlowerSearchCard extends GetView<UserFlowerSearchController> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Icon(Icons.shopping_cart_outlined),
-                Text(locale.LocaleKeys.shopping_cart_add_to_cart.tr),
+                Text(locale.LocaleKeys.user_add_to_cart.tr),
               ],
             )
         ) :
@@ -365,7 +365,7 @@ class UserFlowerSearchCard extends GetView<UserFlowerSearchController> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Icon(Icons.shopping_cart_outlined),
-                Text(locale.LocaleKeys.shopping_cart_add_to_cart.tr),
+                Text(locale.LocaleKeys.user_add_to_cart.tr),
               ],
             ),
             onPressed: () => {

@@ -17,7 +17,7 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
           backgroundColor: const Color(0xfff3f7f7),
           appBar: AppBar(
             backgroundColor: const Color(0xfff3f7f7),
-            title: Text(locale.LocaleKeys.vendor_flower_home_flower_list.tr,style: const TextStyle(
+            title: Text(locale.LocaleKeys.vendor_flower_list.tr,style: const TextStyle(
                 color: Color(0xff050a0a),
                 fontWeight: FontWeight.w600,
                 fontSize: 22
@@ -105,12 +105,12 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
                       Navigator.of(context).pop(),
                       controller.goToSearch()
                     },
-                    child: const Row(
+                    child: Row(
                       children: [
-                        Icon(Icons.search_outlined),
+                        const Icon(Icons.search_outlined),
                         Padding(
-                          padding: EdgeInsetsDirectional.only(start: 4),
-                          child: Text("Search",style: TextStyle(
+                          padding: const EdgeInsetsDirectional.only(start: 4),
+                          child: Text(locale.LocaleKeys.vendor_search.tr,style: const TextStyle(
                               fontSize:17,
                               color: Color(0xff050a0a)
                           ),),
@@ -126,12 +126,12 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
                       Navigator.of(context).pop(),
                       controller.goToHistory()
                     },
-                    child: const Row(
+                    child: Row(
                       children: [
-                        Icon(Icons.history_outlined),
+                        const Icon(Icons.history_outlined),
                         Padding(
-                          padding: EdgeInsetsDirectional.only(start: 4),
-                          child: Text("History",style: TextStyle(
+                          padding: const EdgeInsetsDirectional.only(start: 4),
+                          child: Text(locale.LocaleKeys.vendor_history.tr,style: const TextStyle(
                               fontSize:17,
                               color: Color(0xff050a0a)
                           ),),
@@ -147,12 +147,12 @@ class VendorFlowerHome extends  GetView<VendorFlowerListController>{
                       Navigator.of(context).pop(),
                       controller.logOut(),
                     },
-                    child: const Row(
+                    child: Row(
                       children: [
-                        Icon(Icons.login_outlined),
+                        const Icon(Icons.login_outlined),
                         Padding(
-                          padding: EdgeInsetsDirectional.only(start: 4),
-                          child: Text("Logout",style: TextStyle(
+                          padding: const EdgeInsetsDirectional.only(start: 4),
+                          child: Text(locale.LocaleKeys.vendor_logout.tr,style: const TextStyle(
                               fontSize:17,
                               color: Color(0xff050a0a)
                           ),),

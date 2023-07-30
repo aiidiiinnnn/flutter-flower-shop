@@ -39,7 +39,6 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                 width: 5,
                 height: 5,
                 child: LinearProgressIndicator(),
-                // child: CircularProgressIndicator()
             ),
           ),
         ),
@@ -123,7 +122,7 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Text(
-                                    locale.LocaleKeys.vendor_flower_card_show_more.tr,
+                                    locale.LocaleKeys.vendor_show_more.tr,
                                     style:
                                     const TextStyle(color: Colors.blue, fontSize: 9),
                                   ),
@@ -153,10 +152,10 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                               onTap: null,
                               child: Icon(Icons.arrow_back_ios, size: 16),
                           ),
-                          const Text(
-                            "Out of Stock",
+                          Text(
+                            locale.LocaleKeys.vendor_out_of_stock.tr,
                             style:
-                            TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
+                            const TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
                           ),
                           incrementButton()
                         ],
@@ -260,7 +259,7 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Text(
-                                    locale.LocaleKeys.vendor_flower_card_show_more.tr,
+                                    locale.LocaleKeys.vendor_show_more.tr,
                                     style:
                                     const TextStyle(color: Colors.blue, fontSize: 9),
                                   ),
@@ -290,21 +289,21 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                               child: const Icon(Icons.arrow_back_ios, size: 16),
                               onTap: (){
                                 Widget cancelButton = TextButton(
-                                    child: Text(locale.LocaleKeys.vendor_flower_card_cancel.tr),
+                                    child: Text(locale.LocaleKeys.vendor_cancel.tr),
                                     onPressed: (){
                                       Navigator.of(context).pop();
                                     }
                                 );
                                 Widget continueButton = TextButton(
-                                  child: Text(locale.LocaleKeys.vendor_flower_card_continue.tr),
+                                  child: Text(locale.LocaleKeys.vendor_continue.tr),
                                   onPressed:  () {
                                     controller.deleteFlower(vendorFlower,index);
                                     Navigator.of(context).pop();
                                   },
                                 );
                                 AlertDialog alert = AlertDialog(
-                                  title: Text(locale.LocaleKeys.vendor_flower_card_delete.tr),
-                                  content: Text(locale.LocaleKeys.vendor_flower_card_are_you_sure_you_want_to_delete_this.tr),
+                                  title: Text(locale.LocaleKeys.vendor_delete.tr),
+                                  content: Text(locale.LocaleKeys.vendor_are_you_sure_you_want_to_delete_this.tr),
                                   actions: [
                                     cancelButton,
                                     continueButton,
@@ -318,10 +317,10 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                                 );
                               }
                           ),
-                          const Text(
-                            "Out of Stock",
+                          Text(
+                            locale.LocaleKeys.vendor_out_of_stock.tr,
                             style:
-                            TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
+                            const TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
                           ),
                           incrementButton()
                         ],
@@ -411,13 +410,13 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                         child: const Icon(Icons.delete_outline,color: Colors.black,size: 28),
                         onTap: (){
                           Widget cancelButton = TextButton(
-                              child: Text(locale.LocaleKeys.vendor_flower_card_cancel.tr),
+                              child: Text(locale.LocaleKeys.vendor_cancel.tr),
                               onPressed: (){
                                 Navigator.of(context).pop();
                               }
                           );
                           Widget continueButton = TextButton(
-                            child: Text(locale.LocaleKeys.vendor_flower_card_continue.tr),
+                            child: Text(locale.LocaleKeys.vendor_continue.tr),
                             onPressed:  () {
                               controller.deleteFlower(vendorFlower,index);
                               Navigator.of(context).pop();
@@ -425,8 +424,8 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                             },
                           );
                           AlertDialog alert = AlertDialog(
-                            title: Text(locale.LocaleKeys.vendor_flower_card_delete.tr),
-                            content: Text(locale.LocaleKeys.vendor_flower_card_are_you_sure_you_want_to_delete_this.tr),
+                            title: Text(locale.LocaleKeys.vendor_delete.tr),
+                            content: Text(locale.LocaleKeys.vendor_are_you_sure_you_want_to_delete_this.tr),
                             actions: [
                               cancelButton,
                               continueButton,
@@ -508,7 +507,7 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "${locale.LocaleKeys.vendor_flower_card_count_in_stock.tr} ${vendorFlower.count}",
+                      "${locale.LocaleKeys.vendor_count_in_stock.tr} ${vendorFlower.count}",
                       style:
                       const TextStyle(fontWeight: FontWeight.w400, fontSize: 20),
                     ),
@@ -522,7 +521,7 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
                           Navigator.of(context).pop(),
                           controller.goToEdit(vendorFlower),
                         },
-                        child: Text(locale.LocaleKeys.vendor_flower_card_edit.tr),
+                        child: Text(locale.LocaleKeys.vendor_edit.tr),
                       ),
                     ),
                   ],
@@ -539,7 +538,7 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
     showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-              title: Text('${vendorFlower.name} ${locale.LocaleKeys.vendor_flower_card_description.tr}'),
+              title: Text('${vendorFlower.name} ${locale.LocaleKeys.vendor_description.tr}'),
               content: SingleChildScrollView(
                 child: Text(
                   firstHalfText + secondHalfText,
@@ -548,7 +547,7 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
               ),
               actions: [
                 ElevatedButton(
-                  child: Text(locale.LocaleKeys.vendor_flower_card_show_less.tr),
+                  child: Text(locale.LocaleKeys.vendor_show_less.tr),
                   onPressed: () {
                     controller.textFlag.value = !controller.textFlag.value;
                     Navigator.of(context).pop();

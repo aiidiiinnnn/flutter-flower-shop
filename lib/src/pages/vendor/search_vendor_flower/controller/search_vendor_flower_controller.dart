@@ -25,6 +25,7 @@ class SearchVendorFlowerController extends GetxController{
   LoginVendorViewModel? vendor;
   RxString isLoadingDelete="".obs;
   RxString selectedCategory="".obs;
+  RxBool isFiltered=false.obs;
   RxBool isLoading=true.obs;
   RxBool isRetry=false.obs;
   RxBool textFlag = true.obs;
@@ -359,6 +360,7 @@ class SearchVendorFlowerController extends GetxController{
             }
             countLoading.add("");
           }
+          isFiltered.value=false;
           isLoading.value=false;
         }
     );
@@ -370,6 +372,7 @@ class SearchVendorFlowerController extends GetxController{
     countLoading.clear();
     Map<String, String> query ={};
     query["vendorId"]="${vendorId!}";
+    query["name_like"]=searchController.text;
     if(isCheckedCategory.value){
       query["category_like"]=selectedCategory.value;
     }
@@ -400,21 +403,23 @@ class SearchVendorFlowerController extends GetxController{
             }
             countLoading.add("");
           }
+          isFiltered.value=true;
           isLoading.value=false;
         }
     );
   }
 
   void onTapFilter(){
-    isCheckedCategory.value=false;
-    isCheckedColor.value=false;
-    isCheckedPrice.value=false;
-    priceList.sort();
-    minPrice.value=priceList.first.toDouble();
-    maxPrice.value=priceList.last.toDouble();
-    currentRangeValues = Rx<RangeValues>(RangeValues(minPrice.value, maxPrice.value));
-    division.value = (maxPrice.value-minPrice.value).toInt();
+    if(isFiltered.value==false){
+      isCheckedCategory.value=false;
+      isCheckedColor.value=false;
+      isCheckedPrice.value=false;
+      priceList.sort();
+      minPrice.value=priceList.first.toDouble();
+      maxPrice.value=priceList.last.toDouble();
+      currentRangeValues = Rx<RangeValues>(RangeValues(minPrice.value, maxPrice.value));
+      division.value = (maxPrice.value-minPrice.value).toInt();
+    }
   }
-
 
 }

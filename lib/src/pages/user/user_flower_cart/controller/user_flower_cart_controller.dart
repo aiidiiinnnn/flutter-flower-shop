@@ -21,6 +21,7 @@ class UserFlowerCartController extends GetxController {
   RxBool textFlag = true.obs;
   String? date;
   RxInt totalPrice=RxInt(0);
+  RxString stringPrice="".obs;
   RxList<bool> countLoading=RxList();
   RxBool disableLoading=false.obs;
 
@@ -41,10 +42,29 @@ class UserFlowerCartController extends GetxController {
     date = "${now.year}-${now.month}-${now.day} ${now.hour}:${now.minute}";
   }
 
+  void formatPrice(String price){
+    stringPrice.value="";
+    int counter=0;
+    for(int i = (price.length-1); i>=0; i--){
+      counter++;
+      String str = price[i];
+      if((counter%3) != 0 && i != 0){
+        stringPrice.value="$str$stringPrice";
+      }
+      else if(i == 0){
+        stringPrice.value="$str$stringPrice";
+      }
+      else{
+        stringPrice.value=",$str$stringPrice";
+      }
+    }
+  }
+
   Future<void> getUserById() async {
     cartFlowerList.clear();
     countLoading.clear();
     totalPrice.value=totalPrice.value-totalPrice.value;
+    formatPrice("${totalPrice.value}");
     isLoading.value = true;
     isRetry.value = false;
     final Either<String, LoginUserViewModel> userById = await _repository
@@ -60,6 +80,7 @@ class UserFlowerCartController extends GetxController {
           cartFlowerList.addAll(user!.userFlowerList);
           for(final cart in cartFlowerList){
             totalPrice.value = (cart.price*cart.count)+totalPrice.value;
+            formatPrice("${totalPrice.value}");
             countLoading.add(false);
           }
           isLoading.value = false;
@@ -101,6 +122,7 @@ class UserFlowerCartController extends GetxController {
                   'Deleted', "flower successfully deleted from shopping cart"
               );
               totalPrice.value = totalPrice.value - (flower.count*flower.price);
+              formatPrice("${totalPrice.value}");
               disableLoading.value=false;
               countLoading[index]=false;
             });
@@ -152,6 +174,7 @@ class UserFlowerCartController extends GetxController {
           );
           user = editedUser;
           totalPrice.value = totalPrice.value-flower.price;
+          formatPrice("${totalPrice.value}");
           disableLoading.value=false;
           countLoading[index]=false;
         });
@@ -203,6 +226,7 @@ class UserFlowerCartController extends GetxController {
           );
           user = editedUser;
           totalPrice.value = totalPrice.value+flower.price;
+          formatPrice("${totalPrice.value}");
           disableLoading.value=false;
           countLoading[index]=false;
         });
@@ -264,6 +288,7 @@ class UserFlowerCartController extends GetxController {
                                 user!.userFlowerList.clear();
                                 cartFlowerList.clear();
                                 totalPrice=RxInt(0);
+                                formatPrice("${totalPrice.value}");
                                 isLoadingPurchase.value = false;
 
                               });

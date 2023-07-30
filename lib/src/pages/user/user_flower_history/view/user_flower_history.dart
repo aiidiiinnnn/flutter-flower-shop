@@ -2,7 +2,6 @@ import 'package:flower_shop/src/pages/user/user_flower_history/view/widget/user_
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flower_shop/generated/locales.g.dart' as locale;
-
 import '../controller/user_flower_history_controller.dart';
 
 class UserFlowerHistory extends  GetView<UserFlowerHistoryController>{
@@ -15,7 +14,7 @@ class UserFlowerHistory extends  GetView<UserFlowerHistoryController>{
           backgroundColor: const Color(0xfff3f7f7),
           appBar: AppBar(
             backgroundColor: const Color(0xfff3f7f7),
-            title: Text(locale.LocaleKeys.vendor_flower_home_History.tr,style: const TextStyle(
+            title: Text(locale.LocaleKeys.user_history_page.tr,style: const TextStyle(
                 color: Color(0xff050a0a),
                 fontWeight: FontWeight.w600,
                 fontSize: 22
@@ -41,12 +40,12 @@ class UserFlowerHistory extends  GetView<UserFlowerHistoryController>{
       return _retryButton();
     }
     else if(controller.historyList.isEmpty){
-      return const Center(
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.history_outlined,size: 270),
-            Text("Nothing has been purchased yet", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
+            const Icon(Icons.history_outlined,size: 270),
+            Text(locale.LocaleKeys.user_nothing_has_been_purchased_yet.tr, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
           ],
         ),
       );
@@ -70,16 +69,14 @@ class UserFlowerHistory extends  GetView<UserFlowerHistoryController>{
               fontSize: 17
           )),
           SizedBox(
-            child: Expanded(
-              child: ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: controller.historyList[index].purchaseList.length,
-                  itemBuilder: (_,index2) => UserFlowerHistoryCard(
-                      historyCart: controller.historyList[index].purchaseList[index2],
-                      index: index
-                  )
-              ),
+            child: ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: controller.historyList[index].purchaseList.length,
+                itemBuilder: (_,index2) => UserFlowerHistoryCard(
+                    historyCart: controller.historyList[index].purchaseList[index2],
+                    index: index
+                )
             ),
           )
         ],

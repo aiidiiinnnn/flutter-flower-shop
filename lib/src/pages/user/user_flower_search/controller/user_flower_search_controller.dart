@@ -44,6 +44,7 @@ class UserFlowerSearchController extends GetxController{
   RxMap<int,bool> isAdded=RxMap();
   RxMap buyCounting=RxMap();
   Timer? deBouncer;
+  RxBool isFiltered=false.obs;
 
   @override
   Future<void> onInit() async {
@@ -297,6 +298,7 @@ class UserFlowerSearchController extends GetxController{
                 }
                 countLoading.add("");
               }
+              isFiltered.value=false;
               isLoading.value=false;
         }
     );
@@ -309,6 +311,7 @@ class UserFlowerSearchController extends GetxController{
     maxCount.clear();
     addToCartLoading.clear();
     Map<String, String> query ={};
+    query["name_like"]=searchController.text;
     if(isCheckedCategory.value){
       query["category_like"]=selectedCategory.value;
     }
@@ -358,20 +361,23 @@ class UserFlowerSearchController extends GetxController{
                 }
                 countLoading.add("");
               }
+              isFiltered.value=true;
               isLoading.value=false;
         }
     );
   }
 
   void onTapFilter(){
-    isCheckedCategory.value=false;
-    isCheckedColor.value=false;
-    isCheckedPrice.value=false;
-    priceList.sort();
-    minPrice.value=priceList.first.toDouble();
-    maxPrice.value=priceList.last.toDouble();
-    currentRangeValues = Rx<RangeValues>(RangeValues(minPrice.value, maxPrice.value));
-    division.value = (maxPrice.value-minPrice.value).toInt();
+    if(isFiltered.value=false){
+      isCheckedCategory.value=false;
+      isCheckedColor.value=false;
+      isCheckedPrice.value=false;
+      priceList.sort();
+      minPrice.value=priceList.first.toDouble();
+      maxPrice.value=priceList.last.toDouble();
+      currentRangeValues = Rx<RangeValues>(RangeValues(minPrice.value, maxPrice.value));
+      division.value = (maxPrice.value-minPrice.value).toInt();
+    }
   }
 
   Future<void> onTapIncrement({required UserFlowerSearchViewModel flower,required int index}) async {

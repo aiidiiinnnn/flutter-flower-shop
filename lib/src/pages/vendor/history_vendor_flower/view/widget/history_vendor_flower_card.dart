@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import '../../../../user/user_flower_cart/models/cart_flower_view_model.dart';
 import '../../controller/history_vendor_flower_controller.dart';
+import 'package:flower_shop/generated/locales.g.dart' as locale;
 
 class HistoryVendorFlowerCard extends GetView<HistoryVendorFlowerController> {
 
@@ -105,14 +106,14 @@ class HistoryVendorFlowerCard extends GetView<HistoryVendorFlowerController> {
                 (historyCart.count==1) ? SizedBox(
                   height: 70,
                   width: 70,
-                  child: Text("${historyCart.count} Item",style: const TextStyle(
+                  child: Text("${historyCart.count} ${locale.LocaleKeys.vendor_item.tr}",style: const TextStyle(
                     fontSize: 18,
                     // color: Color(0xff71cc47)
                   ),),
                 ) : SizedBox(
                   height: 70,
                   width: 70,
-                  child: Text("${historyCart.count} Items",style: const TextStyle(
+                  child: Text("${historyCart.count} ${locale.LocaleKeys.vendor_items.tr}",style: const TextStyle(
                     fontSize: 18,
                     // color: Color(0xff71cc47)
                   ),
