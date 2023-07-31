@@ -1,15 +1,15 @@
 import 'dart:io';
+
+import 'package:flower_shop/generated/locales.g.dart' as locale;
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:get/get.dart';
-import 'widget/custom_add_form_field.dart';
+
 import '../controller/add_vendor_flower_controller.dart';
-import 'package:flower_shop/generated/locales.g.dart' as locale;
+import 'widget/custom_add_form_field.dart';
 
-class AddVendorFlower extends  GetView<AddVendorFlowerController>{
+class AddVendorFlower extends GetView<AddVendorFlowerController> {
   const AddVendorFlower({super.key});
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -18,19 +18,20 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
             backgroundColor: const Color(0xfff3f7f7),
             appBar: AppBar(
               backgroundColor: const Color(0xfff3f7f7),
-              title: Text(locale.LocaleKeys.vendor_add_flower.tr,style: const TextStyle(
-                  color: Color(0xff050a0a),
-                  fontWeight: FontWeight.w600,
-                  fontSize: 22
-              ),),
+              title: Text(
+                locale.LocaleKeys.vendor_add_flower.tr,
+                style: const TextStyle(
+                    color: Color(0xff050a0a),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 22),
+              ),
               iconTheme: const IconThemeData(
                 color: Color(0xff050a0a),
                 weight: 2,
               ),
             ),
-
-          body: Center(
-            child: Padding(
+            body: Center(
+                child: Padding(
               padding: const EdgeInsets.all(15),
               child: Container(
                 width: double.infinity,
@@ -38,378 +39,426 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
                 decoration: BoxDecoration(
                     color: const Color(0xffe9e9e9),
                     border: Border.all(color: const Color(0xff9d9d9d)),
-                    borderRadius: BorderRadius.circular(20)
-                ),
+                    borderRadius: BorderRadius.circular(20)),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Obx(() => controller.imagePath.isEmpty ?
-                        Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: InkWell(
-                                onTap: ()=>{
-                                  _showImagePicker(context)
-                                },
-                                child: AspectRatio(
-                                  aspectRatio: 1.65,
-                                  child: Container(
-                                      height: 250,
-                                      width: 250,
-                                      decoration: const BoxDecoration(
-                                        color: Colors.white,
-                                      ),
-                                      child: const Icon(Icons.add_a_photo_outlined,size: 50)
-                                  ),
-                                )
-                            )
-                        ) : Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                height: 250,
-                                width: 250,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    SizedBox(
-                                      height: 200,
-                                      width: 200,
-                                      child: AspectRatio(aspectRatio: 2.2, child: Image(image: FileImage(File(controller.imagePath.toString())),fit: BoxFit.fill,)),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    child: Column(children: [
+                      Obx(
+                        () => controller.imagePath.isEmpty
+                            ? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: InkWell(
+                                    onTap: () => {_showImagePicker(context)},
+                                    child: AspectRatio(
+                                      aspectRatio: 1.65,
+                                      child: Container(
+                                          height: 250,
+                                          width: 250,
+                                          decoration: const BoxDecoration(
+                                            color: Colors.white,
+                                          ),
+                                          child: const Icon(
+                                              Icons.add_a_photo_outlined,
+                                              size: 50)),
+                                    )))
+                            : Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SizedBox(
+                                    height: 250,
+                                    width: 250,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 8),
-                                          child: InkWell(
-                                              splashColor: Colors.blue,
-                                              customBorder: const CircleBorder(),
-                                              onTap: (){
-                                                _showImagePicker(context);
-                                              },
-                                              child: Container(
-                                                  width: 110,
-                                                  height: 34,
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(color: Colors.black),
-                                                    color: const Color(0xffc4c4c4),
-                                                    borderRadius: BorderRadius.circular(10),
-                                                  ),
-                                                  child: const Icon(Icons.add_a_photo_outlined,size: 23)
-                                              )
-                                          ),
+                                        SizedBox(
+                                          height: 200,
+                                          width: 200,
+                                          child: AspectRatio(
+                                              aspectRatio: 2.2,
+                                              child: Image(
+                                                image: FileImage(File(controller
+                                                    .imagePath
+                                                    .toString())),
+                                                fit: BoxFit.fill,
+                                              )),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 8),
-                                          child: InkWell(
-                                              splashColor: Colors.blue,
-                                              customBorder: const CircleBorder(),
-                                              onTap: (){
-                                                _deleteImageDialog(context);
-                                              },
-                                              child: Container(
-                                                  width: 110,
-                                                  height: 34,
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(color: Colors.black),
-                                                    color: const Color(0xffc4c4c4),
-                                                    borderRadius: BorderRadius.circular(10),
-                                                  ),
-                                                  child: Center(
-                                                    child: Text(locale.LocaleKeys.vendor_remove_image.tr,style: const TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight: FontWeight.w500
-                                                    ),),
-                                                  )
-                                              )
-                                          ),
-                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8),
+                                              child: InkWell(
+                                                  splashColor: Colors.blue,
+                                                  customBorder:
+                                                      const CircleBorder(),
+                                                  onTap: () {
+                                                    _showImagePicker(context);
+                                                  },
+                                                  child: Container(
+                                                      width: 110,
+                                                      height: 34,
+                                                      decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color:
+                                                                Colors.black),
+                                                        color: const Color(
+                                                            0xffc4c4c4),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                      ),
+                                                      child: const Icon(
+                                                          Icons
+                                                              .add_a_photo_outlined,
+                                                          size: 23))),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8),
+                                              child: InkWell(
+                                                  splashColor: Colors.blue,
+                                                  customBorder:
+                                                      const CircleBorder(),
+                                                  onTap: () {
+                                                    _deleteImageDialog(context);
+                                                  },
+                                                  child: Container(
+                                                      width: 110,
+                                                      height: 34,
+                                                      decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color:
+                                                                Colors.black),
+                                                        color: const Color(
+                                                            0xffc4c4c4),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                      ),
+                                                      child: Center(
+                                                        child: Text(
+                                                          locale
+                                                              .LocaleKeys
+                                                              .vendor_remove_image
+                                                              .tr,
+                                                          style: const TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                      ))),
+                                            ),
+                                          ],
+                                        )
                                       ],
-                                    )
-                                  ],
-                                )
-                            )
-                        ),),
-
-                        Form(
-                            key: controller.formKey,
-                            child: Column(
-                              children: [
-                                CustomAddFormField(
-                                  hintText: locale.LocaleKeys.vendor_name.tr,
-                                  name: locale.LocaleKeys.vendor_name.tr,
-                                  controller: controller.nameController,
-                                  validator: controller.nameValidator,
-                                  icon: Icons.spa_outlined,
-                                ),
-                                CustomAddFormField(
-                                  hintText: locale.LocaleKeys.vendor_add_description.tr,
-                                  name: locale.LocaleKeys.vendor_add_description.tr,
-                                  controller: controller.descriptionController,
-                                  validator: controller.descriptionValidator,
-                                  icon: Icons.description_outlined,
-                                ),
-                                CustomAddFormField(
-                                  hintText: locale.LocaleKeys.vendor_price.tr,
-                                  name: locale.LocaleKeys.vendor_price.tr,
-                                  controller: controller.priceController,
-                                  validator: controller.priceValidator,
-                                  icon: Icons.attach_money_outlined,
-                                ),
-                                CustomAddFormField(
-                                  hintText: locale.LocaleKeys.vendor_count.tr,
-                                  name: locale.LocaleKeys.vendor_count.tr,
-                                  controller: controller.countController,
-                                  validator: controller.countValidator,
-                                  icon: Icons.numbers_outlined,
-                                ),
-                              ],
-                            )
-                        ),
-
-                        Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Form(
-                              key: controller.categoryKey,
-                              child: RawAutocomplete(
-                                optionsBuilder: (TextEditingValue textEditingValue) {
-                                  if (textEditingValue.text == '') {
-                                    // return const Iterable<String>.empty();
-                                    List<String> matches = <String>[];
-                                    for(final item in controller.categoriesFromJson){
-                                      matches.add(item.name);
-                                    }
-                                    return matches;
-                                  }
-                                  else{
-                                    List<String> matches = <String>[];
-                                    for(final item in controller.categoriesFromJson){
-                                      matches.add(item.name);
-                                    }
-                                    matches.retainWhere((name){
-                                      return name.toLowerCase().contains(textEditingValue.text.toLowerCase());
-                                    });
-                                    return matches;
-                                  }
-                                },
-
-                                onSelected: (String selection) {
-                                  controller.categoryList.add(selection);
-                                  print('You just selected $selection');
-                                },
-
-                                fieldViewBuilder: (BuildContext context, TextEditingController textEditingController, FocusNode focusNode, VoidCallback onFieldSubmitted) {
-                                  return TextField(
-                                    decoration: InputDecoration(
-                                      suffixIcon: Padding(
-                                        padding: const EdgeInsets.all(4),
-                                        child: InkWell(
-                                            splashColor: const Color(0xffc4c4c4),
-                                            customBorder: const CircleBorder(),
-                                            onTap: () {
-                                              controller.addCategory(textEditingController.text);
-                                              textEditingController.clear();
-                                            },
-                                            child: Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal:8),
-                                              child: Container(
-                                                  width: 65,
-                                                  height: 10,
-                                                  decoration: BoxDecoration(
-                                                      border: Border.all(color: const Color(0xff050a0a)),
-                                                      color: const Color(0xffc4c4c4)
-                                                  ),
-                                                  child: Obx(() => (controller.isLoadingCategory.value) ? const Center(
-                                                    child: SizedBox(
-                                                        width: 15,
-                                                        height: 15,
-                                                        child: CircularProgressIndicator()
-                                                    ),
-                                                  ) : const Icon(Icons.add,size:25))
-                                              ),
-                                            )
-                                        )
-                                      ),
-                                      prefixIcon: const Icon(Icons.category_outlined),
-                                      enabledBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(color: Color(0xff050a0a))
-                                      ),
-                                      focusedBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(color: Color(0xff050a0a))
-                                      ),
-                                      labelText: locale.LocaleKeys.vendor_category.tr,
-                                      labelStyle: const TextStyle(color: Color(0xff050a0a)),
-                                    ),
-                                    controller: textEditingController,
-                                    focusNode: focusNode,
-                                    onSubmitted: (String value) {
+                                    ))),
+                      ),
+                      Form(
+                          key: controller.formKey,
+                          child: Column(
+                            children: [
+                              CustomAddFormField(
+                                hintText: locale.LocaleKeys.vendor_name.tr,
+                                name: locale.LocaleKeys.vendor_name.tr,
+                                controller: controller.nameController,
+                                validator: controller.nameValidator,
+                                icon: Icons.spa_outlined,
+                              ),
+                              CustomAddFormField(
+                                hintText:
+                                    locale.LocaleKeys.vendor_add_description.tr,
+                                name:
+                                    locale.LocaleKeys.vendor_add_description.tr,
+                                controller: controller.descriptionController,
+                                validator: controller.descriptionValidator,
+                                icon: Icons.description_outlined,
+                              ),
+                              CustomAddFormField(
+                                hintText: locale.LocaleKeys.vendor_price.tr,
+                                name: locale.LocaleKeys.vendor_price.tr,
+                                controller: controller.priceController,
+                                validator: controller.priceValidator,
+                                icon: Icons.attach_money_outlined,
+                              ),
+                              CustomAddFormField(
+                                hintText: locale.LocaleKeys.vendor_count.tr,
+                                name: locale.LocaleKeys.vendor_count.tr,
+                                controller: controller.countController,
+                                validator: controller.countValidator,
+                                icon: Icons.numbers_outlined,
+                              ),
+                            ],
+                          )),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Form(
+                          child: RawAutocomplete(
+                            key: controller.categoryKey,
+                            optionsBuilder:
+                                (TextEditingValue textEditingValue) {
+                              if (textEditingValue.text == '') {
+                                // return const Iterable<String>.empty();
+                                List<String> matches = <String>[];
+                                for (final item
+                                    in controller.categoriesFromJson) {
+                                  matches.add(item.name);
+                                }
+                                return matches;
+                              } else {
+                                List<String> matches = <String>[];
+                                for (final item
+                                    in controller.categoriesFromJson) {
+                                  matches.add(item.name);
+                                }
+                                matches.retainWhere((name) {
+                                  return name.toLowerCase().contains(
+                                      textEditingValue.text.toLowerCase());
+                                });
+                                return matches;
+                              }
+                            },
+                            onSelected: (String selection) {
+                              controller.onSelectedCategory(selection);
+                            },
+                            textEditingController:
+                                controller.categoryController,
+                            focusNode: controller.focusNode,
+                            fieldViewBuilder: (BuildContext context,
+                                TextEditingController textEditingController,
+                                FocusNode focusNode,
+                                VoidCallback onFieldSubmitted) {
+                              return TextField(
+                                decoration: InputDecoration(
+                                  suffixIcon: Padding(
+                                      padding: const EdgeInsets.all(4),
+                                      child: InkWell(
+                                          splashColor: const Color(0xffc4c4c4),
+                                          customBorder: const CircleBorder(),
+                                          onTap: () {
+                                            controller.addCategory(
+                                                textEditingController.text);
+                                            textEditingController.clear();
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8),
+                                            child: Container(
+                                                width: 65,
+                                                height: 10,
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: const Color(
+                                                            0xff050a0a)),
+                                                    color: const Color(
+                                                        0xffc4c4c4)),
+                                                child: Obx(() => (controller
+                                                        .isLoadingCategory
+                                                        .value)
+                                                    ? const Center(
+                                                        child: SizedBox(
+                                                            width: 15,
+                                                            height: 15,
+                                                            child:
+                                                                CircularProgressIndicator()),
+                                                      )
+                                                    : const Icon(Icons.add,
+                                                        size: 25))),
+                                          ))),
+                                  prefixIcon: IconButton(
+                                    icon: const Icon(Icons.category_outlined),
+                                    onPressed: () {
+                                      controller.focusNode.unfocus();
                                     },
-                                  );
+                                  ),
+                                  enabledBorder: const OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Color(0xff050a0a))),
+                                  focusedBorder: const OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Color(0xff050a0a))),
+                                  labelText:
+                                      locale.LocaleKeys.vendor_category.tr,
+                                  labelStyle:
+                                      const TextStyle(color: Color(0xff050a0a)),
+                                ),
+                                controller: textEditingController,
+                                focusNode: focusNode,
+                                onSubmitted: (String value) {
+                                  textEditingController.clear();
                                 },
-
-                                optionsViewBuilder: (BuildContext context, void Function(String) onSelected,
-                                    Iterable<String> options) {
-                                  return Container(
-                                    height: 50,
-                                    padding: const EdgeInsets.only(right:60),
-                                    child: Material(
-                                        child:SingleChildScrollView(
-                                            child: Column(
-                                              children: options.map((opt){
-                                                return InkWell(
-                                                    onTap: (){
-                                                      onSelected(opt);
-                                                    },
-                                                    child:Card(
-                                                        child: Container(
-                                                          width: double.infinity,
-                                                          padding: const EdgeInsets.all(10),
-                                                          child:Text(opt),
-                                                        )
-                                                    )
-                                                );
-                                              }).toList(),
-                                            )
-                                        )
+                              );
+                            },
+                            optionsViewBuilder: (BuildContext context,
+                                void Function(String) onSelected,
+                                Iterable<String> options) {
+                              return SingleChildScrollView(
+                                child: Container(
+                                  height: 200,
+                                  padding: const EdgeInsets.only(right: 64),
+                                  child: Material(
+                                    child: SizedBox(
+                                      child: ListView(
+                                        children: options.map((opt) {
+                                          return InkWell(
+                                              onTap: () {
+                                                onSelected(opt);
+                                              },
+                                              child: Card(
+                                                  child: Container(
+                                                width: double.infinity,
+                                                padding:
+                                                    const EdgeInsets.all(10),
+                                                child: Text(opt),
+                                              )));
+                                        }).toList(),
+                                      ),
                                     ),
-                                  );
-                                },
-                              ),
-                              ),
-                            ),
-
-                        Obx(() => (controller.categoryList.isNotEmpty) ?
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: SizedBox(
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      Obx(() => (controller.categoryList.isNotEmpty)
+                          ? Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              child: SizedBox(
+                                  height: controller.space.value,
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: controller.categoryList.length,
+                                    itemBuilder: (_, index) => Chip(
+                                      label:
+                                          Text(controller.categoryList[index]),
+                                      onDeleted: () => {
+                                        controller.categoryList.removeAt(index)
+                                      },
+                                    ),
+                                  )),
+                            )
+                          : const SizedBox(height: 0)),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: SizedBox(
+                          height: 40,
+                          width: 120,
+                          child: ElevatedButton(
+                            onPressed: () => {_colorPickerDialog(context)},
+                            child: Obx(() => (controller.isLoadingColor.value)
+                                ? const Center(
+                                    child: SizedBox(
+                                        width: 50,
+                                        child: LinearProgressIndicator()),
+                                  )
+                                : Text(
+                                    locale.LocaleKeys.vendor_color_picker.tr)),
+                          ),
+                        ),
+                      ),
+                      Obx(() => (controller.colorList.isNotEmpty)
+                          ? SizedBox(
                               height: controller.space.value,
                               child: ListView.builder(
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: controller.categoryList.length,
-                                itemBuilder: (_, index) => Chip(
-                                  label: Text(controller.categoryList[index]),
-                                  onDeleted: () => {controller.categoryList.removeAt(index)},
-                                ),)
-                          ),
-                        ) : const SizedBox(height: 0)),
-
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: SizedBox(
-                            height: 40,
-                            width: 120,
-                            child: ElevatedButton(
-                              onPressed: ()=>{
-                                _colorPickerDialog(context)
-                              },
-                              child: Obx(() => (controller.isLoadingColor.value) ? const Center(
-                                child: SizedBox(
-                                    width: 50,
-                                    child: LinearProgressIndicator()
-                                ),
-                              ) :
-                              Text(locale.LocaleKeys.vendor_color_picker.tr)),
-                            ),
-                          ),
-                        ),
-                        Obx(() => (controller.colorList.isNotEmpty) ? SizedBox(
-                          height: controller.space.value,
-                          child: ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: controller.colorList.length,
-                              itemBuilder: (_,index) => Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: InkWell(
-                                    onTap:()=>controller.removeColor(controller.colorList[index]),
-                                    child: Container(
-                                      height: 30,
-                                      width: 30,
-                                      decoration: BoxDecoration(
-                                        color: controller.colorList[index],
-                                        border: Border.all(color: Colors.black),
-                                        borderRadius: BorderRadius.circular(200),
-                                      ),
-                                    ),
-                                  )
-                              )
-                          ),
-                        ) : const SizedBox(height: 0)),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            width: double.infinity,
-                            height: 40,
-                            child: ElevatedButton(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: controller.colorList.length,
+                                  itemBuilder: (_, index) => Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: InkWell(
+                                        onTap: () => controller.removeColor(
+                                            controller.colorList[index]),
+                                        child: Container(
+                                          height: 30,
+                                          width: 30,
+                                          decoration: BoxDecoration(
+                                            color: controller.colorList[index],
+                                            border:
+                                                Border.all(color: Colors.black),
+                                            borderRadius:
+                                                BorderRadius.circular(200),
+                                          ),
+                                        ),
+                                      ))),
+                            )
+                          : const SizedBox(height: 0)),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 40,
+                          child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xff6cba00),
                               ),
-                              onPressed: ()=>controller.addVendorFlower(),
-                              child: Obx(() => (controller.isLoadingSubmit.value) ? const Center(
-                                child: SizedBox(
-                                    width: 50,
-                                    child: LinearProgressIndicator()
-                                ),
-                              ): Text(locale.LocaleKeys.vendor_submit.tr),)
-                            ),
-                          ),
+                              onPressed: () => controller.addVendorFlower(),
+                              child: Obx(
+                                () => (controller.isLoadingSubmit.value)
+                                    ? const Center(
+                                        child: SizedBox(
+                                            width: 50,
+                                            child: LinearProgressIndicator()),
+                                      )
+                                    : Text(locale.LocaleKeys.vendor_submit.tr),
+                              )),
                         ),
-                  ]),
+                      ),
+                    ]),
+                  ),
                 ),
               ),
-            ),
-          )
-
-    )
-    )
-    );
+            ))));
   }
 
   void _colorPickerDialog(BuildContext context) {
     showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: Text(locale.LocaleKeys.vendor_pick_a_color.tr),
-          content: SingleChildScrollView(
-            child: ColorPicker(
-              pickerColor: controller.pickerColor,
-              onColorChanged: (Color value) {
-                controller.currentColor = value;
-              },
-            ),
-          ),
-          actions: [
-            ElevatedButton(
-              child: Text(locale.LocaleKeys.vendor_got_it.tr),
-              onPressed: () {
-                controller.addColor(controller.currentColor);
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        )
-    );
+              title: Text(locale.LocaleKeys.vendor_pick_a_color.tr),
+              content: SingleChildScrollView(
+                child: ColorPicker(
+                  pickerColor: controller.pickerColor,
+                  onColorChanged: (Color value) {
+                    controller.currentColor = value;
+                  },
+                ),
+              ),
+              actions: [
+                ElevatedButton(
+                  child: Text(locale.LocaleKeys.vendor_got_it.tr),
+                  onPressed: () {
+                    controller.addColor(controller.currentColor);
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ));
   }
 
-  void _deleteImageDialog(BuildContext context){
-    showDialog(context: context,
+  void _deleteImageDialog(BuildContext context) {
+    showDialog(
+      context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(locale.LocaleKeys.vendor_delete.tr),
-          content: Text(locale.LocaleKeys.vendor_are_you_sure_you_want_to_delete_this.tr),
+          content: Text(
+              locale.LocaleKeys.vendor_are_you_sure_you_want_to_delete_this.tr),
           actions: [
             TextButton(
                 child: Text(locale.LocaleKeys.vendor_cancel.tr),
-                onPressed: (){
+                onPressed: () {
                   Navigator.of(context).pop();
-                }
-            ),
+                }),
             TextButton(
               child: Text(locale.LocaleKeys.vendor_continue.tr),
-              onPressed:  () {
+              onPressed: () {
                 controller.deleteImage();
                 Navigator.of(context).pop();
               },
@@ -420,88 +469,93 @@ class AddVendorFlower extends  GetView<AddVendorFlowerController>{
     );
   }
 
-  void _showImagePicker(BuildContext context){
+  void _showImagePicker(BuildContext context) {
     showDialog(
         context: context,
         builder: (BuildContext context) => SimpleDialog(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(locale.LocaleKeys.vendor_add_image.tr,style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w500,
-                        // color: Color(0xff050a0a)
-                      ),),
-                    ],
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: Divider(
-                    height: 20,
-                    color: Color(0xff9d9d9d),
-                    thickness: 1,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      InkWell(
-                        child: Column(
-                          children: [
-                            const Icon(Icons.image_outlined,size: 55),
-                            Text(locale.LocaleKeys.vendor_gallery.tr,style: const TextStyle(
-                                fontSize: 15
-                            ),),
-                          ],
-                        ),
-                        onTap: () {
-                          controller.imageFromGallery();
-                          Navigator.pop(context);
-                        },
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            locale.LocaleKeys.vendor_add_image.tr,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                              // color: Color(0xff050a0a)
+                            ),
+                          ),
+                        ],
                       ),
-                      InkWell(
-                        child: Column(
-                          children: [
-                            const Icon(Icons.camera_alt_outlined,size: 55),
-                            Text(locale.LocaleKeys.vendor_camera.tr,style: const TextStyle(
-                                fontSize: 15
-                            ),),
-                          ],
-                        ),
-                        onTap: () {
-                          controller.imageFromCamera();
-                          Navigator.pop(context);
-                        },
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 50,bottom: 20,left: 15,right: 15),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      child: Text(locale.LocaleKeys.vendor_cancel.tr),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
                     ),
-                  ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      child: Divider(
+                        height: 20,
+                        color: Color(0xff9d9d9d),
+                        thickness: 1,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          InkWell(
+                            child: Column(
+                              children: [
+                                const Icon(Icons.image_outlined, size: 55),
+                                Text(
+                                  locale.LocaleKeys.vendor_gallery.tr,
+                                  style: const TextStyle(fontSize: 15),
+                                ),
+                              ],
+                            ),
+                            onTap: () {
+                              controller.imageFromGallery();
+                              Navigator.pop(context);
+                            },
+                          ),
+                          InkWell(
+                            child: Column(
+                              children: [
+                                const Icon(Icons.camera_alt_outlined, size: 55),
+                                Text(
+                                  locale.LocaleKeys.vendor_camera.tr,
+                                  style: const TextStyle(fontSize: 15),
+                                ),
+                              ],
+                            ),
+                            onTap: () {
+                              controller.imageFromCamera();
+                              Navigator.pop(context);
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 50, bottom: 20, left: 15, right: 15),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          child: Text(locale.LocaleKeys.vendor_cancel.tr),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
-            ),
-          ],
-        )
-    );
+            ));
   }
-
 }

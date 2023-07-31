@@ -4,9 +4,9 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'localization_service.dart';
 
 class FlowerApp extends StatelessWidget {
-  FlowerApp({super.key, required this.isLogged, required this.role});
-  bool? isLogged;
-  String? role;
+  const FlowerApp({super.key, required this.isLogged, required this.role});
+  final bool? isLogged;
+  final String? role;
 
   @override
   Widget build(BuildContext context) {
