@@ -1,7 +1,15 @@
-import 'package:flutter/material.dart';
 import 'dart:core';
+
+import 'package:flutter/material.dart';
+
 class CustomSignupFormField extends StatelessWidget {
-  const CustomSignupFormField({super.key, required this.hintText,required this.name, required this.controller, required this.validator,required this.icon});
+  const CustomSignupFormField(
+      {super.key,
+      required this.hintText,
+      required this.name,
+      required this.controller,
+      required this.validator,
+      required this.icon});
   final String hintText;
   final String name;
   final TextEditingController controller;
@@ -18,17 +26,14 @@ class CustomSignupFormField extends StatelessWidget {
           decoration: InputDecoration(
             prefixIcon: Icon(icon),
             enabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Color(0xff050a0a))
-            ),
+                borderSide: BorderSide(color: Color(0xff050a0a))),
             focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Color(0xff050a0a))
-            ),
+                borderSide: BorderSide(color: Color(0xff050a0a))),
             labelText: name,
             labelStyle: const TextStyle(color: Color(0xff050a0a)),
           ),
           validator: validator,
           controller: controller,
-        )
-    );
+        ));
   }
 }

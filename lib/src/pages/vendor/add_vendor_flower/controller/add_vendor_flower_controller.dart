@@ -58,6 +58,14 @@ class AddVendorFlowerController extends GetxController {
     return prefs.getInt("vendorId");
   }
 
+  final RxInt countValue = RxInt(0);
+  void addCountValue(int newValue) {
+    if (countValue.value == newValue) {
+      return;
+    }
+    countValue.value = newValue;
+  }
+
   void onSelectedCategory(String selection) {
     if (categoryList.isNotEmpty) {
       for (final categoryName in categoryList) {

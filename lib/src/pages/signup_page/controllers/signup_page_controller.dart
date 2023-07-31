@@ -23,15 +23,11 @@ class SignupPageController extends GetxController {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
+  final FocusNode passwordsFocusNode = FocusNode();
   RxInt selectedType = 1.obs;
   RxString imagePath = ''.obs;
   RxString savedImage = ''.obs;
   RxBool isLoadingSignup = false.obs;
-
-  @override
-  void onClose() {
-    lastNameController.dispose();
-  }
 
   String? firstNameValidator(final String? firstName) {
     if (firstName == null || firstName.isEmpty) {

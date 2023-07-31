@@ -17,7 +17,7 @@ class SignupPasswordFormField extends StatelessWidget {
   final TextEditingController controller;
   final String? Function(String?) validator;
   final IconData icon;
-  RxBool obscureText = true.obs;
+  final RxBool obscureText = true.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +42,9 @@ class SignupPasswordFormField extends StatelessWidget {
                 labelText: name,
                 labelStyle: const TextStyle(color: Color(0xff050a0a)),
               ),
+              onFieldSubmitted: (emailNode) {
+                obscureText.value = !obscureText.value;
+              },
               validator: validator,
               controller: controller,
             )));
