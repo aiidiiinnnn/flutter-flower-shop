@@ -10,8 +10,8 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
   VendorFlowerCard(
       {super.key, required this.vendorFlower, required this.index});
 
-  VendorFlowerViewModel vendorFlower;
-  int index;
+  final VendorFlowerViewModel vendorFlower;
+  final int index;
   String firstHalfText = "";
   String secondHalfText = "";
 
@@ -26,422 +26,370 @@ class VendorFlowerCard extends GetView<VendorFlowerListController> {
       secondHalfText = "";
     }
     return Obx(() => (controller.isLoadingDelete.value == "${vendorFlower.id}")
-        ? Stack(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(top: 28),
-                width: double.infinity,
-                height: double.infinity,
-                decoration: BoxDecoration(
-                    color: const Color(0xffe9e9e9),
-                    border: Border.all(color: const Color(0xff9d9d9d)),
-                    borderRadius: BorderRadius.circular(20)),
-                child: const Padding(
-                  padding: EdgeInsets.only(
-                      top: 115, left: 25, right: 25, bottom: 35),
-                  child: SizedBox(
-                    width: 5,
-                    height: 5,
-                    child: LinearProgressIndicator(),
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.topCenter,
-                child: Container(
-                    height: 117,
-                    width: 165,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.circular(15)),
-                    child: vendorFlower.imageAddress.isNotEmpty
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: SizedBox.fromSize(
-                                child: Image.memory(
-                              base64Decode(vendorFlower.imageAddress),
-                              fit: BoxFit.fill,
-                            )))
-                        : const Icon(Icons.image_outlined, size: 30)),
-              )
-            ],
-          )
+        ? deletingCard()
         : (controller.disableLoading.value)
-            ? InkWell(
-                onTap: null,
-                child: Stack(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 28),
-                      width: double.infinity,
-                      height: double.infinity,
-                      decoration: BoxDecoration(
-                          color: const Color(0xffe9e9e9),
-                          border: Border.all(color: const Color(0xff9d9d9d)),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 90),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+            ? disableCard(context)
+            : card(context));
+  }
+
+  InkWell card(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        flowerShowDialog(context);
+      },
+      child: Stack(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 28),
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+                color: const Color(0xffe9e9e9),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xff9d9d9d).withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: const Offset(4, 4), // changes position of shadow
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(20)),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 90),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          vendorFlower.name,
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w500),
+                        ),
+                        Text("\$${vendorFlower.price}",
+                            style: const TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w300))
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 35,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 6),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                        child: secondHalfText.isEmpty
+                            ? Center(
+                                child: Text(
+                                  firstHalfText,
+                                  style: const TextStyle(fontSize: 10),
+                                ),
+                              )
+                            : Column(
                                 children: [
                                   Text(
-                                    vendorFlower.name,
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
+                                    controller.textFlag.value
+                                        ? ("$firstHalfText...")
+                                        : (firstHalfText + secondHalfText),
+                                    style: const TextStyle(fontSize: 10),
                                   ),
-                                  Text("\$${vendorFlower.price}",
-                                      style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w300))
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 35,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 6),
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 6.0),
-                                  child: secondHalfText.isEmpty
-                                      ? Center(
-                                          child: Text(
-                                            firstHalfText,
-                                            style:
-                                                const TextStyle(fontSize: 10),
-                                          ),
-                                        )
-                                      : Column(
-                                          children: [
-                                            Text(
-                                              controller.textFlag.value
-                                                  ? ("$firstHalfText...")
-                                                  : (firstHalfText +
-                                                      secondHalfText),
-                                              style:
-                                                  const TextStyle(fontSize: 10),
-                                            ),
-                                            InkWell(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  Text(
-                                                    locale.LocaleKeys
-                                                        .vendor_show_more.tr,
-                                                    style: const TextStyle(
-                                                        color: Colors.blue,
-                                                        fontSize: 9),
-                                                  ),
-                                                ],
-                                              ),
-                                              onTap: () {
-                                                _showDescription(context);
-                                              },
-                                            ),
-                                          ],
+                                  InkWell(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          locale.LocaleKeys.vendor_show_more.tr,
+                                          style: const TextStyle(
+                                              color: Colors.blue, fontSize: 9),
                                         ),
-                                ),
-                              ),
-                            ),
-                            Obx(
-                              () => Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  (controller.countLoading[index] ==
-                                          "${vendorFlower.id}")
-                                      ? const Center(
-                                          child: SizedBox(
-                                              width: 50,
-                                              child: LinearProgressIndicator()),
-                                        )
-                                      : (controller.isOutOfStock[index])
-                                          ? Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                const InkWell(
-                                                  onTap: null,
-                                                  child: Icon(
-                                                      Icons.arrow_back_ios,
-                                                      size: 16),
-                                                ),
-                                                Text(
-                                                  locale.LocaleKeys
-                                                      .vendor_out_of_stock.tr,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 13),
-                                                ),
-                                                incrementButton()
-                                              ],
-                                            )
-                                          : Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                decrementButton(context),
-                                                Text(
-                                                  "${vendorFlower.count}",
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 13),
-                                                ),
-                                                incrementButton()
-                                              ],
-                                            ),
+                                      ],
+                                    ),
+                                    onTap: () {
+                                      _showDescription(context);
+                                    },
+                                  ),
                                 ],
                               ),
-                            )
-                          ],
-                        ),
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.topCenter,
+                  ),
+                  Obx(
+                    () => Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        (controller.countLoading[index] == "${vendorFlower.id}")
+                            ? const Center(
+                                child: SizedBox(
+                                    width: 50,
+                                    child: LinearProgressIndicator()),
+                              )
+                            : (controller.isOutOfStock[index])
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      InkWell(
+                                          child: const Icon(
+                                              Icons.arrow_back_ios,
+                                              size: 16),
+                                          onTap: () {
+                                            Widget cancelButton = TextButton(
+                                                child: Text(locale.LocaleKeys
+                                                    .vendor_cancel.tr),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                });
+                                            Widget continueButton = TextButton(
+                                              child: Text(locale.LocaleKeys
+                                                  .vendor_continue.tr),
+                                              onPressed: () {
+                                                controller.deleteFlower(
+                                                    vendorFlower, index);
+                                                Navigator.of(context).pop();
+                                              },
+                                            );
+                                            AlertDialog alert = AlertDialog(
+                                              title: Text(locale
+                                                  .LocaleKeys.vendor_delete.tr),
+                                              content: Text(locale
+                                                  .LocaleKeys
+                                                  .vendor_are_you_sure_you_want_to_delete_this
+                                                  .tr),
+                                              actions: [
+                                                cancelButton,
+                                                continueButton,
+                                              ],
+                                            );
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return alert;
+                                              },
+                                            );
+                                          }),
+                                      Text(
+                                        locale
+                                            .LocaleKeys.vendor_out_of_stock.tr,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 13),
+                                      ),
+                                      incrementButton()
+                                    ],
+                                  )
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      decrementButton(context),
+                                      Text(
+                                        "${vendorFlower.count}",
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 13),
+                                      ),
+                                      incrementButton()
+                                    ],
+                                  ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          cardPicture()
+        ],
+      ),
+    );
+  }
+
+  Align cardPicture() {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Container(
+          height: 117,
+          width: 165,
+          decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: Colors.black),
+              borderRadius: BorderRadius.circular(15)),
+          child: vendorFlower.imageAddress.isNotEmpty
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: SizedBox.fromSize(
+                      child: Image.memory(
+                    base64Decode(vendorFlower.imageAddress),
+                    fit: BoxFit.fill,
+                  )))
+              : const Icon(Icons.image_outlined, size: 30)),
+    );
+  }
+
+  InkWell disableCard(BuildContext context) {
+    return InkWell(
+      onTap: null,
+      child: Stack(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 28),
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+                color: const Color(0xffe9e9e9),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xff9d9d9d).withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: const Offset(4, 4), // changes position of shadow
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(20)),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 90),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          vendorFlower.name,
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w500),
+                        ),
+                        Text("\$${vendorFlower.price}",
+                            style: const TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w300))
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 35,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 6),
                       child: Container(
-                          height: 117,
-                          width: 165,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(color: Colors.black),
-                              borderRadius: BorderRadius.circular(15)),
-                          child: vendorFlower.imageAddress.isNotEmpty
-                              ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(15),
-                                  child: SizedBox.fromSize(
-                                      child: Image.memory(
-                                    base64Decode(vendorFlower.imageAddress),
-                                    fit: BoxFit.fill,
-                                  )))
-                              : const Icon(Icons.image_outlined, size: 30)),
-                    )
-                  ],
-                ),
-              )
-            : InkWell(
-                onTap: () {
-                  flowerShowDialog(context);
-                },
-                child: Stack(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 28),
-                      width: double.infinity,
-                      height: double.infinity,
-                      decoration: BoxDecoration(
-                          color: const Color(0xffe9e9e9),
-                          border: Border.all(color: const Color(0xff9d9d9d)),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 90),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                        padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                        child: secondHalfText.isEmpty
+                            ? Center(
+                                child: Text(
+                                  firstHalfText,
+                                  style: const TextStyle(fontSize: 10),
+                                ),
+                              )
+                            : Column(
                                 children: [
                                   Text(
-                                    vendorFlower.name,
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
+                                    controller.textFlag.value
+                                        ? ("$firstHalfText...")
+                                        : (firstHalfText + secondHalfText),
+                                    style: const TextStyle(fontSize: 10),
                                   ),
-                                  Text("\$${vendorFlower.price}",
-                                      style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w300))
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 35,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 6),
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 6.0),
-                                  child: secondHalfText.isEmpty
-                                      ? Center(
-                                          child: Text(
-                                            firstHalfText,
-                                            style:
-                                                const TextStyle(fontSize: 10),
-                                          ),
-                                        )
-                                      : Column(
-                                          children: [
-                                            Text(
-                                              controller.textFlag.value
-                                                  ? ("$firstHalfText...")
-                                                  : (firstHalfText +
-                                                      secondHalfText),
-                                              style:
-                                                  const TextStyle(fontSize: 10),
-                                            ),
-                                            InkWell(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  Text(
-                                                    locale.LocaleKeys
-                                                        .vendor_show_more.tr,
-                                                    style: const TextStyle(
-                                                        color: Colors.blue,
-                                                        fontSize: 9),
-                                                  ),
-                                                ],
-                                              ),
-                                              onTap: () {
-                                                _showDescription(context);
-                                              },
-                                            ),
-                                          ],
+                                  InkWell(
+                                    onTap: null,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          locale.LocaleKeys.vendor_show_more.tr,
+                                          style: const TextStyle(
+                                              color: Colors.blue, fontSize: 9),
                                         ),
-                                ),
-                              ),
-                            ),
-                            Obx(
-                              () => Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  (controller.countLoading[index] ==
-                                          "${vendorFlower.id}")
-                                      ? const Center(
-                                          child: SizedBox(
-                                              width: 50,
-                                              child: LinearProgressIndicator()),
-                                        )
-                                      : (controller.isOutOfStock[index])
-                                          ? Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                InkWell(
-                                                    child: const Icon(
-                                                        Icons.arrow_back_ios,
-                                                        size: 16),
-                                                    onTap: () {
-                                                      Widget cancelButton =
-                                                          TextButton(
-                                                              child: Text(locale
-                                                                  .LocaleKeys
-                                                                  .vendor_cancel
-                                                                  .tr),
-                                                              onPressed: () {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                              });
-                                                      Widget continueButton =
-                                                          TextButton(
-                                                        child: Text(locale
-                                                            .LocaleKeys
-                                                            .vendor_continue
-                                                            .tr),
-                                                        onPressed: () {
-                                                          controller
-                                                              .deleteFlower(
-                                                                  vendorFlower,
-                                                                  index);
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        },
-                                                      );
-                                                      AlertDialog alert =
-                                                          AlertDialog(
-                                                        title: Text(locale
-                                                            .LocaleKeys
-                                                            .vendor_delete
-                                                            .tr),
-                                                        content: Text(locale
-                                                            .LocaleKeys
-                                                            .vendor_are_you_sure_you_want_to_delete_this
-                                                            .tr),
-                                                        actions: [
-                                                          cancelButton,
-                                                          continueButton,
-                                                        ],
-                                                      );
-                                                      showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext
-                                                            context) {
-                                                          return alert;
-                                                        },
-                                                      );
-                                                    }),
-                                                Text(
-                                                  locale.LocaleKeys
-                                                      .vendor_out_of_stock.tr,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 13),
-                                                ),
-                                                incrementButton()
-                                              ],
-                                            )
-                                          : Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                decrementButton(context),
-                                                Text(
-                                                  "${vendorFlower.count}",
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 13),
-                                                ),
-                                                incrementButton()
-                                              ],
-                                            ),
+                                      ],
+                                    )
+                                  ),
                                 ],
                               ),
-                            )
-                          ],
-                        ),
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Container(
-                          height: 117,
-                          width: 165,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(color: Colors.black),
-                              borderRadius: BorderRadius.circular(15)),
-                          child: vendorFlower.imageAddress.isNotEmpty
-                              ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(15),
-                                  child: SizedBox.fromSize(
-                                      child: Image.memory(
-                                    base64Decode(vendorFlower.imageAddress),
-                                    fit: BoxFit.fill,
-                                  )))
-                              : const Icon(Icons.image_outlined, size: 30)),
-                    )
-                  ],
+                  ),
+                  Obx(
+                    () => Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        (controller.countLoading[index] == "${vendorFlower.id}")
+                            ? const Center(
+                                child: SizedBox(
+                                    width: 50,
+                                    child: LinearProgressIndicator()),
+                              )
+                            : (controller.isOutOfStock[index])
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const InkWell(
+                                        onTap: null,
+                                        child: Icon(Icons.arrow_back_ios,
+                                            size: 16),
+                                      ),
+                                      Text(
+                                        locale
+                                            .LocaleKeys.vendor_out_of_stock.tr,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 13),
+                                      ),
+                                      incrementButton()
+                                    ],
+                                  )
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      decrementButton(context),
+                                      Text(
+                                        "${vendorFlower.count}",
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 13),
+                                      ),
+                                      incrementButton()
+                                    ],
+                                  ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          cardPicture()
+        ],
+      ),
+    );
+  }
+
+  Stack deletingCard() {
+    return Stack(
+      children: [
+        Container(
+          margin: const EdgeInsets.only(top: 28),
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+              color: const Color(0xffe9e9e9),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xff9d9d9d).withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: const Offset(4, 4), // changes position of shadow
                 ),
-              ));
+              ],
+              borderRadius: BorderRadius.circular(20)),
+          child: const Padding(
+            padding: EdgeInsets.only(top: 115, left: 25, right: 25, bottom: 35),
+            child: SizedBox(
+              width: 5,
+              height: 5,
+              child: LinearProgressIndicator(),
+            ),
+          ),
+        ),
+        cardPicture()
+      ],
+    );
   }
 
   Future<dynamic> flowerShowDialog(BuildContext context) {

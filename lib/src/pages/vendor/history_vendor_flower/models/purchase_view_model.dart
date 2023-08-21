@@ -1,30 +1,30 @@
 import '../../../user/user_flower_cart/models/cart_flower_view_model.dart';
 
-class PurchaseViewModel{
+class PurchaseViewModel {
   final int id;
   List<CartFlowerViewModel> purchaseList;
   final String date;
-  final int userId;
+  final String userName;
+  final String userLastName;
 
-  PurchaseViewModel({
-    required this.purchaseList,
-    required this.date,
-    required this.id,
-    required this.userId
-  });
+  PurchaseViewModel(
+      {required this.purchaseList,
+      required this.date,
+      required this.id,
+      required this.userName,
+      required this.userLastName});
 
-  factory PurchaseViewModel.fromJson(Map<String, dynamic> json){
-    List<CartFlowerViewModel> purchaseList=[];
-    for(final flower in json["purchaseList"]){
+  factory PurchaseViewModel.fromJson(Map<String, dynamic> json) {
+    List<CartFlowerViewModel> purchaseList = [];
+    for (final flower in json["purchaseList"]) {
       purchaseList.add(CartFlowerViewModel.fromJson(flower));
     }
     return PurchaseViewModel(
       id: json["id"],
       date: json["date"],
-      userId: json["userId"],
+      userName: json["userName"],
+      userLastName: json["userLastName"],
       purchaseList: purchaseList,
     );
   }
-
 }
-

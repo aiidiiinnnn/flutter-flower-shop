@@ -4,6 +4,7 @@ import 'package:flower_shop/src/pages/signup_page/view/widget/image_profile_pict
 import 'package:flower_shop/src/pages/signup_page/view/widget/signup_password_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:taav_ui/taav_ui.dart';
 
 import '../controllers/signup_page_controller.dart';
 
@@ -32,8 +33,8 @@ class SignupPage extends GetView<SignupPageController> {
 
   Obx signupPicture() {
     return Obx(() => controller.imagePath.isEmpty
-        ? EmptyProfilePicture(shapeSize: 150)
-        : ImageProfilePicture(shapeSize: 170));
+        ? const EmptyProfilePicture(shapeSize: 150)
+        : const ImageProfilePicture(shapeSize: 170));
   }
 
   AppBar appBar() {
@@ -130,24 +131,18 @@ class SignupPage extends GetView<SignupPageController> {
   Obx selectRoleButton() {
     return Obx(() => Row(
           children: [
-            Row(
-              children: [
-                Radio(
-                    value: 1,
-                    groupValue: controller.selectedType.value,
-                    onChanged: controller.onChangedType),
-                const Text("I am a vendor"),
-              ],
+            TaavRadio<int?>(
+              value: 1,
+              label: "I am a vendor",
+              groupValue: controller.selectedType.value,
+              onChanged: controller.onChangedType,
             ),
-            Row(
-              children: [
-                Radio(
-                    value: 2,
-                    groupValue: controller.selectedType.value,
-                    onChanged: controller.onChangedType),
-                const Text("I am a user"),
-              ],
-            )
+            TaavRadio<int?>(
+              value: 2,
+              label: "I am a user",
+              groupValue: controller.selectedType.value,
+              onChanged: controller.onChangedType,
+            ),
           ],
         ));
   }

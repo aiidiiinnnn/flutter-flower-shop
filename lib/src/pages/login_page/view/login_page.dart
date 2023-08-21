@@ -2,7 +2,7 @@ import 'package:flower_shop/src/pages/login_page/view/widget/custom_login_form_f
 import 'package:flower_shop/src/pages/login_page/view/widget/login_password_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:flower_shop/generated/locales.g.dart' as locale;
 import '../controllers/login_page_controller.dart';
 
 class LoginPage extends GetView<LoginPageController> {
@@ -138,16 +138,29 @@ class LoginPage extends GetView<LoginPageController> {
             "Don't have an account?",
             style: TextStyle(color: Color(0xff050a0a), fontSize: 12),
           ),
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 20),
-            ),
-            onPressed: () => controller.goToSignup(),
-            child: const Text(
-              'Signup',
-              style: TextStyle(color: Colors.blue, fontSize: 14),
-            ),
-          ),
+          Obx(
+            () => (controller.isLoadingLogin.value)
+                ? TextButton(
+                    style: TextButton.styleFrom(
+                      textStyle: const TextStyle(fontSize: 20),
+                    ),
+                    onPressed: null,
+                    child: const Text(
+                      'Signup',
+                      style: TextStyle(color: Colors.blue, fontSize: 14),
+                    ),
+                  )
+                : TextButton(
+                    style: TextButton.styleFrom(
+                      textStyle: const TextStyle(fontSize: 20),
+                    ),
+                    onPressed: () => controller.goToSignup(),
+                    child: const Text(
+                      'Signup',
+                      style: TextStyle(color: Colors.blue, fontSize: 14),
+                    ),
+                  ),
+          )
         ],
       );
 }

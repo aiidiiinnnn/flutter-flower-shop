@@ -4,6 +4,7 @@ import 'package:flower_shop/generated/locales.g.dart' as locale;
 import 'package:flower_shop/src/pages/user/user_flower_search/view/widget/user_flower_search_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:taav_ui/taav_ui.dart';
 
 import '../controller/user_flower_search_controller.dart';
 
@@ -15,20 +16,7 @@ class UserFlowerSearch extends GetView<UserFlowerSearchController> {
     return SafeArea(
         child: Scaffold(
       backgroundColor: const Color(0xfff3f7f7),
-      appBar: AppBar(
-        backgroundColor: const Color(0xfff3f7f7),
-        title: Text(
-          locale.LocaleKeys.user_search_page.tr,
-          style: const TextStyle(
-              color: Color(0xff050a0a),
-              fontWeight: FontWeight.w600,
-              fontSize: 22),
-        ),
-        iconTheme: const IconThemeData(
-          color: Color(0xff050a0a),
-          weight: 2,
-        ),
-      ),
+      appBar: appBar(),
       body: Column(
         children: [
           Padding(
@@ -36,80 +24,113 @@ class UserFlowerSearch extends GetView<UserFlowerSearchController> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Form(
-                  key: controller.searchKey,
-                  child: SizedBox(
-                    width: 300,
-                    height: 50,
-                    child: TextFormField(
-                      enableSuggestions: false,
-                      onChanged: (text) => {
-                        if (controller.deBouncer?.isActive ?? false)
-                          controller.deBouncer?.cancel(),
-                        controller.deBouncer =
-                            Timer(const Duration(milliseconds: 2000), () {
-                          text = controller.searchController.text.toLowerCase();
-                          controller.searchFlowers(text);
-                        })
-                      },
-                      style: const TextStyle(color: Color(0xff050a0a)),
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.search_outlined),
-                        enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff050a0a))),
-                        focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff050a0a))),
-                        labelText: locale.LocaleKeys.user_search.tr.tr,
-                        labelStyle: const TextStyle(color: Color(0xff050a0a)),
-                      ),
-                      controller: controller.searchController,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: Obx(
-                      () => (controller.isLoading.value)
-                          ? const ElevatedButton(
-                              onPressed: null,
-                              child: Center(
-                                  child: Icon(Icons.tune_outlined, size: 17)),
-                            )
-                          : (controller.isFilterDisable.value)
-                              ? const ElevatedButton(
-                                  onPressed: null,
-                                  child: Center(
-                                      child:
-                                          Icon(Icons.tune_outlined, size: 17)),
-                                )
-                              : ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xff71cc47),
-                                  ),
-                                  onPressed: () {
-                                    controller.onTapFilter();
-                                    filterShowDialog(context);
-                                  },
-                                  child: const Center(
-                                      child:
-                                          Icon(Icons.tune_outlined, size: 17)),
-                                ),
-                    )),
+                searchField(),
+                filterButton(context),
               ],
             ),
           ),
-          Expanded(
-            child: Obx(
-              () => RefreshIndicator(
-                onRefresh: controller.getUserById,
-                child: _pageContent(),
-              ),
-            ),
-          )
+          searchContent()
         ],
       ),
     ));
+  }
+
+  Expanded searchContent() {
+    return Expanded(
+      child: Obx(
+        () => RefreshIndicator(
+          onRefresh: controller.getUserById,
+          child: _pageContent(),
+        ),
+      ),
+    );
+  }
+
+  SizedBox filterButton(BuildContext context) {
+    return SizedBox(
+        width: 50,
+        height: 50,
+        child: Obx(
+          () => (controller.isLoading.value)
+              ? const ElevatedButton(
+                  onPressed: null,
+                  child: Center(child: Icon(Icons.tune_outlined, size: 17)),
+                )
+              : (controller.categoryList.isEmpty ||
+                      controller.colorsFromJson.isEmpty ||
+                      controller.priceList.isEmpty)
+                  ? const ElevatedButton(
+                      onPressed: null,
+                      child: Center(child: Icon(Icons.tune_outlined, size: 17)),
+                    )
+                  : (controller.isFilterDisable.value)
+                      ? const ElevatedButton(
+                          onPressed: null,
+                          child: Center(
+                              child: Icon(Icons.tune_outlined, size: 17)),
+                        )
+                      : ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xff71cc47),
+                          ),
+                          onPressed: () {
+                            controller.onTapFilter();
+                            filterShowDialog(context);
+                          },
+                          child: const Center(
+                              child: Icon(Icons.tune_outlined, size: 17)),
+                        ),
+        ));
+  }
+
+  Form searchField() {
+    return Form(
+      key: controller.searchKey,
+      child: SizedBox(
+        width: 300,
+        height: 50,
+        child: TextFormField(
+          enableSuggestions: false,
+          onChanged: (text) => {
+            if (controller.deBouncer?.isActive ?? false)
+              controller.deBouncer?.cancel(),
+            controller.deBouncer =
+                Timer(const Duration(milliseconds: 2000), () {
+              text = controller.searchController.text.toLowerCase();
+              controller.searchFlowers(text);
+            })
+          },
+          style: const TextStyle(color: Color(0xff050a0a)),
+          decoration: InputDecoration(
+            prefixIcon: const Icon(Icons.search_outlined),
+            enabledBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0xff050a0a))),
+            focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0xff050a0a))),
+            labelText: locale.LocaleKeys.user_search.tr.tr,
+            labelStyle: const TextStyle(color: Color(0xff050a0a)),
+          ),
+          controller: controller.searchController,
+        ),
+      ),
+    );
+  }
+
+  AppBar appBar() {
+    return AppBar(
+      backgroundColor: const Color(0xfff3f7f7),
+      title: Text(
+        locale.LocaleKeys.user_search_page.tr,
+        style: const TextStyle(
+            color: Color(0xff050a0a),
+            fontWeight: FontWeight.w600,
+            fontSize: 22),
+      ),
+      iconTheme: const IconThemeData(
+        color: Color(0xff050a0a),
+        weight: 2,
+      ),
+    );
   }
 
   Widget _pageContent() {
@@ -196,18 +217,58 @@ class UserFlowerSearch extends GetView<UserFlowerSearchController> {
                   ),
                 ),
                 (controller.isCheckedCategory.value)
-                    ? SizedBox(
-                        height: 40,
-                        child: DropdownButton<String>(
-                            onChanged: (value) {
-                              controller.setSelectedCategory(value!);
-                            },
-                            value: controller.selectedCategory.value,
-                            items: controller.categoryList
-                                .map<DropdownMenuItem<String>>((dynamic value) {
-                              return DropdownMenuItem(
-                                  value: value, child: Text("$value"));
-                            }).toList()))
+                ? TaavDropdownTheme(
+                  themeData: TaavDropdownThemeData(
+                    enabledBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(35)),
+                    ),
+                    popupBorderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                    ),
+                    fillColor: const Color(0xffe9e9e9),
+                    isFilled: true,
+                    focusedBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(width: 2, color: Color(0xff050a0a)),
+                    ),
+                    labelTextStyle: const TextStyle(color: Color(0xff050a0a)),
+                    hintTextStyle: const TextStyle(color: Color(0xff050a0a)),
+                    selectedItemTextStyle: const TextStyle(color: Color(0xff050a0a)),
+                    iconColor: const Color(0xff050a0a),
+                  ),
+                  child: TaavDropdown<String>(
+                    onClearIconTap: ()=> controller.selectedCategory.value="",
+                    label: 'Category',
+                    items: controller.categoryList.toList(),
+                    showClearButton: true,
+                    popupShape: TaavWidgetShape.round,
+                    mode: Mode.MENU,
+                    popupPadding: const EdgeInsets.symmetric(vertical: 8),
+                    dropdownShape: TaavWidgetShape.round,
+                    onItemsSelected: (value) {
+                      if(value!.isNotEmpty){
+                        controller.setSelectedCategory(value[0]);
+                      }
+                      else{
+                        controller.setSelectedCategory("");
+                      }
+                    }
+                  ),
+                )
+                //     ? SizedBox(
+                //         height: 40,
+                //         child: DropdownButton<String>(
+                //             onChanged: (value) {
+                //               controller.setSelectedCategory(value!);
+                //             },
+                //             value: controller.selectedCategory.value,
+                //             items: controller.categoryList
+                //                 .map<DropdownMenuItem<String>>((dynamic value) {
+                //               return DropdownMenuItem(
+                //                   value: value, child: Text("$value"));
+                //             }).toList())
+                // )
                     : const SizedBox(),
                 const SizedBox(height: 30),
                 Padding(

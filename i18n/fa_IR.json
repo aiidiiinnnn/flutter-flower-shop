@@ -42,7 +42,8 @@
     "add_image": "انتخاب عکس",
     "gallery": "گالری",
     "camera": "دوربین",
-    "remove_image": "پاک کردن عکس"
+    "remove_image": "پاک کردن عکس",
+    "home": "خانه"
   },
 
   "user": {
@@ -75,58 +76,15 @@
     "there_is_no_flower_here": "هیچ گلی اینحا نیست"
   },
 
-  "bottom_navigation_bar": {
-    "Home": "خانه",
-    "History": "تاریخچه",
-    "Search": "جستجو",
-    "Profile": "مشخصات"
-  },
-
-  "vendor_flower_home": {
-    "flower_list": "لیست گل",
-    "History": "صفحه تاریخچه",
-    "Search_page": "صفحه جستجو",
-    "Search": "جستجو",
-    "filter": "فیلتر",
-    "logout": "خروج",
-    "Profile": "صفحه مشخصات",
-    "Home": "خانه",
-    "there_is_no_flower_here": "هنوز هیچ گلی اضافه نشده است"
-  },
-
-  "vendor_flower_card":{
-    "show_more": "نمایش بیشتز",
-    "show_less": "نمایش کمتر",
-    "cancel": "لغو",
-    "continue": "ادامه",
-    "delete": "حذف",
-    "are_you_sure_you_want_to_delete_this": "آیا از حذف خود اطمینان دارید ؟",
-    "count_in_stock": "موجودی:",
-    "edit": "ویرایش",
-    "description": "توضیحات"
-  },
-
-  "add_vendor_flower_card": {
-    "add_flower": "اضافه کردن گل",
-    "edit_flower": "ویرایش گل",
-    "name": "نام",
-    "description": "توضیحات",
-    "price": "قسمت",
-    "count": "تعداد",
-    "category": "دسته بندی",
-    "color_picker": "انتخاب کننده رنگ",
-    "submit": "تایید",
-    "pick_a_color": "یک رنگ انتخاب کن!",
-    "got_it": "گرفتم",
-    "gallery": "گالری",
-    "camera": "دوربین"
-  },
-
-  "shopping_cart": {
-    "shopping_cart": "سبد خرید",
-    "total_price": "قیمت کل:",
-    "confirm_purchase": "خرید نهایی",
-    "add_to_cart": "اضافه کردن به سبد خرید",
-    "out_of_stock": "نامجود"
+  "login": {
+    "login": "ورود",
+    "email": "ایمیل",
+    "password": "رمز عبور",
+    "remember_me": "مرا به خاطر بسپار",
+    "do_not_have_an_account": "Don't have an account?",
+    "signup": "ثبت نام",
+    "please_enter_your_email_address": "لطفا ایمیل خود را وارد کنید",
+    "please_enter_a_valid_email_address": "لطفا ایمیل معتبر وارد کنید",
+    "please_enter_your_password": "لطفا رمز عبور خود را وارد کنید"
   }
 }

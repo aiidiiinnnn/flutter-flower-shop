@@ -34,25 +34,43 @@ class EmptyProfilePicture extends GetView<SignupPageController> {
       left: -10,
       bottom: -10,
       child: Material(
-        color: const Color(0xffc4c4c4),
-        borderRadius: BorderRadius.circular(200),
-        child: InkWell(
-            splashColor: Colors.blue,
-            customBorder: const CircleBorder(),
-            onTap: () {
-              _showImagePicker(context);
-            },
-            child: Container(
-                width: shapeSize / 2.5,
-                height: shapeSize / 2.5,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  borderRadius: BorderRadius.circular(200),
-                ),
-                child: Icon(Icons.add_a_photo_outlined, size: shapeSize / 4.5)
-                // child:
-                )),
-      ),
+          color: const Color(0xffc4c4c4),
+          borderRadius: BorderRadius.circular(200),
+          child: Obx(
+            () => controller.isLoadingSignup.value
+                ? InkWell(
+                    splashColor: Colors.blue,
+                    customBorder: const CircleBorder(),
+                    onTap: null,
+                    child: Container(
+                        width: shapeSize / 2.5,
+                        height: shapeSize / 2.5,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black),
+                          borderRadius: BorderRadius.circular(200),
+                        ),
+                        child: Icon(Icons.add_a_photo_outlined,
+                            size: shapeSize / 4.5)
+                        // child:
+                        ))
+                : InkWell(
+                    splashColor: Colors.blue,
+                    customBorder: const CircleBorder(),
+                    onTap: () {
+                      _showImagePicker(context);
+                    },
+                    child: Container(
+                        width: shapeSize / 2.5,
+                        height: shapeSize / 2.5,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black),
+                          borderRadius: BorderRadius.circular(200),
+                        ),
+                        child: Icon(Icons.add_a_photo_outlined,
+                            size: shapeSize / 4.5)
+                        // child:
+                        )),
+          )),
     );
   }
 

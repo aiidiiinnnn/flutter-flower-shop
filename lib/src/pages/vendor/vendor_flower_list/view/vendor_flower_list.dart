@@ -1,8 +1,8 @@
+import 'package:flower_shop/generated/locales.g.dart' as locale;
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_home.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_profile.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:get/get.dart';
 
 import '../controller/vendor_flower_list_controller.dart';
 
@@ -72,7 +72,7 @@ class VendorFlowerList extends GetView<VendorFlowerListController> {
                         ? Colors.blue
                         : Colors.grey),
                 Text(
-                  "Home",
+                  locale.LocaleKeys.vendor_home.tr,
                   style: TextStyle(
                       color: controller.pageIndex.value == 0
                           ? Colors.blue
@@ -96,7 +96,7 @@ class VendorFlowerList extends GetView<VendorFlowerListController> {
                         ? Colors.blue
                         : Colors.grey),
                 Text(
-                  "Profile",
+                  locale.LocaleKeys.vendor_profile.tr,
                   style: TextStyle(
                       color: controller.pageIndex.value == 1
                           ? Colors.blue

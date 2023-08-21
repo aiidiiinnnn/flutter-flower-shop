@@ -76,10 +76,14 @@ class LoginPageController extends GetxController {
   Future<void> goToSignup() async {
     final result =
         await Get.toNamed("${RouteNames.loginPage}${RouteNames.signupPage}");
+    isChecked.value = false;
     final bool isSignedUp = result != null;
     if (isSignedUp) {
       emailController.text = result["email"];
       passwordController.text = result["password"];
+    } else {
+      emailController.clear();
+      passwordController.clear();
     }
   }
 
@@ -96,7 +100,7 @@ class LoginPageController extends GetxController {
         await _repository.getUserByEmailPassword(
             email: emailController.text, password: passwordController.text);
     vendorsByEmailPassword.fold((left) {
-      print(left);
+      Get.snackbar(left, left);
       isLoadingLogin.value = false;
       isLoading.value = false;
     }, (right) {
@@ -116,7 +120,7 @@ class LoginPageController extends GetxController {
         }
       } else {
         usersByEmailPassword.fold((left) {
-          print(left);
+          Get.snackbar(left, left);
           isLoading.value = false;
         }, (right) {
           if (right.isNotEmpty) {

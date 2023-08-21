@@ -1,16 +1,16 @@
 import '../../user_flower_cart/models/cart_flower_view_model.dart';
 
-
 class PurchaseDto {
   List<CartFlowerViewModel> purchaseList;
   final String date;
-  final int userId;
+  final String userName;
+  final String userLastName;
 
-  PurchaseDto({
-    required this.purchaseList,
-    required this.date,
-    required this.userId
-  });
+  PurchaseDto(
+      {required this.purchaseList,
+      required this.date,
+      required this.userName,
+      required this.userLastName});
 
   Map<String, dynamic> toJson() {
     List<Map<String, dynamic>> flowerList = [];
@@ -20,7 +20,8 @@ class PurchaseDto {
     return {
       "purchaseList": purchaseList,
       "date": date,
-      "userId": userId
+      "userName": userName,
+      "userLastName": userLastName
     };
   }
 }

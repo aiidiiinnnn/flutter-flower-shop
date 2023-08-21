@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import 'package:flower_shop/generated/locales.g.dart' as locale;
+import 'package:flower_shop/src/pages/vendor/edit_vendor_flower/view/widget/custom_edit_form_field.dart';
+import 'package:flower_shop/src/pages/vendor/edit_vendor_flower/view/widget/number_edit_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:get/get.dart';
 
-import '../../add_vendor_flower/view/widget/custom_add_form_field.dart';
 import '../controller/edit_vendor_flower_controller.dart';
 
 class EditVendorFlower extends GetView<EditVendorFlowerController> {
@@ -162,14 +163,15 @@ class EditVendorFlower extends GetView<EditVendorFlowerController> {
                           key: controller.formKey,
                           child: Column(
                             children: [
-                              CustomAddFormField(
+                              CustomEditFormField(
                                 hintText: locale.LocaleKeys.vendor_name.tr,
                                 name: locale.LocaleKeys.vendor_name.tr,
                                 controller: controller.nameController,
                                 validator: controller.nameValidator,
                                 icon: Icons.spa_outlined,
+                                maxLength: 15,
                               ),
-                              CustomAddFormField(
+                              CustomEditFormField(
                                 hintText:
                                     locale.LocaleKeys.vendor_add_description.tr,
                                 name:
@@ -177,15 +179,16 @@ class EditVendorFlower extends GetView<EditVendorFlowerController> {
                                 controller: controller.descriptionController,
                                 validator: controller.descriptionValidator,
                                 icon: Icons.description_outlined,
+                                maxLength: 240,
                               ),
-                              CustomAddFormField(
+                              NumberEditFormField(
                                 hintText: locale.LocaleKeys.vendor_price.tr,
                                 name: locale.LocaleKeys.vendor_price.tr,
                                 controller: controller.priceController,
                                 validator: controller.priceValidator,
                                 icon: Icons.attach_money_outlined,
                               ),
-                              CustomAddFormField(
+                              NumberEditFormField(
                                 hintText: locale.LocaleKeys.vendor_count.tr,
                                 name: locale.LocaleKeys.vendor_count.tr,
                                 controller: controller.countController,
@@ -242,6 +245,7 @@ class EditVendorFlower extends GetView<EditVendorFlowerController> {
                                           onTap: () {
                                             controller.addCategory(
                                                 textEditingController.text);
+                                            controller.focusNode.unfocus();
                                             textEditingController.clear();
                                           },
                                           child: Padding(
@@ -354,8 +358,7 @@ class EditVendorFlower extends GetView<EditVendorFlowerController> {
                                       width: 50,
                                       child: LinearProgressIndicator()),
                                 )
-                              : Text(locale.LocaleKeys
-                                  .add_vendor_flower_card_color_picker.tr)),
+                              : Text(locale.LocaleKeys.vendor_color_picker.tr)),
                         ),
                       ),
                       Obx(() => (controller.colors.isNotEmpty)
@@ -402,8 +405,7 @@ class EditVendorFlower extends GetView<EditVendorFlowerController> {
                                             width: 50,
                                             child: LinearProgressIndicator()),
                                       )
-                                    : Text(locale.LocaleKeys
-                                        .add_vendor_flower_card_submit.tr),
+                                    : Text(locale.LocaleKeys.vendor_submit.tr),
                               )),
                         ),
                       ),
@@ -418,8 +420,7 @@ class EditVendorFlower extends GetView<EditVendorFlowerController> {
     showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-              title: Text(
-                  locale.LocaleKeys.add_vendor_flower_card_pick_a_color.tr),
+              title: Text(locale.LocaleKeys.vendor_pick_a_color.tr),
               content: SingleChildScrollView(
                 child: ColorPicker(
                   pickerColor: controller.pickerColor,
@@ -430,8 +431,7 @@ class EditVendorFlower extends GetView<EditVendorFlowerController> {
               ),
               actions: [
                 ElevatedButton(
-                  child:
-                      Text(locale.LocaleKeys.add_vendor_flower_card_got_it.tr),
+                  child: Text(locale.LocaleKeys.vendor_got_it.tr),
                   onPressed: () {
                     controller.addColor(controller.currentColor);
                     Navigator.of(context).pop();

@@ -39,6 +39,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: ^4.6.5
   shared_preferences: ^2.2.0
+  taav_ui:
+    version: ^0.2.77
+    hosted:
+      name: taav_ui
+      url: https://unpub.taavserver.ir:4001
 
 dev_dependencies:
   flutter_test:

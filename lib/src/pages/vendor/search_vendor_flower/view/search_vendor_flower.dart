@@ -15,90 +15,10 @@ class SearchVendorFlower extends GetView<SearchVendorFlowerController> {
     return SafeArea(
         child: Scaffold(
       backgroundColor: const Color(0xfff3f7f7),
-      appBar: AppBar(
-        backgroundColor: const Color(0xfff3f7f7),
-        title: Text(
-          locale.LocaleKeys.vendor_search_page.tr,
-          style: const TextStyle(
-              color: Color(0xff050a0a),
-              fontWeight: FontWeight.w600,
-              fontSize: 22),
-        ),
-        iconTheme: const IconThemeData(
-          color: Color(0xff050a0a),
-          weight: 2,
-        ),
-      ),
+      appBar: appBar(),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Form(
-                  key: controller.searchKey,
-                  child: SizedBox(
-                    width: 300,
-                    height: 50,
-                    child: TextFormField(
-                      enableSuggestions: false,
-                      onChanged: (text) => {
-                        if (controller.deBouncer?.isActive ?? false)
-                          controller.deBouncer?.cancel(),
-                        controller.deBouncer =
-                            Timer(const Duration(milliseconds: 2000), () {
-                          text = controller.searchController.text.toLowerCase();
-                          controller.searchFlowers(text);
-                        })
-                      },
-                      style: const TextStyle(color: Color(0xff050a0a)),
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.search_outlined),
-                        enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff050a0a))),
-                        focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff050a0a))),
-                        labelText: locale.LocaleKeys.vendor_search.tr,
-                        labelStyle: const TextStyle(color: Color(0xff050a0a)),
-                      ),
-                      controller: controller.searchController,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: Obx(
-                      () => (controller.isLoading.value)
-                          ? const ElevatedButton(
-                              onPressed: null,
-                              child: Center(
-                                  child: Icon(Icons.tune_outlined, size: 17)),
-                            )
-                          : (controller.isFilterDisable.value)
-                              ? const ElevatedButton(
-                                  onPressed: null,
-                                  child: Center(
-                                      child:
-                                          Icon(Icons.tune_outlined, size: 17)),
-                                )
-                              : ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xff71cc47),
-                                  ),
-                                  onPressed: () {
-                                    controller.onTapFilter();
-                                    flowerShowDialog(context);
-                                  },
-                                  child: const Center(
-                                      child:
-                                          Icon(Icons.tune_outlined, size: 17)),
-                                ),
-                    )),
-              ],
-            ),
-          ),
+          searchBar(context),
           Expanded(
             child: Obx(
               () => RefreshIndicator(
@@ -110,6 +30,100 @@ class SearchVendorFlower extends GetView<SearchVendorFlowerController> {
         ],
       ),
     ));
+  }
+
+  AppBar appBar() {
+    return AppBar(
+      backgroundColor: const Color(0xfff3f7f7),
+      title: Text(
+        locale.LocaleKeys.vendor_search_page.tr,
+        style: const TextStyle(
+            color: Color(0xff050a0a),
+            fontWeight: FontWeight.w600,
+            fontSize: 22),
+      ),
+      iconTheme: const IconThemeData(
+        color: Color(0xff050a0a),
+        weight: 2,
+      ),
+    );
+  }
+
+  Padding searchBar(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          searchTextFormField(),
+          filterButton(context),
+        ],
+      ),
+    );
+  }
+
+  SizedBox filterButton(BuildContext context) {
+    return SizedBox(
+        width: 50,
+        height: 50,
+        child: Obx(
+          () => (controller.isLoading.value)
+              ? const ElevatedButton(
+                  onPressed: null,
+                  child: Center(child: Icon(Icons.tune_outlined, size: 17)),
+                )
+              : (controller.categoryList.isEmpty ||
+                      controller.colorsFromJson.isEmpty ||
+                      controller.priceList.isEmpty)
+                  ? const ElevatedButton(
+                      onPressed: null,
+                      child: Center(child: Icon(Icons.tune_outlined, size: 17)),
+                    )
+                  : ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xff71cc47),
+                      ),
+                      onPressed: () {
+                        controller.onTapFilter();
+                        flowerShowDialog(context);
+                      },
+                      child: const Center(
+                          child: Icon(Icons.tune_outlined, size: 17)),
+                    ),
+        ));
+  }
+
+  Form searchTextFormField() {
+    return Form(
+      key: controller.searchKey,
+      child: SizedBox(
+        width: 300,
+        height: 50,
+        child: TextFormField(
+          enableSuggestions: false,
+          onChanged: (text) => {
+            if (controller.deBouncer?.isActive ?? false)
+              controller.deBouncer?.cancel(),
+            controller.deBouncer =
+                Timer(const Duration(milliseconds: 2000), () {
+              text = controller.searchController.text.toLowerCase();
+              controller.searchFlowers(text);
+            })
+          },
+          style: const TextStyle(color: Color(0xff050a0a)),
+          decoration: InputDecoration(
+            prefixIcon: const Icon(Icons.search_outlined),
+            enabledBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0xff050a0a))),
+            focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0xff050a0a))),
+            labelText: locale.LocaleKeys.vendor_search.tr,
+            labelStyle: const TextStyle(color: Color(0xff050a0a)),
+          ),
+          controller: controller.searchController,
+        ),
+      ),
+    );
   }
 
   Widget _pageContent() {

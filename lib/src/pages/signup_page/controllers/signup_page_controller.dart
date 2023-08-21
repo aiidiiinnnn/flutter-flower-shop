@@ -90,8 +90,6 @@ class SignupPageController extends GetxController {
       String base64String = base64.encode(bytes);
       savedImage.value = base64String;
       update();
-    } else {
-      print('No image selected.');
     }
   }
 
@@ -107,8 +105,6 @@ class SignupPageController extends GetxController {
       String base64String = base64.encode(bytes);
       savedImage.value = base64String;
       update();
-    } else {
-      print('No image selected.');
     }
   }
 
@@ -133,7 +129,7 @@ class SignupPageController extends GetxController {
         await _repository.addVendor(dto);
     request.fold((left) {
       isLoadingSignup.value = false;
-      print(left);
+      Get.snackbar(left, left);
     }, (right) {
       isLoadingSignup.value = false;
       Get.back(result: {
@@ -164,7 +160,7 @@ class SignupPageController extends GetxController {
         await _repository.addUser(dto);
     request.fold((left) {
       isLoadingSignup.value = false;
-      print(left);
+      Get.snackbar(left, left);
     }, (right) {
       isLoadingSignup.value = false;
       Get.back(result: {

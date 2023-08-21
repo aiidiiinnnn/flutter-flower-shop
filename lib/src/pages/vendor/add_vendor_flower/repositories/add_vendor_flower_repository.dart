@@ -94,6 +94,27 @@ class AddVendorFlowerRepository{
     }
   }
 
+  Future<Either<String,List<CategoriesViewModel>>> getCategoriesAutoComplete(String filter) async{
+    final url = Uri.http(RepositoryUrls.fullBaseUrl, 'categories',{
+    'name_like': filter,
+    },);
+    final response = await http.get(url,headers: customHeaders);
+
+    if(response.statusCode >= 200 && response.statusCode <400){
+      final List<CategoriesViewModel> categoriesList =[];
+      final List<dynamic> categories = json.decode(response.body);
+
+      for(final items in categories){
+        final userFlowerViewModel = CategoriesViewModel.fromJson(items);
+        categoriesList.add(userFlowerViewModel);
+      }
+      return Right(categoriesList);
+    }
+    else{
+      return Left("Error: ${response.statusCode}");
+    }
+  }
+
   Future<Either<String, ColorsViewModel>> addColors(ColorsDto dto) async{
     final url = Uri.http(RepositoryUrls.fullBaseUrl, 'colors');
     final request = await http.post(url,body: json.encode(dto.toJson()),headers: customHeaders);

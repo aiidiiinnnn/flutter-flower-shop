@@ -1,14 +1,22 @@
-import 'package:flutter/material.dart';
 import 'dart:core';
 
+import 'package:flutter/material.dart';
+
 class CustomEditFormField extends StatelessWidget {
-  const CustomEditFormField({super.key, required this.hintText,required this.name, required this.controller, required this.validator,required this.icon});
+  const CustomEditFormField(
+      {super.key,
+      required this.hintText,
+      required this.name,
+      required this.controller,
+      required this.validator,
+      this.maxLength,
+      required this.icon});
   final String hintText;
   final String name;
   final TextEditingController controller;
   final String? Function(String?) validator;
   final IconData icon;
-
+  final int? maxLength;
 
   @override
   Widget build(BuildContext context) {
@@ -20,17 +28,15 @@ class CustomEditFormField extends StatelessWidget {
           decoration: InputDecoration(
             prefixIcon: Icon(icon),
             enabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Color(0xff050a0a))
-            ),
+                borderSide: BorderSide(color: Color(0xff050a0a))),
             focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Color(0xff050a0a))
-            ),
+                borderSide: BorderSide(color: Color(0xff050a0a))),
             labelText: name,
             labelStyle: const TextStyle(color: Color(0xff050a0a)),
           ),
           validator: validator,
           controller: controller,
-        )
-    );
+          maxLength: maxLength,
+        ));
   }
 }

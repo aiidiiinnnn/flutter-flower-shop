@@ -32,48 +32,86 @@ class ImageProfilePicture extends GetView<SignupPageController> {
   Padding deleteImage(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      child: InkWell(
-          splashColor: Colors.blue,
-          customBorder: const CircleBorder(),
-          onTap: () {
-            _deleteImageDialog(context);
-          },
-          child: Container(
-              width: shapeSize / 1.5,
-              height: shapeSize / 4,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black),
-                color: const Color(0xffc4c4c4),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Center(
-                child: Text(
-                  "Remove Image",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                ),
-              ))),
+      child: controller.isLoadingSignup.value
+          ? InkWell(
+              splashColor: Colors.blue,
+              customBorder: const CircleBorder(),
+              onTap: null,
+              child: Container(
+                  width: shapeSize / 1.5,
+                  height: shapeSize / 4,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    color: const Color(0xffc4c4c4),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      "Remove Image",
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                    ),
+                  )))
+          : InkWell(
+              splashColor: Colors.blue,
+              customBorder: const CircleBorder(),
+              onTap: () {
+                _deleteImageDialog(context);
+              },
+              child: Container(
+                  width: shapeSize / 1.5,
+                  height: shapeSize / 4,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    color: const Color(0xffc4c4c4),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      "Remove Image",
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                    ),
+                  ))),
     );
   }
 
   Padding editImage(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: InkWell(
-          splashColor: Colors.blue,
-          customBorder: const CircleBorder(),
-          onTap: () {
-            _showImagePicker(context);
-          },
-          child: Container(
-              width: shapeSize / 1.5,
-              height: shapeSize / 4,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black),
-                color: const Color(0xffc4c4c4),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Icon(Icons.add_a_photo_outlined, size: shapeSize / 5))),
-    );
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Obx(
+          () => controller.isLoadingSignup.value
+              ? InkWell(
+                  splashColor: Colors.blue,
+                  customBorder: const CircleBorder(),
+                  onTap: null,
+                  child: Container(
+                      width: shapeSize / 1.5,
+                      height: shapeSize / 4,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                        color: const Color(0xffc4c4c4),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(Icons.add_a_photo_outlined,
+                          size: shapeSize / 5)))
+              : InkWell(
+                  splashColor: Colors.blue,
+                  customBorder: const CircleBorder(),
+                  onTap: () {
+                    _showImagePicker(context);
+                  },
+                  child: Container(
+                      width: shapeSize / 1.5,
+                      height: shapeSize / 4,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                        color: const Color(0xffc4c4c4),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(Icons.add_a_photo_outlined,
+                          size: shapeSize / 5))),
+        ));
   }
 
   Container image() {

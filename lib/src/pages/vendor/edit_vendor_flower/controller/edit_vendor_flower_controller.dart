@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../login_page/models/vendor_models/login_vendor_view_model.dart';
 import '../../add_vendor_flower/models/categories/categories_dto.dart';
 import '../../add_vendor_flower/models/categories/categories_view_model.dart';
 import '../../add_vendor_flower/models/colors/color_dto.dart';
@@ -32,6 +33,7 @@ class EditVendorFlowerController extends GetxController {
   RxString imagePath = ''.obs;
   RxString savedImage = ''.obs;
   int? vendorId;
+  LoginVendorViewModel? vendor;
   RxDouble space = RxDouble(30);
   RxList<CategoriesViewModel> categoriesFromJson = RxList();
   RxList<ColorsViewModel> colorsFromJson = RxList();
@@ -53,9 +55,25 @@ class EditVendorFlowerController extends GetxController {
     categoryList.value = Get.arguments['category'];
     savedImage.value = Get.arguments['imageAddress'];
     colors.value = Get.arguments['color'];
+    await getVendorById();
     await getFlowerById();
     await getCategories();
     await getColors();
+  }
+
+  Future<void> getVendorById() async {
+    isLoading.value = true;
+    isRetry.value = false;
+    final Either<String, LoginVendorViewModel> vendorById =
+        await _repository.getVendor(vendorId!);
+    vendorById.fold((left) {
+      Get.snackbar(left, left);
+      isLoading.value = false;
+      isRetry.value = true;
+    }, (vendorViewModel) {
+      vendor = vendorViewModel;
+      isLoading.value = false;
+    });
   }
 
   void deleteImage() {
@@ -75,7 +93,7 @@ class EditVendorFlowerController extends GetxController {
     final Either<String, List<CategoriesViewModel>> flower =
         await _repository.getCategories();
     flower.fold((left) {
-      print(left);
+      Get.snackbar(left, left);
       isLoading.value = false;
       isRetry.value = true;
     }, (right) {
@@ -102,12 +120,12 @@ class EditVendorFlowerController extends GetxController {
         await _repository.addCategories(categoryDto);
     categoryRequest.fold((left) {
       isLoadingCategory.value = false;
-      print(left);
+      Get.snackbar(left, left);
     }, (right) async {
       Get.snackbar('Category', 'category successfully added');
-      categoryList.add(category);
       await getCategories();
       isLoadingCategory.value = false;
+      categoryList.add(category);
     });
   }
 
@@ -122,14 +140,12 @@ class EditVendorFlowerController extends GetxController {
           return;
         } else {
           categoryList.add(selection);
-          print('You just selected $selection');
           categoryController.clear();
           focusNode.unfocus();
         }
       }
     } else {
       categoryList.add(selection);
-      print('You just selected $selection');
       categoryController.clear();
       focusNode.unfocus();
     }
@@ -142,7 +158,7 @@ class EditVendorFlowerController extends GetxController {
     final Either<String, List<ColorsViewModel>> flower =
         await _repository.getColors();
     flower.fold((left) {
-      print(left);
+      Get.snackbar(left, left);
       isLoading.value = false;
       isRetry.value = true;
     }, (right) {
@@ -167,7 +183,7 @@ class EditVendorFlowerController extends GetxController {
     final Either<String, ColorsViewModel> categoryRequest =
         await _repository.addColors(colorDto);
     categoryRequest.fold((left) {
-      print(left);
+      Get.snackbar(left, left);
     }, (right) async {
       Get.snackbar('Color', 'Color successfully added');
       pickerColor = color;
@@ -197,8 +213,6 @@ class EditVendorFlowerController extends GetxController {
       String base64String = base64.encode(bytes);
       savedImage.value = base64String;
       update();
-    } else {
-      print('No image selected.');
     }
   }
 
@@ -214,8 +228,6 @@ class EditVendorFlowerController extends GetxController {
       String base64String = base64.encode(bytes);
       savedImage.value = base64String;
       update();
-    } else {
-      print('No image selected.');
     }
   }
 
@@ -258,7 +270,7 @@ class EditVendorFlowerController extends GetxController {
     final Either<String, EditVendorFlowerViewModel> flowerById =
         await _repository.getFlowerById(_selectedFlowerId!);
     flowerById.fold((left) {
-      print(left);
+      Get.snackbar(left, left);
     }, (right) {
       nameController.text = right.name;
       descriptionController.text = right.description;
@@ -295,6 +307,8 @@ class EditVendorFlowerController extends GetxController {
         category: categoryList,
         count: int.parse(countController.text),
         id: _selectedFlowerId!,
-        vendorId: vendorId!,
+        vendorName: vendor!.firstName,
+        vendorLastName: vendor!.lastName,
+        vendorImage: vendor!.imagePath,
       );
 }

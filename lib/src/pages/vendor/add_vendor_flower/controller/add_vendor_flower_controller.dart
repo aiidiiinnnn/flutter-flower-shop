@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -10,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taav_ui/taav_ui.dart';
 
 import '../../../login_page/models/vendor_models/login_vendor_view_model.dart';
 import '../models/add_vendor/add_vendor_flower_dto.dart';
@@ -26,6 +28,7 @@ class AddVendorFlowerController extends GetxController {
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController categoryController = TextEditingController();
+  final TaavSuggestionsBoxController autoCompleteController = TaavSuggestionsBoxController();
   final FocusNode focusNode = FocusNode();
   final TextEditingController countController = TextEditingController();
   LoginVendorViewModel? vendor;
@@ -74,16 +77,15 @@ class AddVendorFlowerController extends GetxController {
           Get.snackbar('Category', "Can't add duplicate category");
           categoryController.clear();
           focusNode.unfocus();
+          return;
         } else {
           categoryList.add(selection);
-          print('You just selected $selection');
           categoryController.clear();
           focusNode.unfocus();
         }
       }
     } else {
       categoryList.add(selection);
-      print('You just selected $selection');
       categoryController.clear();
       focusNode.unfocus();
     }
@@ -113,12 +115,12 @@ class AddVendorFlowerController extends GetxController {
         await _repository.addCategories(categoryDto);
     categoryRequest.fold((left) {
       isLoadingCategory.value = false;
-      print(left);
+      Get.snackbar(left, left);
     }, (right) async {
       Get.snackbar('Category', 'category successfully added');
-      categoryList.add(category);
       await getCategories();
       isLoadingCategory.value = false;
+      categoryList.add(category);
     });
   }
 
@@ -145,7 +147,7 @@ class AddVendorFlowerController extends GetxController {
     final Either<String, ColorsViewModel> categoryRequest =
         await _repository.addColors(colorDto);
     categoryRequest.fold((left) {
-      print(left);
+      Get.snackbar(left, left);
     }, (right) async {
       Get.snackbar('Color', 'Color successfully added');
       pickerColor = color;
@@ -173,8 +175,6 @@ class AddVendorFlowerController extends GetxController {
       String base64String = base64.encode(bytes);
       savedImage.value = base64String;
       update();
-    } else {
-      print('No image selected.');
     }
   }
 
@@ -195,8 +195,6 @@ class AddVendorFlowerController extends GetxController {
       String base64String = base64.encode(bytes);
       savedImage.value = base64String;
       update();
-    } else {
-      print('No image selected.');
     }
   }
 
@@ -238,7 +236,7 @@ class AddVendorFlowerController extends GetxController {
     final Either<String, LoginVendorViewModel> vendorById =
         await _repository.getVendor(vendorId!);
     vendorById.fold((left) {
-      print(left);
+      Get.snackbar(left, left);
       isLoading.value = false;
       isRetry.value = true;
     }, (vendorViewModel) {
@@ -253,18 +251,21 @@ class AddVendorFlowerController extends GetxController {
     }
     isLoadingSubmit.value = true;
     final dto = AddVendorFlowerDto(
-        name: nameController.text,
-        description: descriptionController.text,
-        price: int.parse(priceController.text),
-        color: colors,
-        imageAddress: savedImage.value,
-        count: int.parse(countController.text),
-        category: categoryList,
-        vendorId: vendorId!);
+      name: nameController.text,
+      description: descriptionController.text,
+      price: int.parse(priceController.text),
+      color: colors,
+      imageAddress: savedImage.value,
+      count: int.parse(countController.text),
+      category: categoryList,
+      vendorName: vendor!.firstName,
+      vendorLastName: vendor!.lastName,
+      vendorImage: vendor!.imagePath,
+    );
     final Either<String, AddVendorFlowerViewModel> request =
         await _repository.addVendorFlower(dto);
     request.fold((left) {
-      print(left);
+      Get.snackbar(left, left);
       isLoadingSubmit.value = false;
     }, (right) async {
       vendor!.vendorFlowerList.add(right.id);
@@ -292,7 +293,9 @@ class AddVendorFlowerController extends GetxController {
           "imageAddress": right.imageAddress,
           "count": right.count,
           "category": right.category,
-          "vendorId": right.vendorId
+          "vendorName": right.vendorName,
+          "vendorLastName": right.vendorLastName,
+          "vendorImage": right.vendorImage
         });
       });
     });
@@ -305,13 +308,52 @@ class AddVendorFlowerController extends GetxController {
     final Either<String, List<CategoriesViewModel>> flower =
         await _repository.getCategories();
     flower.fold((left) {
-      print(left);
+      Get.snackbar(left, left);
       isLoading.value = false;
       isRetry.value = true;
     }, (right) {
       categoriesFromJson.addAll(right);
       isLoading.value = false;
     });
+  }
+
+  // FutureOr<List<CategoriesViewModel>> _autoCompleteProvider(final String filter) async {
+  //   final Response<List<dynamic>> response = await Dio().get(
+  //     'http://5d85ccfb1e61af001471bf60.mockapi.io/user',
+  //     queryParameters: {
+  //       'filter': filter,
+  //       'page': '1',
+  //       'limit': '4',
+  //     },
+  //   );
+  //
+  //   return response.data!
+  //       .map((final e) {
+  //     Logger.log(e);
+  //     return UserModel.fromJson(e as Map<String, dynamic>);
+  //   })
+  //       .toList();
+  // }
+
+  FutureOr<List<CategoriesViewModel>> autoCompleteCategories(final String filter) async {
+    categoriesFromJson.clear();
+    isLoading.value = true;
+    isRetry.value = false;
+    if(filter.trim().isNotEmpty){
+      final Either<String, List<CategoriesViewModel>> flower =
+      await _repository.getCategoriesAutoComplete(filter);
+      return flower.fold((left) {
+        Get.snackbar(left, left);
+        isLoading.value = false;
+        isRetry.value = true;
+        return [];
+      }, (right) {
+        categoriesFromJson.addAll(right);
+        isLoading.value = false;
+        return categoriesFromJson.toList();
+      });
+    }
+    return [];
   }
 
   Future<void> getColors() async {
@@ -321,7 +363,7 @@ class AddVendorFlowerController extends GetxController {
     final Either<String, List<ColorsViewModel>> flower =
         await _repository.getColors();
     flower.fold((left) {
-      print(left);
+      Get.snackbar(left, left);
       isLoading.value = false;
       isRetry.value = true;
     }, (right) {
