@@ -3,6 +3,7 @@ import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/ven
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:taav_ui/taav_ui.dart';
 
 import '../controller/vendor_flower_list_controller.dart';
 
@@ -21,14 +22,35 @@ class VendorFlowerList extends GetView<VendorFlowerListController> {
             bottomNavigationBar: bottomNavigation()));
   }
 
-  FloatingActionButton floatingAction() {
-    return FloatingActionButton(
+  TaavFloatingActionButtonMenu floatingAction() {
+    return TaavFloatingActionButtonMenu(
+      direction: AxisDirection.up,
       backgroundColor: const Color(0xff6cba00),
-      onPressed: () => {
-        controller.goToAdd(),
-      },
-      child: const Icon(Icons.add, size: 40),
+      buttonCustomChild: const Center(
+        child: Icon(Icons.add, size: 40)
+      ),
+      activeButtonCustomChild: const Center(
+        child:  Icon(Icons.close, size: 35)
+      ),
+      useRotationAnimation: false,
+      items: [
+        TaavFloatingActionButtonMenuItem(
+          icon: Icons.spa_outlined,
+          onTap: () => controller.goToAdd(),
+          backgroundColor: TaavColors.red,
+        ),
+        TaavFloatingActionButtonMenuItem(
+          icon: Icons.search_outlined,
+          onTap: () => controller.goToSearch(),
+          backgroundColor: TaavColors.blue,
+        ),
+        TaavFloatingActionButtonMenuItem(
+          icon: Icons.history_outlined,
+          onTap: () => controller.goToHistory(),
+        ),
+      ],
     );
+
   }
 
   Obx pageContent() {

@@ -5,6 +5,7 @@ import 'package:flower_shop/src/pages/vendor/vendor_flower_list/repositories/ven
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taav_ui/taav_ui.dart';
 
 import '../../../../../flower_shop.dart';
 import '../../../login_page/models/vendor_models/login_vendor_dto.dart';
@@ -251,7 +252,7 @@ class VendorFlowerListController extends GetxController {
       }, (right) {
         isLoadingDelete.value = "";
         disableLoading.value = false;
-        Get.snackbar('Deleted', "Item has been deleted successfully");
+        TaavToastManager().showToast("Item has been deleted successfully", status: TaavWidgetStatus.success);
       });
     } else {
       Get.snackbar('Error', result);

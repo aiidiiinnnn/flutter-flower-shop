@@ -2,6 +2,7 @@ import 'package:either_dart/either.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/models/vendor_flower_dto.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taav_ui/taav_ui.dart';
 
 import '../../../login_page/models/user_models/login_user_dto.dart';
 import '../../../login_page/models/user_models/login_user_view_model.dart';
@@ -112,7 +113,7 @@ class UserFlowerCartController extends GetxController {
       );
       user = editedUser;
       cartFlowerList.remove(flower);
-      Get.snackbar('Deleted', "flower successfully deleted from shopping cart");
+      TaavToastManager().showToast("Flower successfully deleted from shopping cart", status: TaavWidgetStatus.success);
       totalPrice.value = totalPrice.value - (flower.count * flower.price);
       formatPrice("${totalPrice.value}");
       disableLoading.value = false;

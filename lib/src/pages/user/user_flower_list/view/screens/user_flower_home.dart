@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flower_shop/generated/locales.g.dart' as locale;
 import 'package:flower_shop/src/pages/user/user_flower_list/view/widget/user_flower_card.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +21,7 @@ class UserFlowerHome extends GetView<UserFlowerListController> {
       body: Obx(
         () => RefreshIndicator(
           onRefresh: controller.getUserById,
-          child: _pageContent(),
+          child: _pageContent(context),
         ),
       ),
     ));
@@ -273,7 +272,7 @@ class UserFlowerHome extends GetView<UserFlowerListController> {
     );
   }
 
-  Widget _pageContent() {
+  Widget _pageContent(BuildContext context) {
     if (controller.isLoading.value) {
       return const Center(child:
       CircularProgressIndicator()
@@ -293,7 +292,7 @@ class UserFlowerHome extends GetView<UserFlowerListController> {
         ),
       );
     }
-    return _userFlower();
+    return _userFlower(context);
   }
 
   Widget _retryButton() => Center(
@@ -302,8 +301,29 @@ class UserFlowerHome extends GetView<UserFlowerListController> {
             child: const Icon(Icons.keyboard_return_outlined)),
       );
 
-  Widget _userFlower() => Obx(() => ListView.builder(
-      itemCount: controller.flowersList.length,
-      itemBuilder: (_, index) => UserFlowerCard(
-          userFlower: controller.flowersList[index], index: index)));
+  Widget _userFlower(BuildContext context) =>
+      Obx(() => SizedBox(
+        height: MediaQuery.of(context).size.height,
+        child: TaavCarouselSlider.builder(
+          itemCount: controller.flowersList.length,
+            options: CarouselOptions(
+              enlargeCenterPage: true,
+              aspectRatio: 2,
+              scrollDirection: Axis.vertical,
+              // autoPlay: true,
+              // pauseAutoPlayOnManualNavigate: true,
+            ),
+          itemBuilder: (
+              final context,
+              final itemIndex,
+              final pageViewIndex,
+              ) =>
+              UserFlowerCard(
+                  userFlower: controller.flowersList[itemIndex], index: itemIndex)
+        ),
+      ),);
+      // Obx(() => ListView.builder(
+      // itemCount: controller.flowersList.length,
+      // itemBuilder: (_, index) => UserFlowerCard(
+      //     userFlower: controller.flowersList[index], index: index))
 }

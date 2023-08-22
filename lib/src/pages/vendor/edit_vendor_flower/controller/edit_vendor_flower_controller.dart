@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taav_ui/taav_ui.dart';
 
 import '../../../login_page/models/vendor_models/login_vendor_view_model.dart';
 import '../../add_vendor_flower/models/categories/categories_dto.dart';
@@ -104,7 +105,7 @@ class EditVendorFlowerController extends GetxController {
 
   Future<void> addCategory(String category) async {
     if (category.isEmpty) {
-      Get.snackbar('Category', "Can't add empty category");
+      TaavToastManager().showToast("Can't add empty category", status: TaavWidgetStatus.warning);
       return;
     }
     for (final categoryName in categoriesFromJson) {
@@ -122,7 +123,7 @@ class EditVendorFlowerController extends GetxController {
       isLoadingCategory.value = false;
       Get.snackbar(left, left);
     }, (right) async {
-      Get.snackbar('Category', 'category successfully added');
+      TaavToastManager().showToast('category successfully added', status: TaavWidgetStatus.success);
       await getCategories();
       isLoadingCategory.value = false;
       categoryList.add(category);
@@ -134,7 +135,7 @@ class EditVendorFlowerController extends GetxController {
       for (final categoryName in categoryList) {
         if (categoryName.toLowerCase().trim() ==
             selection.toLowerCase().trim()) {
-          Get.snackbar('Category', "Can't add duplicate category");
+          TaavToastManager().showToast("Can't add duplicate category", status: TaavWidgetStatus.warning);
           categoryController.clear();
           focusNode.unfocus();
           return;
@@ -185,7 +186,7 @@ class EditVendorFlowerController extends GetxController {
     categoryRequest.fold((left) {
       Get.snackbar(left, left);
     }, (right) async {
-      Get.snackbar('Color', 'Color successfully added');
+      TaavToastManager().showToast('Color successfully added', status: TaavWidgetStatus.success);
       pickerColor = color;
       colors.add(pickerColor.value);
       await getColors();

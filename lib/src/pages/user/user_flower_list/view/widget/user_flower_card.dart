@@ -27,7 +27,7 @@ class UserFlowerCard extends GetView<UserFlowerListController> {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Container(
-        height: 570,
+        height: 600,
         decoration: BoxDecoration(
             color: const Color(0xffe9e9e9),
             boxShadow: [
@@ -44,7 +44,7 @@ class UserFlowerCard extends GetView<UserFlowerListController> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                  height: 300,
+                  height: 210,
                   width: 340,
                   decoration: BoxDecoration(
                       color: Colors.white,

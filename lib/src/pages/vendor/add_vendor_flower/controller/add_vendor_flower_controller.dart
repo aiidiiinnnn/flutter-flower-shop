@@ -74,7 +74,7 @@ class AddVendorFlowerController extends GetxController {
       for (final categoryName in categoryList) {
         if (categoryName.toLowerCase().trim() ==
             selection.toLowerCase().trim()) {
-          Get.snackbar('Category', "Can't add duplicate category");
+          TaavToastManager().showToast("Can't add duplicate category", status: TaavWidgetStatus.warning);
           categoryController.clear();
           focusNode.unfocus();
           return;
@@ -93,12 +93,12 @@ class AddVendorFlowerController extends GetxController {
 
   Future<void> addCategory(String category) async {
     if (category.isEmpty) {
-      Get.snackbar('Category', "Can't add empty category");
+      TaavToastManager().showToast("Can't add empty category", status: TaavWidgetStatus.warning);
       return;
     }
     for (final categoryName in categoryList) {
       if (categoryName.toLowerCase().trim() == category.toLowerCase().trim()) {
-        Get.snackbar('Category', "Can't add duplicate category");
+        TaavToastManager().showToast("Can't add duplicate category", status: TaavWidgetStatus.warning);
         return;
       }
     }
@@ -117,7 +117,7 @@ class AddVendorFlowerController extends GetxController {
       isLoadingCategory.value = false;
       Get.snackbar(left, left);
     }, (right) async {
-      Get.snackbar('Category', 'category successfully added');
+      TaavToastManager().showToast('category successfully added', status: TaavWidgetStatus.success);
       await getCategories();
       isLoadingCategory.value = false;
       categoryList.add(category);
@@ -149,7 +149,7 @@ class AddVendorFlowerController extends GetxController {
     categoryRequest.fold((left) {
       Get.snackbar(left, left);
     }, (right) async {
-      Get.snackbar('Color', 'Color successfully added');
+      TaavToastManager().showToast('Color successfully added', status: TaavWidgetStatus.success);
       pickerColor = color;
       colorList.add(pickerColor);
       colors.add(pickerColor.value);

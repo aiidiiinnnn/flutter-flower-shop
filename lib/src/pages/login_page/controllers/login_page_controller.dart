@@ -1,8 +1,11 @@
+import 'dart:core';
+
 import 'package:either_dart/either.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taav_ui/taav_ui.dart';
 
 import '../../../../flower_shop.dart';
 import '../models/user_models/login_user_view_model.dart';
@@ -20,6 +23,7 @@ class LoginPageController extends GetxController {
   final TextEditingController passwordController = TextEditingController();
   String chosenRole = "";
   RxBool isLoadingLogin = false.obs;
+  RxBool switchValue = false.obs;
 
   String? emailValidator(final String? email) {
     if (email == null || email.isEmpty) {
@@ -87,12 +91,13 @@ class LoginPageController extends GetxController {
     }
   }
 
-  Future<void> login() async {
+  Future<void> login(bool value) async {
     if (!formKey.currentState!.validate()) {
       return;
     }
     isLoadingLogin.value = true;
     isLoading.value = true;
+    switchValue.value = value;
     final Either<String, List<LoginVendorViewModel>> vendorsByEmailPassword =
         await _repository.getVendorByEmailPassword(
             email: emailController.text, password: passwordController.text);
@@ -138,7 +143,8 @@ class LoginPageController extends GetxController {
               }
             }
           } else {
-            Get.snackbar('Wrong', 'Email or password is wrong');
+            switchValue.value = !value;
+            TaavToastManager().showToast('Email or password is wrong', status: TaavWidgetStatus.danger);
           }
           isLoadingLogin.value = false;
           isLoading.value = false;

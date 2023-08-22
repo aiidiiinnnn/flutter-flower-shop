@@ -186,12 +186,12 @@ class AddVendorFlower extends GetView<AddVendorFlowerController> {
                     ),
                     onSubmitted: (String? selection) {
                       if (controller.categoryController.text.isEmpty) {
-                        Get.snackbar('Category', "Can't add empty category");
+                        TaavToastManager().showToast("Can't add empty category", status: TaavWidgetStatus.warning);
                         return;
                       }
                       for (final categoryName in controller.categoryList) {
                         if (categoryName.toLowerCase().trim() == controller.categoryController.text.toLowerCase().trim()) {
-                          Get.snackbar('Category', "Can't add duplicate category");
+                          TaavToastManager().showToast("Can't add duplicate category", status: TaavWidgetStatus.warning);
                           return;
                         }
                       }

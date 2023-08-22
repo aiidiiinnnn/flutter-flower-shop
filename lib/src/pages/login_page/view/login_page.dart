@@ -3,6 +3,7 @@ import 'package:flower_shop/src/pages/login_page/view/widget/login_password_form
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flower_shop/generated/locales.g.dart' as locale;
+import 'package:taav_ui/taav_ui.dart';
 import '../controllers/login_page_controller.dart';
 
 class LoginPage extends GetView<LoginPageController> {
@@ -111,24 +112,53 @@ class LoginPage extends GetView<LoginPageController> {
 
   Widget loginButton() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-        child: SizedBox(
-          width: double.infinity,
-          height: 40,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xff6cba00),
-            ),
-            onPressed: controller.login,
-            child: Obx(
-              () => (controller.isLoadingLogin.value)
-                  ? const Center(
-                      child:
-                          SizedBox(width: 50, child: LinearProgressIndicator()),
-                    )
-                  : const Text("Login"),
-            ),
-          ),
-        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Obx(() => TaavCupertinoSwitch(
+              isDisabled: controller.isLoadingLogin.value ? true : false,
+              onChanged: (final value) => {
+                controller.login(value),
+              },
+              value: controller.switchValue.value,
+              activeThumbColor: const Color(0xff4a8000),
+              activeTrackColor: const Color(0xff6cba00),
+              inactiveThumbColor: const Color(0xff4a8000),
+              inactiveTrackColor: const Color(0xff7fdb00),
+              switchWidth: 200,
+              switchChild: FittedBox(
+                child: (controller.isLoadingLogin.value)
+                    ? const Center(
+                  child:
+                  SizedBox(width: 70, child: LinearProgressIndicator()),
+                )
+                    : const Text("Login",style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white
+                ),),
+              ),
+              fillParent: true,
+            ),),
+          ],
+        )
+        // child: SizedBox(
+        //   width: double.infinity,
+        //   height: 40,
+        //   child: ElevatedButton(
+        //     style: ElevatedButton.styleFrom(
+        //       backgroundColor: const Color(0xff6cba00),
+        //     ),
+        //     onPressed: controller.login,
+        //     child: Obx(
+        //       () => (controller.isLoadingLogin.value)
+        //           ? const Center(
+        //               child:
+        //                   SizedBox(width: 50, child: LinearProgressIndicator()),
+        //             )
+        //           : const Text("Login"),
+        //     ),
+        //   ),
+        // ),
       );
 
   Widget signupPrompt() => Row(
