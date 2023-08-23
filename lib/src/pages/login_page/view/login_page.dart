@@ -141,24 +141,6 @@ class LoginPage extends GetView<LoginPageController> {
             ),),
           ],
         )
-        // child: SizedBox(
-        //   width: double.infinity,
-        //   height: 40,
-        //   child: ElevatedButton(
-        //     style: ElevatedButton.styleFrom(
-        //       backgroundColor: const Color(0xff6cba00),
-        //     ),
-        //     onPressed: controller.login,
-        //     child: Obx(
-        //       () => (controller.isLoadingLogin.value)
-        //           ? const Center(
-        //               child:
-        //                   SizedBox(width: 50, child: LinearProgressIndicator()),
-        //             )
-        //           : const Text("Login"),
-        //     ),
-        //   ),
-        // ),
       );
 
   Widget signupPrompt() => Row(

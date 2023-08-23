@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:flower_shop/generated/locales.g.dart' as locale;
+import 'package:flower_shop/src/pages/vendor/vendor_flower_list/models/vendor_flower_view_model.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/widget/vendor_flower_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:taav_ui/taav_ui.dart';
 
 import '../../controller/vendor_flower_list_controller.dart';
 
@@ -19,7 +21,8 @@ class VendorFlowerHome extends GetView<VendorFlowerListController> {
       drawer: Obx(
         () => vendorDrawer(context),
       ),
-      body: Obx(() => _pageContent()),
+      body: _vendorFlower(),
+      // body: Obx(() => _pageContent()),
     ));
   }
 
@@ -250,6 +253,23 @@ class VendorFlowerHome extends GetView<VendorFlowerListController> {
     );
   }
 
+  // Widget _pageContent() {
+  //   if (controller.vendorFlowersList.isEmpty) {
+  //     return Center(
+  //       child: Column(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           const Icon(Icons.home_outlined, size: 270),
+  //           Text(locale.LocaleKeys.vendor_there_is_no_flower_here.tr,
+  //               style:
+  //               const TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
+  //         ],
+  //       ),
+  //     );
+  //   }
+  //   return _vendorFlower();
+  // }
+
   Widget _pageContent() {
     if (controller.isLoading.value) {
       return const Center(child: CircularProgressIndicator());
@@ -277,18 +297,45 @@ class VendorFlowerHome extends GetView<VendorFlowerListController> {
             child: const Icon(Icons.refresh_outlined)),
       );
 
-  Widget _vendorFlower() => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5),
-        child: GridView.builder(
-          itemCount: controller.vendorFlowersList.length,
-          itemBuilder: (_, index) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-              child: VendorFlowerCard(
-                  vendorFlower: controller.vendorFlowersList[index],
-                  index: index)),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
+  Widget _vendorFlower() => Obx(
+    () => TaavGridView<VendorFlowerViewModel>(
+      key: controller.flowersHandler.key,
+      items: controller.flowersHandler.list,
+      crossAxisCount: const CrossAxisCount(xs: 2, lg: 4),
+      crossAxisItemSize: 200,
+      // onRefreshData: () async {
+      //   controller.flowersHandler.key.currentState!.clearAllItems();
+      //   controller.getFlowersWithHandler;
+      // },
+      onRefreshData: controller.getFlowersWithHandler,
+      onLoadMoreData: () => controller.getFlowersWithHandler(resetData: false),
+      showError: controller.flowersHandler.showError.value,
+      hasMoreData: controller.flowersHandler.hasMoreData.value,
+      itemBuilder: (
+          final context,
+          final item,
+          final index,
+          ) =>
+          VendorFlowerCard(
+              vendorFlower: item,
+              index: index
           ),
-        ),
-      );
+
+    ),
+  );
+
+  // Widget _vendorFlower() => Padding(
+  //       padding: const EdgeInsets.symmetric(vertical: 5),
+  //       child: GridView.builder(
+  //         itemCount: controller.vendorFlowersList.length,
+  //         itemBuilder: (_, index) => Padding(
+  //             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+  //             child: VendorFlowerCard(
+  //                 vendorFlower: controller.vendorFlowersList[index],
+  //                 index: index)),
+  //         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+  //           crossAxisCount: 2,
+  //         ),
+  //       ),
+  //     );
 }

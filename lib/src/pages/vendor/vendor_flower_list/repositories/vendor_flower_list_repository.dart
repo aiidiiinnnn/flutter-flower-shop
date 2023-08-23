@@ -13,10 +13,45 @@ class VendorFlowerListRepository {
   final httpClient = http.Client();
   Map<String, String> customHeaders = {"content-type": "application/json"};
 
-  Future<Either<String, List<VendorFlowerViewModel>>> getFlowerByVendorId(
-      String vendorName, String vendorLastName) async {
+  // Future<List<VendorFlowerViewModel>> getData(
+  //     String vendorName, String vendorLastName,int page) async {
+  //   final url = Uri.http(RepositoryUrls.fullBaseUrl, 'vendorFlowers',
+  //       {"vendorName": vendorName, "vendorLastName": vendorLastName,"limit":6.toString(),"offset":page.toString()});
+  //   final response = await http.get(url, headers: customHeaders);
+  //
+  //   final List<dynamic> responseData = json.decode(response.body);
+  //
+  //   return responseData
+  //       .map((final item) => VendorFlowerViewModel.fromJson(item as Map<String, dynamic>))
+  //       .toList();
+  // }
+
+  Future<Either<String, List<VendorFlowerViewModel>>> getData(
+      String vendorName, String vendorLastName,int page, int limit) async {
     final url = Uri.http(RepositoryUrls.fullBaseUrl, 'vendorFlowers',
-        {"vendorName": vendorName, "vendorLastName": vendorLastName});
+        {"vendorName": vendorName, "vendorLastName": vendorLastName, '_limit' : '$limit', '_page' : '$page'}, );
+    final response = await http.get(url, headers: customHeaders);
+
+    if (response.statusCode >= 200 && response.statusCode < 400) {
+      final List<VendorFlowerViewModel> vendorFlowers = [];
+      final List<dynamic> vendorFlowersList = json.decode(response.body);
+
+      for (final items in vendorFlowersList) {
+        final vendorFlowerViewModel = VendorFlowerViewModel.fromJson(items);
+        vendorFlowers.add(vendorFlowerViewModel);
+      }
+      return Right(vendorFlowersList
+          .map((final item) => VendorFlowerViewModel.fromJson(item as Map<String, dynamic>))
+          .toList());
+    } else {
+      return Left("Error: ${response.statusCode}");
+    }
+  }
+
+  Future<Either<String, List<VendorFlowerViewModel>>> getFlowerByVendorId(
+      String vendorName, String vendorLastName,int page) async {
+    final url = Uri.http(RepositoryUrls.fullBaseUrl, 'vendorFlowers',
+        {"vendorName": vendorName, "vendorLastName": vendorLastName,"limit":3.toString(),"offset":page.toString()});
     final response = await http.get(url, headers: customHeaders);
 
     if (response.statusCode >= 200 && response.statusCode < 400) {
@@ -32,6 +67,26 @@ class VendorFlowerListRepository {
       return Left("Error: ${response.statusCode}");
     }
   }
+
+  // Future<Either<String, List<VendorFlowerViewModel>>> getFlowerByVendorId(
+  //     String vendorName, String vendorLastName) async {
+  //   final url = Uri.http(RepositoryUrls.fullBaseUrl, 'vendorFlowers',
+  //       {"vendorName": vendorName, "vendorLastName": vendorLastName});
+  //   final response = await http.get(url, headers: customHeaders);
+  //
+  //   if (response.statusCode >= 200 && response.statusCode < 400) {
+  //     final List<VendorFlowerViewModel> vendorFlowers = [];
+  //     final List<dynamic> vendorFlowersList = json.decode(response.body);
+  //
+  //     for (final items in vendorFlowersList) {
+  //       final vendorFlowerViewModel = VendorFlowerViewModel.fromJson(items);
+  //       vendorFlowers.add(vendorFlowerViewModel);
+  //     }
+  //     return Right(vendorFlowers);
+  //   } else {
+  //     return Left("Error: ${response.statusCode}");
+  //   }
+  // }
 
   Future<Either<String, int>> vendorEditFlowerList({
     required LoginVendorDto dto,
