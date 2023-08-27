@@ -8,12 +8,34 @@ import '../../../login_page/models/vendor_models/login_vendor_dto.dart';
 import '../../../login_page/models/vendor_models/login_vendor_view_model.dart';
 import '../../add_or_edit_vendor_flower/models/categories/categories_view_model.dart';
 import '../../add_or_edit_vendor_flower/models/colors/colors_view_model.dart';
+import '../../vendor_flower_list/models/vendor_flower_view_model.dart';
 import '../models/search_vendor_flower_dto.dart';
 import '../models/search_vendor_flower_view_model.dart';
 
 class SearchVendorFlowerRepository {
   final httpClient = http.Client();
   Map<String, String> customHeaders = {"content-type": "application/json"};
+
+  Future<Either<String, List<SearchVendorFlowerViewModel>>> getData(
+      {required Map<String, String> query}) async {
+    final url = Uri.http(RepositoryUrls.fullBaseUrl, 'vendorFlowers',query);
+    final response = await http.get(url, headers: customHeaders);
+
+    if (response.statusCode >= 200 && response.statusCode < 400) {
+      final List<SearchVendorFlowerViewModel> vendorFlowers = [];
+      final List<dynamic> vendorFlowersList = json.decode(response.body);
+
+      for (final items in vendorFlowersList) {
+        final vendorFlowerViewModel = SearchVendorFlowerViewModel.fromJson(items);
+        vendorFlowers.add(vendorFlowerViewModel);
+      }
+      return Right(vendorFlowersList
+          .map((final item) => SearchVendorFlowerViewModel.fromJson(item as Map<String, dynamic>))
+          .toList());
+    } else {
+      return Left("Error: ${response.statusCode}");
+    }
+  }
 
   Future<Either<String, LoginVendorViewModel>> getVendor(int id) async {
     final url = Uri.http(RepositoryUrls.fullBaseUrl, 'vendors/$id');

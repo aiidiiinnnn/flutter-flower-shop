@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taav_ui/taav_ui.dart';
 
+import '../../../../infrastructure/utils/taav_list_handler.dart';
 import '../../../login_page/models/vendor_models/login_vendor_dto.dart';
 import '../../../login_page/models/vendor_models/login_vendor_view_model.dart';
 import '../../add_or_edit_vendor_flower/models/categories/categories_view_model.dart';
@@ -36,7 +37,11 @@ class SearchVendorFlowerController extends GetxController {
   RxBool isCheckedColor = false.obs;
   RxBool isCheckedPrice = false.obs;
   RxBool isFilterDisable = false.obs;
+
   RxList<SearchVendorFlowerViewModel> searchList = RxList();
+    TaavListViewHandler<SearchVendorFlowerViewModel> searchedFlowersHandler =
+  TaavListViewHandler(limit: 3);
+
   RxList<String> countLoading = RxList();
   RxList<bool> isOutOfStock = RxList();
   RxList<int> priceList = RxList();
@@ -51,7 +56,8 @@ class SearchVendorFlowerController extends GetxController {
     super.onInit();
     await sharedVendor().then((id) => vendorId = id);
     await getVendorById();
-    await getFlowersByVendorId();
+    await getFlowersWithHandler();
+    // await getFlowersByVendorId();
     await getCategories();
     await getColors();
   }
@@ -74,6 +80,52 @@ class SearchVendorFlowerController extends GetxController {
       vendor = vendorViewModel;
       isLoading.value = false;
     });
+  }
+
+  RxInt page = 1.obs;
+  Future<void> getFlowersWithHandler({final bool resetData = true,String? nameToSearch}) async {
+
+    Map<String, String> query = {};
+    query["vendorName"] = vendor!.firstName;
+    query["vendorLastName"] = vendor!.lastName;
+
+    if(nameToSearch.isNot_null){
+      query["name_like"] = nameToSearch!;
+    }
+    else{
+      query["name_like"] = searchController.text;
+    }
+
+    if (isCheckedCategory.value) {
+      query["category_like"] = selectedCategory.value;
+    }
+    if (isCheckedColor.value) {
+      query["color_like"] = selectedColor.value.toString();
+    }
+    if (isCheckedPrice.value) {
+      query["price_gte"] = currentRangeValues.value.start.round().toString();
+      query["price_lte"] = currentRangeValues.value.end.round().toString();
+    }
+    query["_limit"] = searchedFlowersHandler.limit.toString();
+    query["_page"] = page.value.toString();
+
+    searchedFlowersHandler.prepare(resetData: resetData);
+
+    if(resetData){
+      flowerClearValues();
+    }
+    final Either<String, List<SearchVendorFlowerViewModel>> result = await _repository
+        .getData(query: query);
+
+    result.fold((exception) {
+      Get.snackbar(exception,exception);
+      searchedFlowersHandler.onError();
+    },
+            (flowers) {
+              page.value++;
+              searchedFlowersHandler.onSuccess(items: flowers);
+              flowerSetValues(flowers);
+        });
   }
 
   Future<void> getFlowersByVendorId() async {

@@ -4,8 +4,10 @@ import 'package:flower_shop/generated/locales.g.dart' as locale;
 import 'package:flower_shop/src/pages/vendor/search_vendor_flower/view/widget/search_vendor_flower_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:taav_ui/taav_ui.dart';
 
 import '../controller/search_vendor_flower_controller.dart';
+import '../models/search_vendor_flower_view_model.dart';
 
 class SearchVendorFlower extends GetView<SearchVendorFlowerController> {
   const SearchVendorFlower({super.key});
@@ -21,10 +23,11 @@ class SearchVendorFlower extends GetView<SearchVendorFlowerController> {
           searchBar(context),
           Expanded(
             child: Obx(
-              () => RefreshIndicator(
-                onRefresh: controller.getFlowersByVendorId,
-                child: _pageContent(),
-              ),
+                ()=> _vendorFlower()
+              // () => RefreshIndicator(
+              //   onRefresh: controller.getFlowersByVendorId,
+              //   child: _pageContent(),
+              // ),
             ),
           )
         ],
@@ -105,9 +108,9 @@ class SearchVendorFlower extends GetView<SearchVendorFlowerController> {
             if (controller.deBouncer?.isActive ?? false)
               controller.deBouncer?.cancel(),
             controller.deBouncer =
-                Timer(const Duration(milliseconds: 2000), () {
+                Timer(const Duration(milliseconds: 1500), () {
               text = controller.searchController.text.toLowerCase();
-              controller.searchFlowers(text);
+              controller.getFlowersWithHandler(resetData: false,nameToSearch: text);
             })
           },
           style: const TextStyle(color: Color(0xff050a0a)),
@@ -155,11 +158,33 @@ class SearchVendorFlower extends GetView<SearchVendorFlowerController> {
 
   Widget _vendorFlower() => Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
-      child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: controller.searchList.length,
-          itemBuilder: (_, index) => SearchVendorFlowerCard(
-              vendorFlower: controller.searchList[index], index: index)));
+      child: TaavListView<SearchVendorFlowerViewModel>(
+          key: controller.searchedFlowersHandler.key,
+          items: controller.searchedFlowersHandler.list,
+          disableScrollbar: true,
+          showRefreshIndicator: false,
+          padding: EdgeInsets.zero,
+          // onRefreshData: controller.getFlowersWithHandler,
+          onLoadMoreData: () => controller.getFlowersWithHandler(resetData: false),
+          showError: controller.searchedFlowersHandler.showError.value,
+          hasMoreData: controller.searchedFlowersHandler.hasMoreData.value,
+          itemBuilder: (
+              final context,
+              final item,
+              final index,
+              ) => SearchVendorFlowerCard(
+              vendorFlower: item,
+              index: index)
+      ),
+      // child: ListView.builder(
+      //     shrinkWrap: true,
+      //     itemCount: controller.searchList.length,
+      //     itemBuilder: (_, index) => SearchVendorFlowerCard(
+      //         vendorFlower: controller.searchList[index], index: index))
+
+  );
+
+
 
   Future<dynamic> flowerShowDialog(BuildContext context) {
     return showDialog(

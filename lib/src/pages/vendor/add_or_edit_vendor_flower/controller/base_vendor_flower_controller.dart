@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+
 import 'dart:typed_data';
 
 import 'package:either_dart/either.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taav_ui/taav_ui.dart';
 
@@ -151,40 +154,23 @@ abstract class BaseVendorFlowerController extends GetxController {
   }
 
 
-  final RxList<Uint8List> _bytes = RxList();
-  RxBool loadingForNonEditor=false.obs;
-
   Future<void> imageFromCamera(BuildContext context) async {
-    loadingForNonEditor.value = true;
-    TaavImagePicker(context).fromCamera().then((final value) async {
-      _bytes
-        ..clear()
-        ..add(await value!.readAsBytes());
-      update();
-    }).catchError((final dynamic error, final StackTrace? stack) {
-      if (error is TaavFilePickerException) {
-        TaavToastManager()
-            .showToast(error.message, status: TaavWidgetStatus.warning);
-      }
-    }).whenComplete(() {
-      loadingForNonEditor.value = false;
-    });
-      // TaavImagePicker(context).fromGallerySingle().then((final value) async {
-      //   final Uint8List byte = await value!.readAsBytes();
-      // });
+      TaavImagePicker(context).fromGallerySingle().then((final value) async {
+        final Uint8List byte = await value!.readAsBytes();
+      });
 
-    // final XFile? pickedImage =
-    // await ImagePicker().pickImage(source: ImageSource.camera);
-    //
-    // if (pickedImage != null) {
-    //   imagePath.value = pickedImage.path.toString();
-    //   File imageFile = File(imagePath.value);
-    //   Uint8List bytes = await imageFile.readAsBytes();
-    //
-    //   String base64String = base64.encode(bytes);
-    //   savedImage.value = base64String;
-    //   update();
-    // }
+    final XFile? pickedImage =
+    await ImagePicker().pickImage(source: ImageSource.camera);
+
+    if (pickedImage != null) {
+      imagePath.value = pickedImage.path.toString();
+      File imageFile = File(imagePath.value);
+      Uint8List bytes = await imageFile.readAsBytes();
+
+      String base64String = base64.encode(bytes);
+      savedImage.value = base64String;
+      update();
+    }
   }
 
   void deleteImage() {
@@ -192,34 +178,19 @@ abstract class BaseVendorFlowerController extends GetxController {
     savedImage.value = "";
   }
 
-  Future<void> imageFromGallery(BuildContext context) async {
-    loadingForNonEditor.value = true;
-    TaavImagePicker(context).fromGallerySingle().then((final value) async {
-      _bytes
-        ..clear()
-        ..add(await value!.readAsBytes());
+  Future<void> imageFromGallery() async {
+    final XFile? pickedImage =
+    await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedImage != null) {
+      imagePath.value = pickedImage.path.toString();
+      File imageFile = File(imagePath.value);
+      Uint8List bytes = await imageFile.readAsBytes();
+
+      String base64String = base64.encode(bytes);
+      savedImage.value = base64String;
       update();
-    }).catchError((final dynamic error, final StackTrace? stack) {
-      if (error is TaavFilePickerException) {
-        TaavToastManager()
-            .showToast(error.message, status: TaavWidgetStatus.warning);
-      }
-    }).whenComplete(() {
-      savedImage.value = base64.encode(_bytes.first);
-      loadingForNonEditor.value = false;
-    });
-    // final XFile? pickedImage =
-    // await ImagePicker().pickImage(source: ImageSource.gallery);
-    //
-    // if (pickedImage != null) {
-    //   imagePath.value = pickedImage.path.toString();
-    //   File imageFile = File(imagePath.value);
-    //   Uint8List bytes = await imageFile.readAsBytes();
-    //
-    //   String base64String = base64.encode(bytes);
-    //   savedImage.value = base64String;
-    //   update();
-    // }
+    }
   }
 
   String? countValidator(final String? count) {

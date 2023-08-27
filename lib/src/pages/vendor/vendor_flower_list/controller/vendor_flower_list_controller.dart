@@ -105,9 +105,6 @@ class VendorFlowerListController extends GetxController {
     });
   }
 
-  RxBool showError = false.obs;
-  RxBool hasMoreData = false.obs;
-  RxString errorMessage = ''.obs;
   RxInt page = 1.obs;
 
 

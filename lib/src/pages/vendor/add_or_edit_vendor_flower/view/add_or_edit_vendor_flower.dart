@@ -528,7 +528,7 @@ class AddOrEditVendorFlower<T extends BaseVendorFlowerController> extends GetVie
                               ],
                             ),
                             onTap: () {
-                              controller.imageFromGallery(context);
+                              controller.imageFromGallery();
                               Navigator.pop(context);
                             },
                           ),
