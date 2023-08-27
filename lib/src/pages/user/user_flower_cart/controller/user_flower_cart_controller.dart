@@ -15,7 +15,6 @@ class UserFlowerCartController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isRetry = false.obs;
   RxBool isLoadingPurchase = false.obs;
-  RxBool isLoadingDelete = false.obs;
   final UserFlowerCartRepository _repository = UserFlowerCartRepository();
   LoginUserViewModel? user;
   int? userId;
@@ -24,7 +23,10 @@ class UserFlowerCartController extends GetxController {
   String? date;
   RxInt totalPrice = RxInt(0);
   RxString stringPrice = "".obs;
+
+  RxList<bool> isLoadingDelete = RxList();
   RxList<bool> countLoading = RxList();
+
   RxBool disableLoading = false.obs;
 
   @override
@@ -63,6 +65,7 @@ class UserFlowerCartController extends GetxController {
   Future<void> getUserById() async {
     cartFlowerList.clear();
     countLoading.clear();
+    isLoadingDelete.clear();
     totalPrice.value = totalPrice.value - totalPrice.value;
     formatPrice("${totalPrice.value}");
     isLoading.value = true;
@@ -80,6 +83,7 @@ class UserFlowerCartController extends GetxController {
         totalPrice.value = (cart.price * cart.count) + totalPrice.value;
         formatPrice("${totalPrice.value}");
         countLoading.add(false);
+        isLoadingDelete.add(false);
       }
       isLoading.value = false;
     });
@@ -89,6 +93,7 @@ class UserFlowerCartController extends GetxController {
       {required CartFlowerViewModel flower, required int index}) async {
     disableLoading.value = true;
     countLoading[index] = true;
+    isLoadingDelete[index] = true;
 
     user!.userFlowerList.removeAt(index);
 
@@ -106,6 +111,7 @@ class UserFlowerCartController extends GetxController {
       Get.snackbar('Exception', exception);
       disableLoading.value = false;
       countLoading[index] = false;
+      isLoadingDelete[index] = false;
     }, (right) {
       List<CartFlowerViewModel> shoppingCart = (user!.userFlowerList);
       final editedUser = user!.copyWith(
@@ -118,6 +124,7 @@ class UserFlowerCartController extends GetxController {
       formatPrice("${totalPrice.value}");
       disableLoading.value = false;
       countLoading[index] = false;
+      isLoadingDelete[index]= false;
     });
   }
 

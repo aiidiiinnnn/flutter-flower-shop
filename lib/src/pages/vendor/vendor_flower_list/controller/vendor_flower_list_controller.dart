@@ -19,7 +19,7 @@ class VendorFlowerListController extends GetxController {
       GlobalKey<TaavGridViewState<VendorFlowerViewModel>>();
 
   final VendorFlowerListRepository _repository = VendorFlowerListRepository();
-  RxList<VendorFlowerViewModel> vendorFlowersList = RxList();
+  // RxList<VendorFlowerViewModel> vendorFlowersList = RxList();
   TaavGridViewHandler<VendorFlowerViewModel> flowersHandler =
       TaavGridViewHandler(limit: 3);
   RxBool isLoading = false.obs;
@@ -33,6 +33,8 @@ class VendorFlowerListController extends GetxController {
   RxBool textFlag = true.obs;
   RxInt pageIndex = RxInt(0);
   PageController pageController = PageController();
+
+  RxInt flowerCounter = RxInt(0);
 
   void onDestinationSelected(index) {
     pageIndex.value = index;
@@ -67,7 +69,7 @@ class VendorFlowerListController extends GetxController {
     if (result != null) {
       final VendorFlowerViewModel newVendorFlower =
           VendorFlowerViewModel.fromJson(result);
-      vendorFlowersList.add(newVendorFlower);
+      flowersHandler.list.add(newVendorFlower);
       countLoading.add("");
       // disableRefresh.add(false);
       isOutOfStock.add(false);
@@ -80,7 +82,7 @@ class VendorFlowerListController extends GetxController {
   Future<void> goToSearch() async {
     await Get.toNamed(
         "${RouteNames.vendorFlowerList}${RouteNames.vendorFlowerHome}${RouteNames.searchVendorFlower}");
-    getFlowersByVendorId();
+    getFlowersWithHandler();
   }
 
   Future<void> goToHistory() async {
@@ -111,49 +113,13 @@ class VendorFlowerListController extends GetxController {
   RxInt page = 1.obs;
 
 
-  Future<void> getFlowers() async {
-    vendorFlowersList.clear();
-    isOutOfStock.clear();
-    countLoading.clear();
-
-    hasMoreData.value = true;
-    showError.value = false;
-
-    isLoading.value = true;
-    isRetry.value = false;
-    final Either<String, List<VendorFlowerViewModel>> flower = await _repository
-        .getData(vendor!.firstName, vendor!.lastName, page.value, 5);
-    flower.fold((left) {
-      Get.snackbar(left, left);
-      isRetry.value = true;
-      showError.value = true;
-    }, (right) {
-      hasMoreData.value = false;
-      // mainKey.currentState!.addAll(right);
-      page.value++;
-      vendorFlowersList.addAll(right);
-      disableLoading.value = false;
-      for (final flower in right) {
-        countLoading.add("");
-        if (flower.count == 0) {
-          isOutOfStock.add(true);
-        } else {
-          isOutOfStock.add(false);
-        }
-      }
-    });
-    isLoading.value = false;
-  }
-
   Future<void> getFlowersWithHandler({final bool resetData = true}) async {
     flowersHandler.prepare(resetData: resetData);
-
     if(resetData){
       page.value = 1;
       isOutOfStock.clear();
       countLoading.clear();
     }
-
     final Either<String, List<VendorFlowerViewModel>> result = await _repository
         .getData(vendor!.firstName, vendor!.lastName, page.value, flowersHandler.limit );
 
@@ -162,8 +128,9 @@ class VendorFlowerListController extends GetxController {
       flowersHandler.onError();
     },
         (flowers) {
-          flowersHandler.onSuccess(items: flowers);
           page.value++;
+          flowersHandler.onSuccess(items: flowers);
+
           disableLoading.value = false;
           for (final flower in flowers) {
             countLoading.add("");
@@ -176,102 +143,6 @@ class VendorFlowerListController extends GetxController {
         });
   }
 
-  // Future<void> updateList() async {
-  //   hasMoreData.value = true;
-  //   showError.value = false;
-  //   vendorFlowersList.clear();
-  //   isOutOfStock.clear();
-  //   countLoading.clear();
-  //
-  //   await _repository.getData(
-  //       vendor!.firstName, vendor!.lastName,page.value).then((final data) {
-  //     if (data.isEmpty) {
-  //       hasMoreData.value = false;
-  //     } else {
-  //       // hasMoreData.value = true;
-  //       vendorFlowersList.addAll(data);
-  //       hasMoreData.value = page.value < vendorFlowersList.length;
-  //       mainKey.currentState!.addAll(data);
-  //       page.value++;
-  //
-  //       disableLoading.value = false;
-  //       for (final flower in data) {
-  //         countLoading.add("");
-  //         if (flower.count == 0) {
-  //           isOutOfStock.add(true);
-  //         } else {
-  //           isOutOfStock.add(false);
-  //         }
-  //       }
-  //     }
-  //   }).onError((final dynamic error, final stackTrace) {
-  //     hasMoreData.value = true;
-  //     showError.value = true;
-  //     errorMessage.value = error.toString();
-  //   });
-  // }
-
-  Future<void> getFlowersByVendorId() async {
-    vendorFlowersList.clear();
-    isOutOfStock.clear();
-    countLoading.clear();
-
-    hasMoreData.value = true;
-    showError.value = false;
-
-    isLoading.value = true;
-    isRetry.value = false;
-    final Either<String, List<VendorFlowerViewModel>> flower = await _repository
-        .getFlowerByVendorId(vendor!.firstName, vendor!.lastName, page.value);
-    flower.fold((left) {
-      Get.snackbar(left, left);
-      isRetry.value = true;
-      showError.value = true;
-    }, (right) {
-      hasMoreData.value = false;
-      // mainKey.currentState!.addAll(right);
-      page.value++;
-      vendorFlowersList.addAll(right);
-      disableLoading.value = false;
-      for (final flower in right) {
-        countLoading.add("");
-        if (flower.count == 0) {
-          isOutOfStock.add(true);
-        } else {
-          isOutOfStock.add(false);
-        }
-      }
-    });
-    isLoading.value = false;
-  }
-
-  // Future<void> getFlowersByVendorId() async {
-  //   vendorFlowersList.clear();
-  //   isOutOfStock.clear();
-  //   countLoading.clear();
-  //   isLoading.value = true;
-  //   isRetry.value = false;
-  //   final Either<String, List<VendorFlowerViewModel>> flower =
-  //   await _repository.getFlowerByVendorId(
-  //       vendor!.firstName, vendor!.lastName,page.value);
-  //   flower.fold((left) {
-  //     Get.snackbar(left, left);
-  //     isRetry.value = true;
-  //   }, (right) {
-  //     vendorFlowersList.addAll(right);
-  //     disableLoading.value = false;
-  //     for (final flower in right) {
-  //       countLoading.add("");
-  //       // disableRefresh.add(false);
-  //       if (flower.count == 0) {
-  //         isOutOfStock.add(true);
-  //       } else {
-  //         isOutOfStock.add(false);
-  //       }
-  //     }
-  //   });
-  //   isLoading.value = false;
-  // }
 
   Future<void> addFlowerCount(
       {required VendorFlowerViewModel flowerToEdit, required int index}) async {
@@ -314,11 +185,11 @@ class VendorFlowerListController extends GetxController {
       );
 
   void addCount({required int index}) {
-    int editedCount = vendorFlowersList[index].count;
-    final editedFlower = vendorFlowersList[index].copyWith(
+    int editedCount = flowersHandler.list[index].count;
+    final editedFlower = flowersHandler.list[index].copyWith(
       count: editedCount++,
     );
-    vendorFlowersList[index] = editedFlower;
+    flowersHandler.list[index] = editedFlower;
   }
 
   Future<void> minusFlowerCount(
@@ -364,11 +235,11 @@ class VendorFlowerListController extends GetxController {
       );
 
   void minusCount({required int index}) {
-    int editedCount = vendorFlowersList[index].count;
-    final editedFlower = vendorFlowersList[index].copyWith(
+    int editedCount = flowersHandler.list[index].count;
+    final editedFlower = flowersHandler.list[index].copyWith(
       count: editedCount--,
     );
-    vendorFlowersList[index] = editedFlower;
+    flowersHandler.list[index] = editedFlower;
   }
 
   Future<void> deleteFlower(VendorFlowerViewModel flower, int index) async {
@@ -377,7 +248,7 @@ class VendorFlowerListController extends GetxController {
     final result = await _repository.deleteFlower(flowerId: flower.id);
     final bool isRecipeDeleted = result == null;
     if (isRecipeDeleted) {
-      vendorFlowersList.remove(flower);
+      flowersHandler.list.remove(flower);
       countLoading.remove("");
       // disableRefresh.remove(false);
       isOutOfStock.removeAt(index);
@@ -426,8 +297,8 @@ class VendorFlowerListController extends GetxController {
     );
     final bool isFlowerEdited = result != null;
     if (isFlowerEdited) {
-      final int index = vendorFlowersList.indexOf(flowerViewModel);
-      vendorFlowersList[index] = VendorFlowerViewModel(
+      final int index = flowersHandler.list.indexOf(flowerViewModel);
+      flowersHandler.list[index] = VendorFlowerViewModel(
           id: result['id'],
           name: result['name'],
           imageAddress: result['imageAddress'],
@@ -439,7 +310,7 @@ class VendorFlowerListController extends GetxController {
           vendorLastName: result['vendorLastName'],
           vendorImage: result['vendorImage'],
           count: result['count']);
-      if (vendorFlowersList[index].count == 0) {
+      if (flowersHandler.list[index].count == 0) {
         isOutOfStock[index] = true;
       } else {
         isOutOfStock[index] = false;

@@ -15,14 +15,15 @@ class VendorFlowerHome extends GetView<VendorFlowerListController> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
+        child: TaavScaffold(
       backgroundColor: const Color(0xfff3f7f7),
       appBar: appBar(),
       drawer: Obx(
         () => vendorDrawer(context),
       ),
       body: _vendorFlower(),
-      // body: Obx(() => _pageContent()),
+          padding: EdgeInsets.zero,
+          contentPadding: EdgeInsets.zero,
     ));
   }
 
@@ -253,61 +254,16 @@ class VendorFlowerHome extends GetView<VendorFlowerListController> {
     );
   }
 
-  // Widget _pageContent() {
-  //   if (controller.vendorFlowersList.isEmpty) {
-  //     return Center(
-  //       child: Column(
-  //         mainAxisAlignment: MainAxisAlignment.center,
-  //         children: [
-  //           const Icon(Icons.home_outlined, size: 270),
-  //           Text(locale.LocaleKeys.vendor_there_is_no_flower_here.tr,
-  //               style:
-  //               const TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
-  //         ],
-  //       ),
-  //     );
-  //   }
-  //   return _vendorFlower();
-  // }
-
-  Widget _pageContent() {
-    if (controller.isLoading.value) {
-      return const Center(child: CircularProgressIndicator());
-    } else if (controller.isRetry.value) {
-      return _retryButton();
-    } else if (controller.vendorFlowersList.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.home_outlined, size: 270),
-            Text(locale.LocaleKeys.vendor_there_is_no_flower_here.tr,
-                style:
-                    const TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
-          ],
-        ),
-      );
-    }
-    return _vendorFlower();
-  }
-
-  Widget _retryButton() => Center(
-        child: OutlinedButton(
-            onPressed: controller.getFlowersByVendorId,
-            child: const Icon(Icons.refresh_outlined)),
-      );
-
   Widget _vendorFlower() => Obx(
     () => TaavGridView<VendorFlowerViewModel>(
       key: controller.flowersHandler.key,
       items: controller.flowersHandler.list,
       crossAxisCount: const CrossAxisCount(xs: 2, lg: 4),
       crossAxisItemSize: 200,
-      // onRefreshData: () async {
-      //   controller.flowersHandler.key.currentState!.clearAllItems();
-      //   controller.getFlowersWithHandler;
-      // },
-      onRefreshData: controller.getFlowersWithHandler,
+      disableScrollbar: true,
+      showRefreshIndicator: false,
+      padding: EdgeInsets.zero,
+      // onRefreshData: controller.getFlowersWithHandler,
       onLoadMoreData: () => controller.getFlowersWithHandler(resetData: false),
       showError: controller.flowersHandler.showError.value,
       hasMoreData: controller.flowersHandler.hasMoreData.value,
@@ -315,27 +271,11 @@ class VendorFlowerHome extends GetView<VendorFlowerListController> {
           final context,
           final item,
           final index,
-          ) =>
-          VendorFlowerCard(
+          ) => VendorFlowerCard(
               vendorFlower: item,
               index: index
-          ),
-
+          )
     ),
   );
 
-  // Widget _vendorFlower() => Padding(
-  //       padding: const EdgeInsets.symmetric(vertical: 5),
-  //       child: GridView.builder(
-  //         itemCount: controller.vendorFlowersList.length,
-  //         itemBuilder: (_, index) => Padding(
-  //             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-  //             child: VendorFlowerCard(
-  //                 vendorFlower: controller.vendorFlowersList[index],
-  //                 index: index)),
-  //         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-  //           crossAxisCount: 2,
-  //         ),
-  //       ),
-  //     );
 }

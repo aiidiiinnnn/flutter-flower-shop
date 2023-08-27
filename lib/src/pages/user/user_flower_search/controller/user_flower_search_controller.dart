@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../login_page/models/user_models/login_user_view_model.dart';
-import '../../../vendor/add_vendor_flower/models/categories/categories_view_model.dart';
-import '../../../vendor/add_vendor_flower/models/colors/colors_view_model.dart';
+import '../../../vendor/add_or_edit_vendor_flower/models/categories/categories_view_model.dart';
+import '../../../vendor/add_or_edit_vendor_flower/models/colors/colors_view_model.dart';
 import '../../user_flower_cart/models/cart_flower_view_model.dart';
 import '../models/user_flower_search_view_model.dart';
 import '../repositories/user_flower_search_repository.dart';

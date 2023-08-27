@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flower_shop/generated/locales.g.dart' as locale;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:taav_ui/taav_ui.dart';
 
 import '../../controller/vendor_flower_list_controller.dart';
 
@@ -12,21 +13,82 @@ class VendorFlowerProfile extends GetView<VendorFlowerListController> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
+      child: TaavScaffold(
+        showBorder: false,
+        padding:  EdgeInsets.zero,
+        contentPadding: EdgeInsets.zero,
         backgroundColor: const Color(0xfff3f7f7),
         appBar: appBar(),
-        body: Stack(alignment: Alignment.topCenter, children: [
-          greenDecoration(),
-          Positioned(
-            child: Stack(
-              alignment: Alignment.topCenter,
-              children: [profileInformation()],
+        body: Column(
+          children: [
+            Expanded(
+              child: Stack(alignment: Alignment.topCenter, children: [
+                greenDecoration(),
+                Positioned(
+                  child: Stack(
+                    alignment: Alignment.topCenter,
+                    children: [profileInformation()],
+                  ),
+                ),
+                Positioned(
+                  child: profilePicture(),
+                ),
+              ]),
             ),
-          ),
-          Positioned(
-            child: profilePicture(),
-          ),
-        ]),
+
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: TaavLabeledDivider(
+                label: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 4),
+                  child: TaavText.caption1('Rate Us'),
+                ),
+                thickness: 1.2,
+                startFlex: 1,
+                endFlex: 10,
+                color: TaavColors.blue,
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(bottom: 40),
+              child: TaavRatingBar(
+                initialRating: 3,
+                itemCount: 5,
+                itemBuilder: (final context, final index) {
+                  switch (index) {
+                    case 0:
+                      return const Icon(
+                        Icons.sentiment_very_dissatisfied,
+                        color: Colors.red,
+                      );
+                    case 1:
+                      return const Icon(
+                        Icons.sentiment_dissatisfied,
+                        color: Colors.redAccent,
+                      );
+                    case 2:
+                      return const Icon(
+                        Icons.sentiment_neutral,
+                        color: Colors.amber,
+                      );
+                    case 3:
+                      return const Icon(
+                        Icons.sentiment_satisfied,
+                        color: Colors.lightGreen,
+                      );
+                  }
+
+                  return const Icon(
+                    Icons.sentiment_very_satisfied,
+                    color: Colors.green,
+                  );
+                },
+                onRatingUpdate: print,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

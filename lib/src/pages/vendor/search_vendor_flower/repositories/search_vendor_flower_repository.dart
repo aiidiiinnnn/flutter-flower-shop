@@ -6,8 +6,8 @@ import 'package:http/http.dart' as http;
 import '../../../../infrastructure/common/repository_url.dart';
 import '../../../login_page/models/vendor_models/login_vendor_dto.dart';
 import '../../../login_page/models/vendor_models/login_vendor_view_model.dart';
-import '../../add_vendor_flower/models/categories/categories_view_model.dart';
-import '../../add_vendor_flower/models/colors/colors_view_model.dart';
+import '../../add_or_edit_vendor_flower/models/categories/categories_view_model.dart';
+import '../../add_or_edit_vendor_flower/models/colors/colors_view_model.dart';
 import '../models/search_vendor_flower_dto.dart';
 import '../models/search_vendor_flower_view_model.dart';
 

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flower_shop/generated/locales.g.dart' as locale;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:taav_ui/taav_ui.dart';
 
 import '../../controller/user_flower_list_controller.dart';
 import '../../models/user_flower_view_model.dart';
@@ -94,11 +95,18 @@ class UserFlowerCard extends GetView<UserFlowerListController> {
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       itemCount: userFlower.category.length,
-                      itemBuilder: (_, index) => Chip(
-                        label: Text(
-                          userFlower.category[index],
-                          style: const TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.w500),
+                      itemBuilder: (_, index) => TaavChipTheme(
+                        themeData: TaavChipThemeData(
+                          backgroundColor: TaavColors.grey[300],
+                          borderRadius: const BorderRadius.all(Radius.circular(15)),
+                          labelStyle: const TextStyle(color: TaavColors.white),
+                          borderSide: const BorderSide(
+                            width: 0,
+                            color: TaavColors.transparent,
+                          ),
+                        ),
+                        child: TaavChip(
+                          label:userFlower.category[index],
                         ),
                       ),
                     ),
@@ -411,4 +419,17 @@ class UserFlowerCard extends GetView<UserFlowerListController> {
       icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
     );
   }
+
+  Widget chipLabel({final String? label, final Widget? child}) => Row(
+    children: [
+      Expanded(
+        flex: 4,
+        child: TaavText.body1(label ?? ''),
+      ),
+      Expanded(
+        flex: 3,
+        child: child ?? const SizedBox.shrink(),
+      ),
+    ],
+  );
 }

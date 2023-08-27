@@ -1,5 +1,6 @@
 import 'package:flower_shop/src/pages/user/user_flower_cart/view/user_flower_cart.dart';
-import 'package:flower_shop/src/pages/vendor/add_vendor_flower/view/add_vendor_flower.dart';
+import 'package:flower_shop/src/pages/vendor/add_or_edit_vendor_flower/controller/add_vendor_flower_controller.dart';
+import 'package:flower_shop/src/pages/vendor/add_or_edit_vendor_flower/view/add_or_edit_vendor_flower.dart';
 import 'package:flower_shop/src/pages/vendor/history_vendor_flower/view/history_vendor_flower.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/screens/vendor_flower_profile.dart';
 import 'package:flower_shop/src/pages/vendor/vendor_flower_list/view/vendor_flower_list.dart';
@@ -18,9 +19,9 @@ import '../../pages/user/user_flower_list/view/screens/user_flower_profile.dart'
 import '../../pages/user/user_flower_list/view/user_flower_list.dart';
 import '../../pages/user/user_flower_search/commons/user_flower_search_binding.dart';
 import '../../pages/user/user_flower_search/view/user_flower_search.dart';
-import '../../pages/vendor/add_vendor_flower/commons/add_vendor_flower_binding.dart';
-import '../../pages/vendor/edit_vendor_flower/commons/edit_vendor_flower_binding.dart';
-import '../../pages/vendor/edit_vendor_flower/view/edit_vendor_flower.dart';
+import '../../pages/vendor/add_or_edit_vendor_flower/commons/add_vendor_flower_binding.dart';
+import '../../pages/vendor/add_or_edit_vendor_flower/commons/edit_vendor_flower_binding.dart';
+import '../../pages/vendor/add_or_edit_vendor_flower/controller/edit_vendor_flower_controller.dart';
 import '../../pages/vendor/history_vendor_flower/commons/history_vendor_flower_binding.dart';
 import '../../pages/vendor/search_vendor_flower/commons/search_vendor_flower_binding.dart';
 import '../../pages/vendor/search_vendor_flower/view/search_vendor_flower.dart';
@@ -55,12 +56,12 @@ class RoutePages{
               children: [
                 GetPage(
                     name: RouteNames.addVendorFlower,
-                    page: () => const AddVendorFlower(),
+                    page: () => const AddOrEditVendorFlower<AddVendorFlowerController>(),
                     binding: AddVendorFlowerBinding()
                 ),
                 GetPage(
                     name: RouteNames.editVendorFlower,
-                    page: () => const EditVendorFlower(),
+                    page: () =>  const AddOrEditVendorFlower<EditVendorFlowerController>(),
                     binding: EditVendorFlowerBinding()
                 ),
                 GetPage(

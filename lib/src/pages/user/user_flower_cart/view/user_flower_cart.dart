@@ -111,15 +111,24 @@ class UserFlowerCart extends GetView<UserFlowerCartController> {
     } else if (controller.isRetry.value) {
       return _retryButton();
     } else if (controller.cartFlowerList.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.shopping_cart, size: 270),
-            Text(locale.LocaleKeys.user_no_flower_founded_to_purchase.tr,
-                style:
-                    const TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
-          ],
+      return const Center(
+        child: TaavShimmerEffect(
+            color: Colors.blue,
+            duration: Duration(seconds: 1),
+            enabled: true,
+            direction: TaavShimmerEffectDirection.bottomRightToTopLeft,
+            widthPercent: 0.1,
+            pausePercent: 0,
+            curve: Curves.decelerate,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.shopping_cart, size: 270),
+                Text("No flower founded to purchase",
+                    style:
+                    TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
+              ],
+            )
         ),
       );
     }

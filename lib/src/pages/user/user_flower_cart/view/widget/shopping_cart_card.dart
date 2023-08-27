@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flower_shop/generated/locales.g.dart' as locale;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:taav_ui/taav_ui.dart';
 
 import '../../controller/user_flower_cart_controller.dart';
 import '../../models/cart_flower_view_model.dart';
@@ -14,6 +15,83 @@ class ShoppingCartCard extends GetView<UserFlowerCartController> {
   final int index;
   String firstHalfText = "";
   String secondHalfText = "";
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   if (cartFlower.description.length > 20) {
+  //     firstHalfText = cartFlower.description.substring(0, 20);
+  //     secondHalfText =
+  //         cartFlower.description.substring(20, cartFlower.description.length);
+  //   } else {
+  //     firstHalfText = cartFlower.description;
+  //     secondHalfText = "";
+  //   }
+  //   return Padding(
+  //     padding: const EdgeInsets.all(6),
+  //     child: Stack(
+  //       children: [
+  //         Container(
+  //           width: double.infinity,
+  //           height: 200,
+  //           decoration: BoxDecoration(
+  //               color: const Color(0xffe9e9e9),
+  //               border: Border.all(color: const Color(0xff9d9d9d)),
+  //               borderRadius: BorderRadius.circular(20)),
+  //           child: Row(
+  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //             children: [
+  //               shoppingCardImage(),
+  //               Column(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: [
+  //                   shoppingCardName(),
+  //                   shoppingCardDescription(context),
+  //                   SizedBox(
+  //                     width: 170,
+  //                     child: Obx(
+  //                       () => (controller.countLoading[index])
+  //                           ? const SizedBox(
+  //                               width: 70,
+  //                               height: 10,
+  //                               child: LinearProgressIndicator())
+  //                           : Row(
+  //                               mainAxisAlignment:
+  //                                   MainAxisAlignment.spaceBetween,
+  //                               children: [
+  //                                 Text("\$${cartFlower.price}",
+  //                                     style: const TextStyle(
+  //                                         fontSize: 14,
+  //                                         fontWeight: FontWeight.w300)),
+  //                                 countButtons(),
+  //                               ],
+  //                             ),
+  //                     ),
+  //                   )
+  //                 ],
+  //               )
+  //             ],
+  //           ),
+  //         ),
+  //         Obx(() => Positioned(
+  //               right: 10,
+  //               top: 10,
+  //               child: (controller.isLoadingDelete.value)
+  //                   ? const Center(
+  //                       child: SizedBox(
+  //                           width: 20,
+  //                           height: 20,
+  //                           child: CircularProgressIndicator()),
+  //                     )
+  //                   : IconButton(
+  //                       onPressed: () => controller.onTapDelete(
+  //                           flower: cartFlower, index: index),
+  //                       icon: const Icon(Icons.delete_outline)),
+  //             ))
+  //       ],
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +105,88 @@ class ShoppingCartCard extends GetView<UserFlowerCartController> {
     }
     return Padding(
       padding: const EdgeInsets.all(6),
-      child: Stack(
+      child: Obx(() => (controller.isLoadingDelete[index])?
+
+      Container(
+        width: double.infinity,
+        height: 200,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            TaavShimmerEffect(
+              color: const Color(0xffe9e9e9),
+              duration: const Duration(seconds: 1),
+              enabled: true,
+              direction: TaavShimmerEffectDirection.bottomRightToTopLeft,
+              widthPercent: 0.1,
+              pausePercent: 0,
+              curve: Curves.decelerate,
+              child: Container(
+                height: 170,
+                width: 170,
+                decoration: BoxDecoration(
+                    color: const Color(0xffe9e9e9), borderRadius: BorderRadius.circular(15)),
+              ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TaavShimmerEffect(
+                  color: const Color(0xffe9e9e9),
+                  duration: const Duration(seconds: 1),
+                  enabled: true,
+                  direction: TaavShimmerEffectDirection.bottomRightToTopLeft,
+                  widthPercent: 0.1,
+                  pausePercent: 0,
+                  curve: Curves.decelerate,
+                  child: Container(
+                    height: 20,
+                    width: 150,
+                    decoration: BoxDecoration(
+                        color: const Color(0xff9d9d9d), borderRadius: BorderRadius.circular(15)),
+                  ),
+                ),
+                TaavShimmerEffect(
+                  color: const Color(0xffe9e9e9),
+                  duration: const Duration(seconds: 1),
+                  enabled: true,
+                  direction: TaavShimmerEffectDirection.bottomRightToTopLeft,
+                  widthPercent: 0.1,
+                  pausePercent: 0,
+                  curve: Curves.decelerate,
+                  child: Container(
+                    height: 20,
+                    width: 150,
+                    decoration: BoxDecoration(
+                        color: const Color(0xff9d9d9d), borderRadius: BorderRadius.circular(15)),
+                  ),
+                ),
+                TaavShimmerEffect(
+                  color: const Color(0xffe9e9e9),
+                  duration: const Duration(seconds: 1),
+                  enabled: true,
+                  direction: TaavShimmerEffectDirection.bottomRightToTopLeft,
+                  widthPercent: 0.1,
+                  pausePercent: 0,
+                  curve: Curves.decelerate,
+                  child: Container(
+                    height: 20,
+                    width: 50,
+                    decoration: BoxDecoration(
+                        color: const Color(0xff9d9d9d), borderRadius: BorderRadius.circular(15)),
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      )
+
+          :Stack(
         children: [
           Container(
             width: double.infinity,
@@ -49,22 +208,22 @@ class ShoppingCartCard extends GetView<UserFlowerCartController> {
                     SizedBox(
                       width: 170,
                       child: Obx(
-                        () => (controller.countLoading[index])
+                            () => (controller.countLoading[index])
                             ? const SizedBox(
-                                width: 70,
-                                height: 10,
-                                child: LinearProgressIndicator())
+                            width: 70,
+                            height: 10,
+                            child: LinearProgressIndicator())
                             : Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("\$${cartFlower.price}",
-                                      style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w300)),
-                                  countButtons(),
-                                ],
-                              ),
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("\$${cartFlower.price}",
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w300)),
+                            countButtons(),
+                          ],
+                        ),
                       ),
                     )
                   ],
@@ -72,23 +231,16 @@ class ShoppingCartCard extends GetView<UserFlowerCartController> {
               ],
             ),
           ),
-          Obx(() => Positioned(
-                right: 10,
-                top: 10,
-                child: (controller.isLoadingDelete.value)
-                    ? const Center(
-                        child: SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator()),
-                      )
-                    : IconButton(
-                        onPressed: () => controller.onTapDelete(
-                            flower: cartFlower, index: index),
-                        icon: const Icon(Icons.delete_outline)),
-              ))
+          Positioned(
+            right: 10,
+            top: 10,
+            child: IconButton(
+                onPressed: () => controller.onTapDelete(
+                    flower: cartFlower, index: index),
+                icon: const Icon(Icons.delete_outline)),
+          ),
         ],
-      ),
+      ),)
     );
   }
 

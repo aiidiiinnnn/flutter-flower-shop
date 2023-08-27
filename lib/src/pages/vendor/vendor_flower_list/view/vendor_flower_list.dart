@@ -13,13 +13,37 @@ class VendorFlowerList extends GetView<VendorFlowerListController> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
+        child: TaavScaffold(
+          showBorder: false,
+          padding: EdgeInsets.zero,
+          contentPadding: EdgeInsets.zero,
+          persistentFooterButtons: [
+            Center(
+              child: Obx(() => TaavStepper(
+                currentStep: controller.pageIndex.value,
+                onStepTapped: (final v) => {
+                  controller.pageIndex.value = v,
+                  controller.onDestinationSelected(controller.pageIndex.value),
+                  controller.pageController.jumpToPage(controller.pageIndex.value),
+                },
+                steps: _steps(controller.pageIndex.value, true),
+                iconMargin: const EdgeInsets.all(8),
+                iconPadding: const EdgeInsets.all(8),
+                progressiveDividerColor: true,
+                showStepDivider: true,
+                iconSize: 32,
+              )),
+            )
+          ],
+          extendBody: false,
             backgroundColor: const Color(0xfff3f7f7),
             body: pageContent(),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
             floatingActionButton: floatingAction(),
-            bottomNavigationBar: bottomNavigation()));
+            // bottomNavigationBar: bottomNavigation()
+        )
+    );
   }
 
   TaavFloatingActionButtonMenu floatingAction() {
@@ -62,6 +86,33 @@ class VendorFlowerList extends GetView<VendorFlowerListController> {
       ),
     );
   }
+
+  List<TaavStep> _steps(final int currentStep, final bool withText) => [
+    TaavStep(
+      content: () => const ColoredBox(
+        color: TaavColors.red,
+      ),
+      title: withText ? const TaavText('Home') : null,
+      state: currentStep > 0
+          ? TaavStepState.complete
+          : currentStep == 0
+          ? TaavStepState.indexed
+          : TaavStepState.inComplete,
+      icon: Icons.home_outlined,
+    ),
+    TaavStep(
+      content: () => const ColoredBox(
+        color: TaavColors.blue,
+      ),
+      title: withText ? const TaavText('Profile') : null,
+      state: currentStep > 1
+          ? TaavStepState.complete
+          : currentStep == 1
+          ? TaavStepState.indexed
+          : TaavStepState.inComplete,
+      icon: Icons.person_outlined,
+    ),
+  ];
 
   Obx bottomNavigation() {
     return Obx(

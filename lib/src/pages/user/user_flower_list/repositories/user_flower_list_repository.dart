@@ -3,7 +3,7 @@ import 'package:either_dart/either.dart';
 import '../../../../infrastructure/common/repository_url.dart';
 import 'package:http/http.dart' as http;
 import '../../../login_page/models/user_models/login_user_view_model.dart';
-import '../../../vendor/add_vendor_flower/models/categories/categories_view_model.dart';
+import '../../../vendor/add_or_edit_vendor_flower/models/categories/categories_view_model.dart';
 import '../../user_flower_history/models/purchase_view_model.dart';
 import '../models/user_flower_view_model.dart';
 

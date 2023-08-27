@@ -274,8 +274,27 @@ class UserFlowerHome extends GetView<UserFlowerListController> {
 
   Widget _pageContent(BuildContext context) {
     if (controller.isLoading.value) {
-      return const Center(child:
-      CircularProgressIndicator()
+      return const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TaavShimmerEffect(
+              color: Colors.blue,
+              duration: Duration(seconds: 1),
+              enabled: true,
+              direction: TaavShimmerEffectDirection.bottomRightToTopLeft,
+              widthPercent: 0.1,
+              pausePercent: 0,
+              curve: Curves.decelerate,
+              child: Column(
+                children: [
+                  Icon(Icons.hourglass_empty_outlined,size: 40,),
+                  TaavText.heading5('Loading'),
+                ],
+              )
+            ),
+          ],
+        ),
       );
     } else if (controller.isRetry.value) {
       return _retryButton();
