@@ -21,7 +21,8 @@ class AddVendorFlowerController extends BaseVendorFlowerController {
     await getColors();
   }
 
-  Future<void> addVendorFlower() async {
+  @override
+  Future<void> modify() async {
     if (!formKey.currentState!.validate()) {
       return;
     }
@@ -29,17 +30,17 @@ class AddVendorFlowerController extends BaseVendorFlowerController {
     final dto = AddVendorFlowerDto(
       name: nameController.text,
       description: descriptionController.text,
+      imageAddress: savedImage.value,
       price: int.parse(priceController.text),
       color: colors,
-      imageAddress: savedImage.value,
-      count: int.parse(countController.text),
       category: categoryList,
+      count: int.parse(countController.text),
       vendorName: vendor!.firstName,
       vendorLastName: vendor!.lastName,
       vendorImage: vendor!.imagePath,
     );
     final Either<String, AddOrEditVendorFlowerViewModel> request =
-        await repository.addVendorFlower(dto);
+    await repository.addVendorFlower(dto);
     request.fold((left) {
       Get.snackbar(left, left);
       isLoadingSubmit.value = false;
@@ -76,9 +77,6 @@ class AddVendorFlowerController extends BaseVendorFlowerController {
       });
     });
   }
-
-  @override
-  Future<void> modify() async {}
 
 
 }

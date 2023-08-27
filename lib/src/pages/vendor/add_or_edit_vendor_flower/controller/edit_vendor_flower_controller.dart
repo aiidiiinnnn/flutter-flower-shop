@@ -1,21 +1,8 @@
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:either_dart/either.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:taav_ui/taav_ui.dart';
-
-import '../../../login_page/models/vendor_models/login_vendor_view_model.dart';
 import '../models/addOrEdit_vendor/addOrEdit_vendor_flower_view_model.dart';
 import '../models/addOrEdit_vendor/edit_vendor_flower_dto.dart';
-import '../models/categories/categories_dto.dart';
-import '../models/categories/categories_view_model.dart';
-import '../models/colors/color_dto.dart';
-import '../models/colors/colors_view_model.dart';
 import 'base_vendor_flower_controller.dart';
 
 class EditVendorFlowerController extends BaseVendorFlowerController {

@@ -16,15 +16,15 @@ class VendorFlowerHome extends GetView<VendorFlowerListController> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: TaavScaffold(
-      backgroundColor: const Color(0xfff3f7f7),
-      appBar: appBar(),
-      drawer: Obx(
-        () => vendorDrawer(context),
-      ),
-      body: _vendorFlower(),
+          backgroundColor: const Color(0xfff3f7f7),
+          appBar: appBar(),
+          drawer: Obx(
+                () => vendorDrawer(context),
+          ),
+          body: _vendorFlower(),
           padding: EdgeInsets.zero,
           contentPadding: EdgeInsets.zero,
-    ));
+        ));
   }
 
   AppBar appBar() {

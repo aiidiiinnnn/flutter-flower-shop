@@ -19,9 +19,8 @@ class VendorFlowerListController extends GetxController {
       GlobalKey<TaavGridViewState<VendorFlowerViewModel>>();
 
   final VendorFlowerListRepository _repository = VendorFlowerListRepository();
-  // RxList<VendorFlowerViewModel> vendorFlowersList = RxList();
   TaavGridViewHandler<VendorFlowerViewModel> flowersHandler =
-      TaavGridViewHandler(limit: 3);
+      TaavGridViewHandler(limit: 6);
   RxBool isLoading = false.obs;
   RxString isLoadingDelete = "".obs;
   RxBool disableLoading = false.obs;
@@ -69,9 +68,8 @@ class VendorFlowerListController extends GetxController {
     if (result != null) {
       final VendorFlowerViewModel newVendorFlower =
           VendorFlowerViewModel.fromJson(result);
-      flowersHandler.list.add(newVendorFlower);
+      flowersHandler.addItem(newVendorFlower);
       countLoading.add("");
-      // disableRefresh.add(false);
       isOutOfStock.add(false);
     }
     pageIndex.value = 0;
@@ -248,10 +246,6 @@ class VendorFlowerListController extends GetxController {
     final result = await _repository.deleteFlower(flowerId: flower.id);
     final bool isRecipeDeleted = result == null;
     if (isRecipeDeleted) {
-      flowersHandler.list.remove(flower);
-      countLoading.remove("");
-      // disableRefresh.remove(false);
-      isOutOfStock.removeAt(index);
       vendor!.vendorFlowerList.remove(flower.id);
       final result = await _repository.vendorEditFlowerList(
         dto: LoginVendorDto(
@@ -273,6 +267,9 @@ class VendorFlowerListController extends GetxController {
         TaavToastManager().showToast("Item has been deleted successfully",
             status: TaavWidgetStatus.success);
       });
+      flowersHandler.removeAt(index);
+      countLoading.remove("");
+      isOutOfStock.removeAt(index);
     } else {
       Get.snackbar('Error', result);
     }
